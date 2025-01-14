@@ -10,20 +10,6 @@
       "StackName": "amplify-sondratulalaphotogra-dev-e1894",
       "StackId": "arn:aws:cloudformation:us-east-1:178450627339:stack/amplify-sondratulalaphotogra-dev-e1894/e05b98e0-d2a9-11ef-afc9-0affd1fee9b1",
       "AmplifyAppId": "d46uvav67tth9"
-    },
-    "categories": {
-      "api": {
-        "sondratulalaphotogra": {}
-      },
-      "auth": {
-        "sondratulalaphotograae5900a8": {}
-      },
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d46uvav67tth9",
-          "type": "manual"
-        }
-      }
     }
   }
 }
