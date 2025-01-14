@@ -9,6 +9,5 @@
   "authAccess": [
     "READ"
   ],
-  "triggerFunction": "NONE",
   "groupAccess": {}
 }

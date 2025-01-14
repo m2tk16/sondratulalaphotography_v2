@@ -11,7 +11,7 @@ interface GetImageProps {
 
 const GetImage: React.FC<GetImageProps> = ({ imagePath, className = "", fluid = true }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-
+  console.log(imagePath)
   useEffect(() => {
     async function fetchImage() {
       try {

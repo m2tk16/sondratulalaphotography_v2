@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "sondratulalaphotogra650077c5_identitypool_650077c5",
+    "identityPoolName": "sondratulalaphotograaaef21f8_identitypool_aaef21f8",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "sondra650077c5",
-    "userPoolName": "sondratulalaphotogra650077c5_userpool_650077c5",
+    "resourceNameTruncated": "sondraaaef21f8",
+    "userPoolName": "sondratulalaphotograaaef21f8_userpool_aaef21f8",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,15 +31,22 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "sondra650077c5_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "sondraaaef21f8_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "650077c5",
-    "resourceName": "sondratulalaphotogra650077c5",
+    "sharedId": "aaef21f8",
+    "resourceName": "sondratulalaphotograaaef21f8",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "default",
+    "useDefault": "defaultSocial",
+    "hostedUI": true,
     "usernameAttributes": [
       "email"
     ],
+    "triggers": {},
+    "hostedUIDomainName": "sondratulalaphotograaaef21f8-aaef21f8",
+    "authProvidersUserPool": [
+      "Google"
+    ],
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
@@ -57,6 +64,11 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": []
+    "dependsOn": [],
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\"],\"LogoutURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\"]}",
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "permissions": []
   }
 }

@@ -1,7 +1,7 @@
 {
   "api": {},
   "auth": {
-    "sondratulalaphotogra650077c5": {
+    "sondratulalaphotograaaef21f8": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -16,7 +16,9 @@
         "signupAttributes": [
           "EMAIL"
         ],
-        "socialProviders": [],
+        "socialProviders": [
+          "GOOGLE"
+        ],
         "usernameAttributes": [
           "EMAIL"
         ],

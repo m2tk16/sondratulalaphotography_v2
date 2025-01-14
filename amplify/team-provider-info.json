@@ -12,11 +12,11 @@
       "AmplifyAppId": "dm7aei9mgulua"
     },
     "categories": {
-      "auth": {
-        "sondratulalaphotogra650077c5": {}
-      },
       "storage": {
         "sondratulalaphotographys3": {}
+      },
+      "auth": {
+        "sondratulalaphotograaaef21f8": {}
       }
     }
   }
