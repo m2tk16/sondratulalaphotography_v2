@@ -1,0 +1,13 @@
+.home-image {
+    opacity: 0;
+    transition: opacity .75s ease-in-out;
+  }
+  
+  .home-image.visible {
+    opacity: 1;
+  }
+
+  .loading-spinner {
+    text-align: center;
+    padding: auto;
+  }
