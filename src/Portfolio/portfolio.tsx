@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./portfolio.css";
 import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
@@ -9,7 +9,7 @@ import { list } from "@aws-amplify/storage";
 
 
 const Portfolio = () => {
-    const [imageArray, setImageArray] = useState([]);
+  const [imageArray, setImageArray] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchImages = async () => {

@@ -1,7 +1,5 @@
-// import React, { useState, useEffect } from "react";
 import { Amplify } from 'aws-amplify';
 import awsConfig from './aws-exports';
-import React from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "@aws-amplify/ui-react/styles.css";
@@ -21,7 +19,7 @@ function App() {
         <Router>
           <NavBar />
           <Routes>
-            <Route path='/' exact element={<Home />} />
+            <Route path='/' element={<Home />} />
             <Route path='/about' element={<About/>} />
             {/*
             <Route path='/portfolio' element={<Portfolio/>} />

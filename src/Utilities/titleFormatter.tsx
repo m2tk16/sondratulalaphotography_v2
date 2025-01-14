@@ -1,6 +1,9 @@
-import React from "react";
 
-const ExtractAndFormat = ({ path }) => {
+interface ExtractAndFormatProps {
+  path: string;
+}
+
+const ExtractAndFormat: React.FC<ExtractAndFormatProps> = ({ path }) => {
   const formatPath = () => {
     if (!path || typeof path !== "string") {
       console.error("Invalid path:", path);

@@ -12,10 +12,17 @@ interface PortfolioWrapperProps {
   path: string;
 }
 
+interface AuthSession {
+  userId: string;
+  accessToken: string;
+}
+
+
+
 const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  const [authSession, setAuthSession] = useState(null);
+  const [authSession, setAuthSession] = useState<AuthSession | null>(null);
   const title = <ExtractAndFormat path={path} />;
 
   useEffect(() => {

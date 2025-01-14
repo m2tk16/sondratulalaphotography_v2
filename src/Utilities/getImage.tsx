@@ -3,14 +3,20 @@ import Spinner from "react-bootstrap/Spinner";
 import Image from "react-bootstrap/Image";
 import { getUrl } from "@aws-amplify/storage";
 
-const GetImage = ({ imagePath, className = "", fluid = true }) => {
-  const [imageUrl, setImageUrl] = useState(null);
+interface GetImageProps {
+  imagePath: string;
+  className?: string;
+  fluid?: boolean;
+}
+
+const GetImage: React.FC<GetImageProps> = ({ imagePath, className = "", fluid = true }) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchImage() {
       try {
         const urlResponse = await getUrl({ path: imagePath });
-        setImageUrl(urlResponse.url);
+        setImageUrl(urlResponse.url.toString());;
       } catch (error) {
         console.error("Error fetching image:", error);
       }
