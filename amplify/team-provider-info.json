@@ -1,15 +1,23 @@
 {
-  "dev": {
+  "main": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-sondratulalaphotogra-dev-e1894-authRole",
-      "UnauthRoleArn": "arn:aws:iam::178450627339:role/amplify-sondratulalaphotogra-dev-e1894-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::178450627339:role/amplify-sondratulalaphotogra-dev-e1894-authRole",
+      "AuthRoleName": "amplify-sondratulalaphotogra-main-496bb-authRole",
+      "UnauthRoleArn": "arn:aws:iam::178450627339:role/amplify-sondratulalaphotogra-main-496bb-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::178450627339:role/amplify-sondratulalaphotogra-main-496bb-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-sondratulalaphotogra-dev-e1894-deployment",
-      "UnauthRoleName": "amplify-sondratulalaphotogra-dev-e1894-unauthRole",
-      "StackName": "amplify-sondratulalaphotogra-dev-e1894",
-      "StackId": "arn:aws:cloudformation:us-east-1:178450627339:stack/amplify-sondratulalaphotogra-dev-e1894/e05b98e0-d2a9-11ef-afc9-0affd1fee9b1",
-      "AmplifyAppId": "d46uvav67tth9"
+      "DeploymentBucketName": "amplify-sondratulalaphotogra-main-496bb-deployment",
+      "UnauthRoleName": "amplify-sondratulalaphotogra-main-496bb-unauthRole",
+      "StackName": "amplify-sondratulalaphotogra-main-496bb",
+      "StackId": "arn:aws:cloudformation:us-east-1:178450627339:stack/amplify-sondratulalaphotogra-main-496bb/6fb4f7f0-d2b1-11ef-8896-0ea15dff965b",
+      "AmplifyAppId": "dm7aei9mgulua"
+    },
+    "categories": {
+      "auth": {
+        "sondratulalaphotogra650077c5": {}
+      },
+      "storage": {
+        "sondratulalaphotographys3": {}
+      }
     }
   }
 }
