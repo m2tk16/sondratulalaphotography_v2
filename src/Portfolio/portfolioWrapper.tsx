@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./portfolio.css";
 import GetImage from "../Utilities/getImage";
 import Col from "react-bootstrap/Col";
@@ -6,23 +7,28 @@ import Row from "react-bootstrap/Row";
 import { Heart, CurrencyBitcoin } from "react-bootstrap-icons";
 import { FaPaypal } from "react-icons/fa";
 import ExtractAndFormat from "../Utilities/titleFormatter";
-import { fetchAuthSession } from "@aws-amplify/auth";
+//import { fetchAuthSession } from "@aws-amplify/auth";
 
 interface PortfolioWrapperProps {
   path: string;
 }
 
+{/*
 interface AuthSession {
   userId: string;
   accessToken: string;
 }
+*/}
 
 const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  const [authSession, setAuthSession] = useState<AuthSession | null>(null);
+  //const [authSession, setAuthSession] = useState<AuthSession | null>(null);
   const title = <ExtractAndFormat path={path} />;
 
+  setIsVisible(true);
+  setLikeCount(1);
+  {/*
   useEffect(() => {
     setIsVisible(true);
 
@@ -37,6 +43,7 @@ const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
 
     fetchUserSession();
   }, []);
+  
 
   const handleLikeClick = async () => {
     const accessToken = authSession?.tokens?.accessToken?.payload;
@@ -76,6 +83,7 @@ const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
       //  console.error("Error liking the photo:", error);
       //}
   };
+  */}
 
   return (
     <div className="p-6 portfolio-image-wrapper">
@@ -92,9 +100,9 @@ const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
           <Col className="col-4 text-center">
             <Heart
               size={20}
-              onClick={handleLikeClick} // Attach click handler
               className="like-icon"
             />
+            {/* onClick={handleLikeClick} */}
             <div className="like-count">{likeCount}</div>
           </Col>
           <Col className="col-4 text-center">
