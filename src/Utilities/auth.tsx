@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 
 const UseAuth = () => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState({});
   const [error, setError] = useState<string | null>(null);
 
   const getUser = async () => {
@@ -13,7 +13,7 @@ const UseAuth = () => {
       setUser(currentUser);
     } catch (error) {
       console.error("Error fetching user:", error);
-      setUser(null);
+      setUser({});
     }
   };
 
