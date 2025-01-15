@@ -65,10 +65,10 @@
     },
     "breakCircularDependency": true,
     "dependsOn": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\"],\"LogoutURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\"]}",
     "parentStack": {
       "Ref": "AWS::StackId"
     },
-    "permissions": []
+    "permissions": [],
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"https://sondratulalaphotography.com/\",\"http://localhost:3001/\"],\"LogoutURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"http://localhost:3001/\"]}"
   }
 }

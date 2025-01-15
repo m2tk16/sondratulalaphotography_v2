@@ -17,8 +17,6 @@ interface AuthSession {
   accessToken: string;
 }
 
-
-
 const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
