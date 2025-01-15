@@ -1,5 +1,20 @@
 {
-  "api": {},
+  "api": {
+    "api1a616468": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "sondratulalaphotogradcd4b5ed"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "sondratulalaphotograaaef21f8": {
       "customAuth": false,
@@ -30,6 +45,13 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "sondratulalaphotogradcd4b5ed": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
   "hosting": {},
   "parameters": {
     "AMPLIFY_auth_sondratulalaphotograaaef21f8_googleClientId": {
@@ -37,6 +59,22 @@
         {
           "category": "auth",
           "resourceName": "sondratulalaphotograaaef21f8"
+        }
+      ]
+    },
+    "AMPLIFY_function_sondratulalaphotogradcd4b5ed_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sondratulalaphotogradcd4b5ed"
+        }
+      ]
+    },
+    "AMPLIFY_function_sondratulalaphotogradcd4b5ed_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sondratulalaphotogradcd4b5ed"
         }
       ]
     }

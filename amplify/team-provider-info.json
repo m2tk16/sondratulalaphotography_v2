@@ -19,6 +19,15 @@
         "sondratulalaphotograaaef21f8": {
           "googleClientId": "988414843190-t9uk5u32967dcv6h7o636mvm49atimjt.apps.googleusercontent.com"
         }
+      },
+      "function": {
+        "sondratulalaphotogradcd4b5ed": {
+          "deploymentBucketName": "amplify-sondratulalaphotogra-main-496bb-deployment",
+          "s3Key": "amplify-builds/sondratulalaphotogradcd4b5ed-6b4b426c2b312b696344-build.zip"
+        }
+      },
+      "api": {
+        "api1a616468": {}
       }
     }
   }

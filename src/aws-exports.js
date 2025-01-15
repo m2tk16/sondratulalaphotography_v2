@@ -3,6 +3,13 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
+    "aws_cloud_logic_custom": [
+        {
+            "name": "api1a616468",
+            "endpoint": "https://u2stec7ki5.execute-api.us-east-1.amazonaws.com/main",
+            "region": "us-east-1"
+        }
+    ],
     "aws_cognito_identity_pool_id": "us-east-1:f76107e3-d374-4f45-883b-5bfea4ca5dd9",
     "aws_cognito_region": "us-east-1",
     "aws_user_pools_id": "us-east-1_Ag1DJ56zy",
