@@ -1,5 +1,5 @@
 import { Hub } from "aws-amplify/utils";
-// import { signInWithRedirect, signOut, getCurrentUser } from "aws-amplify/auth";
+import { signInWithRedirect, signOut, getCurrentUser } from "aws-amplify/auth";
 import { useEffect, useState } from "react";
 
 
@@ -9,8 +9,7 @@ const UseAuth = () => {
 
   const getUser = async () => {
     try {
-      // const currentUser = await getCurrentUser();
-      const currentUser = "tulalam"
+      const currentUser = await getCurrentUser();
       setUser(currentUser);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -38,8 +37,7 @@ const UseAuth = () => {
     return () => unsubscribe();
   }, [error]);
 
-  // return { user, signInWithRedirect, signOut };
-  return { user }
+  return { user, signInWithRedirect, signOut };
 };
 
 export default UseAuth;
