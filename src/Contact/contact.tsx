@@ -66,9 +66,10 @@ const Contact = () => {
         <>
             <Row className="justify-content-center g-4">
                 <Col xs={12} md={12} className="text-center p-4">
-                    <Card className="portfolio-title">
+                    <Card className="contact-me-title">
                         <div className="font-loader">Contact Me!</div>
                     </Card>
+
                 </Col>
             </Row>
             <Row className="d-flex justify-content-center align-items-center px-5">
