@@ -39,7 +39,7 @@ const NavBar = () => {
             ) : (
               <Nav.Link
                 className="nav-link fs-5"
-                onClick={() => signInWithRedirect({ provider: "Google", scopes: ["email", "openid", "profile"] })}
+                onClick={() => signInWithRedirect({ provider: "Google" })}
               >
                 Sign In
               </Nav.Link>
