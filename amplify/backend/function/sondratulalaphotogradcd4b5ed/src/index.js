@@ -1,17 +1,54 @@
+const AWS = require('aws-sdk');
+AWS.config.update({ region: 'us-east-1' });
+const ses = new AWS.SES();
 
-
-/**
- * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
- */
 exports.handler = async (event) => {
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-    return {
-        statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
-        body: JSON.stringify('Hello from Lambda!'),
+    const { firstName, lastName, email, subject, message } = JSON.parse(event.body);
+
+    const emailParams = {
+        Source: 'info-contact@sondratulalaphotography.com',
+        Destination: {
+            ToAddresses: ['sondratulalaphotography@gmail.com'],
+        },
+        Message: {
+            Subject: {
+                Data: `Contact Form Submission: ${subject}`,
+            },
+            Body: {
+                Text: {
+                    Data: `
+                        You have a new contact form submission:
+                        
+                        First Name: ${firstName}
+                        Last Name: ${lastName}
+                        Email: ${email}
+                        Message: ${message}
+                    `,
+                },
+            },
+        },
     };
+
+    try {
+        await ses.sendEmail(emailParams).promise();
+        return {
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify({ message: 'Email sent successfully' }),
+        };
+        
+    } catch (error) {
+        console.error('Error sending email:', error);
+        return {
+            statusCode: 500,
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify({ message: 'Failed to send email', error }),
+        };
+    }
 };
