@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 
 
 const UseAuth = () => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    username: ""
+  })
   const [error, setError] = useState<string | null>(null);
 
   const getUser = async () => {
