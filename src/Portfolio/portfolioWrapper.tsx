@@ -1,5 +1,5 @@
 // import React, { useState, useEffect } from "react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./portfolio.css";
 import GetImage from "../Utilities/getImage";
 import Col from "react-bootstrap/Col";
@@ -26,8 +26,11 @@ const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
   //const [authSession, setAuthSession] = useState<AuthSession | null>(null);
   const title = <ExtractAndFormat path={path} />;
 
-  //setIsVisible(true);
-  //setLikeCount(1);
+  useEffect(() => {
+    setIsVisible(true);
+    setLikeCount(1);
+  }, []);
+  
   {/*
   useEffect(() => {
     setIsVisible(true);
