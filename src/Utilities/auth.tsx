@@ -2,14 +2,9 @@ import { Hub } from "aws-amplify/utils";
 import { signInWithRedirect, signOut, getCurrentUser } from "aws-amplify/auth";
 import { useEffect, useState } from "react";
 
-export interface AuthUser {
-  id: string;
-  username: string;
-  email: string;
-}
 
 const UseAuth = () => {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState(null);
   const [error, setError] = useState<string | null>(null);
 
   const getUser = async () => {
