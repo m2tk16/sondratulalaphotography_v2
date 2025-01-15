@@ -8,6 +8,8 @@ import SacFont from "../Utilities/fonts";
 const NavBar = () => {
   SacFont();
   const { user, signInWithRedirect, signOut } = UseAuth();
+  console.log("Navbar user")
+  console.log(user)
 
   return (
     <Navbar collapseOnSelect expand="sm" sticky="top" className="navbar">
@@ -30,7 +32,7 @@ const NavBar = () => {
             <Nav.Link href="/contact" className="nav-link fs-5">
               Contact
             </Nav.Link>
-            {user ? ( 
+            {user && user.username !== "" ? (
               <Nav.Link className="nav-link fs-5" onClick={() => signOut()}>
                 Sign Out
               </Nav.Link>

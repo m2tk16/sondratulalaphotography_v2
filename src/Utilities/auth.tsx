@@ -2,22 +2,22 @@ import { Hub } from "aws-amplify/utils";
 import { signInWithRedirect, signOut, getCurrentUser } from "aws-amplify/auth";
 import { useEffect, useState } from "react";
 
-
 const UseAuth = () => {
+  const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState({
     username: ""
   })
-  const [error, setError] = useState<string | null>(null);
 
   const getUser = async () => {
-    // try {
+    try {
       const currentUser = await getCurrentUser();
-      console.log(currentUser)
+      console.log("----")
+      console.log(user)
       setUser(currentUser);
-    //} catch (error) {
-    //  console.error("Error fetching user:", error);
-    //  setUser({});
-    //}
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      setUser({username: ""});
+    }
   };
 
   useEffect(() => {
