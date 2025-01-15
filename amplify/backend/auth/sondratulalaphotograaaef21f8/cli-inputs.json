@@ -1,7 +1,7 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "sondratulalaphotograaaef21f8_identitypool_aaef21f8",
+    "identityPoolName": "sondratulalaphotograe9c7e0af_identitypool_e9c7e0af",
     "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "sondraaaef21f8",
     "userPoolName": "sondratulalaphotograaaef21f8_userpool_aaef21f8",
@@ -14,7 +14,7 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code",
+    "emailVerificationSubject": "Sondra Tulala Photography Verification Code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
@@ -36,7 +36,7 @@
     "sharedId": "aaef21f8",
     "resourceName": "sondratulalaphotograaaef21f8",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "defaultSocial",
+    "useDefault": "manual",
     "hostedUI": true,
     "usernameAttributes": [
       "email"
@@ -69,6 +69,12 @@
       "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"https://sondratulalaphotography.com/\",\"http://localhost:3001/\"],\"LogoutURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"http://localhost:3001/\"]}"
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "authProviders": [
+      "accounts.google.com"
+    ],
+    "thirdPartyAuth": true,
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"email\",\"openid\",\"profile\"],\"CallbackURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"https://sondratulalaphotography.com/\",\"http://localhost:3001/\"],\"LogoutURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"http://localhost:3001/\"]}"
   }
 }

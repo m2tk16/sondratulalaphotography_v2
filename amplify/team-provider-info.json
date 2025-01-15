@@ -16,7 +16,9 @@
         "sondratulalaphotographys3": {}
       },
       "auth": {
-        "sondratulalaphotograaaef21f8": {}
+        "sondratulalaphotograaaef21f8": {
+          "googleClientId": "988414843190-t9uk5u32967dcv6h7o636mvm49atimjt.apps.googleusercontent.com"
+        }
       }
     }
   }

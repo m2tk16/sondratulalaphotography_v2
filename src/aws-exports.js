@@ -3,7 +3,7 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
-    "aws_cognito_identity_pool_id": "us-east-1:760f011b-bf12-4c7a-a0c3-d65283824f12",
+    "aws_cognito_identity_pool_id": "us-east-1:f76107e3-d374-4f45-883b-5bfea4ca5dd9",
     "aws_cognito_region": "us-east-1",
     "aws_user_pools_id": "us-east-1_Ag1DJ56zy",
     "aws_user_pools_web_client_id": "6q431rsrfrbteccluagbdl5ucs",
@@ -14,11 +14,11 @@ const awsmobile = {
             "openid",
             "profile"
         ],
-        "redirectSignIn": "https://sondratulalaphotography.com/,http://localhost:5173/,http://localhost:3000/",
-        "redirectSignOut": "https://sondratulalaphotography.com/,http://localhost:5173/,http://localhost:3000/",
+        "redirectSignIn": "https://sondratulalaphotography.com/,http://localhost:5173/,http://localhost:3000/,http://localhost:5173/,http://localhost:3000/,https://sondratulalaphotography.com/,http://localhost:3001/",
+        "redirectSignOut": "https://sondratulalaphotography.com/,http://localhost:5173/,http://localhost:3000/,http://localhost:3001/",
         "responseType": "code"
     },
-    "federationTarget": "COGNITO_USER_POOLS",
+    "federationTarget": "COGNITO_USER_AND_IDENTITY_POOLS",
     "aws_cognito_username_attributes": [
         "EMAIL"
     ],

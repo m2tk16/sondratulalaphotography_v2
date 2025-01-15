@@ -31,6 +31,16 @@
     }
   },
   "hosting": {},
+  "parameters": {
+    "AMPLIFY_auth_sondratulalaphotograaaef21f8_googleClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "sondratulalaphotograaaef21f8"
+        }
+      ]
+    }
+  },
   "storage": {
     "sondratulalaphotographys3": {
       "dependsOn": [],
