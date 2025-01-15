@@ -8,8 +8,6 @@ import SacFont from "../Utilities/fonts";
 const NavBar = () => {
   SacFont();
   const { user, signInWithRedirect, signOut } = UseAuth();
-  console.log("Navbar user")
-  console.log(user)
 
   return (
     <Navbar collapseOnSelect expand="sm" sticky="top" className="navbar">

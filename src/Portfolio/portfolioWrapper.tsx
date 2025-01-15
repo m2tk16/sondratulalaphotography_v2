@@ -26,8 +26,8 @@ const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
   //const [authSession, setAuthSession] = useState<AuthSession | null>(null);
   const title = <ExtractAndFormat path={path} />;
 
-  setIsVisible(true);
-  setLikeCount(1);
+  //setIsVisible(true);
+  //setLikeCount(1);
   {/*
   useEffect(() => {
     setIsVisible(true);

@@ -7,7 +7,7 @@ import "./App.css";
 import NavBar from "./Navigation/navbar";
 import Home from "./Home/home";
 import About from "./About/about";
-//import Portfolio from "./Portfolio/portfolio";
+import Portfolio from "./Portfolio/portfolio";
 import Contact from "./Contact/contact";
 import Footer from "./Footer/footer";
 
@@ -21,7 +21,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/about' element={<About/>} />
-            {/* <Route path='/portfolio' element={<Portfolio/>} /> */}
+            <Route path='/portfolio' element={<Portfolio/>} />
             <Route path='/contact' element={<Contact/>} />
           </Routes>
           <Footer />

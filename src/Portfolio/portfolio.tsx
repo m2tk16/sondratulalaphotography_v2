@@ -15,7 +15,7 @@ const Portfolio = () => {
         const fetchImages = async () => {
           try {
             const result = await list({ prefix: "images/portfolio/" });
-            console.log(result);
+            
             const filteredImages = result.items.filter(
               (item) =>
                 item.key &&
@@ -26,7 +26,6 @@ const Portfolio = () => {
               const parts = "public/" + item.key;
               return parts;
             });
-            
             setImageArray(filenames);
 
           } catch (err) {
