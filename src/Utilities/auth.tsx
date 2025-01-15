@@ -8,13 +8,14 @@ const UseAuth = () => {
   const [error, setError] = useState<string | null>(null);
 
   const getUser = async () => {
-    try {
+    // try {
       const currentUser = await getCurrentUser();
+      console.log(currentUser)
       setUser(currentUser);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      setUser({});
-    }
+    //} catch (error) {
+    //  console.error("Error fetching user:", error);
+    //  setUser({});
+    //}
   };
 
   useEffect(() => {

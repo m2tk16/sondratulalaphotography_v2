@@ -43,7 +43,7 @@ const NavBar = () => {
               </Nav.Link>
             )}
           </Nav>
-           {user && <div className="user">{"tulalam"}</div>}
+           {user && <div className="user">{user.username}</div>}
         </Navbar.Collapse>
       </Container>
     </Navbar>
