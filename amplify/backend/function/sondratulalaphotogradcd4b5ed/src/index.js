@@ -16,7 +16,7 @@ exports.handler = async (event) => {
     const path = event.path || '';
     const method = event.httpMethod || '';
 
-    if (path.endsWith('/contact/submit') && method === 'POST') {
+    if (path.endsWith('/contact/send-email') && method === 'POST') {
       console.log("Routing to contact submission handler");
       return await handleRequestInformation(event);
     }

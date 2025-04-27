@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/contact/send-email": {
+      "name": "/contact/send-email",
+      "lambdaFunction": "sondratulalaphotogradcd4b5ed",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
