@@ -9,7 +9,8 @@
       "UnauthRoleName": "amplify-sondratulalaphotogra-main-496bb-unauthRole",
       "StackName": "amplify-sondratulalaphotogra-main-496bb",
       "StackId": "arn:aws:cloudformation:us-east-1:178450627339:stack/amplify-sondratulalaphotogra-main-496bb/6fb4f7f0-d2b1-11ef-8896-0ea15dff965b",
-      "AmplifyAppId": "dm7aei9mgulua"
+      "AmplifyAppId": "dm7aei9mgulua",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-sondratulalaphotogra-main-496bb-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "storage": {
@@ -23,7 +24,7 @@
       "function": {
         "sondratulalaphotogradcd4b5ed": {
           "deploymentBucketName": "amplify-sondratulalaphotogra-main-496bb-deployment",
-          "s3Key": "amplify-builds/sondratulalaphotogradcd4b5ed-55733547726b58582b65-build.zip"
+          "s3Key": "amplify-builds/sondratulalaphotogradcd4b5ed-436c6c6c746a44496e70-build.zip"
         }
       },
       "api": {

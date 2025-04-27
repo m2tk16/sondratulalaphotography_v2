@@ -48,6 +48,7 @@
   "function": {
     "sondratulalaphotogradcd4b5ed": {
       "build": true,
+      "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }

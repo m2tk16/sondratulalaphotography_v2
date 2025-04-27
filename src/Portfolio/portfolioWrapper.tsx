@@ -1,4 +1,3 @@
-// import React, { useState, useEffect } from "react";
 import React, { useState, useEffect } from "react";
 import "./portfolio.css";
 import GetImage from "../Utilities/getImage";
@@ -7,31 +6,26 @@ import Row from "react-bootstrap/Row";
 import { Heart, CurrencyBitcoin } from "react-bootstrap-icons";
 import { FaPaypal } from "react-icons/fa";
 import ExtractAndFormat from "../Utilities/titleFormatter";
-//import { fetchAuthSession } from "@aws-amplify/auth";
+import { fetchAuthSession } from "@aws-amplify/auth";
 
 interface PortfolioWrapperProps {
   path: string;
 }
 
-{/*
-interface AuthSession {
-  userId: string;
-  accessToken: string;
-}
-*/}
+// ✅ Use inferred return type from fetchAuthSession
+type AuthSessionType = Awaited<ReturnType<typeof fetchAuthSession>>;
 
 const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  //const [authSession, setAuthSession] = useState<AuthSession | null>(null);
+  const [authSession, setAuthSession] = useState<AuthSessionType | null>(null);
   const title = <ExtractAndFormat path={path} />;
 
   useEffect(() => {
     setIsVisible(true);
     setLikeCount(1);
   }, []);
-  
-  {/*
+
   useEffect(() => {
     setIsVisible(true);
 
@@ -46,47 +40,43 @@ const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
 
     fetchUserSession();
   }, []);
-  
 
   const handleLikeClick = async () => {
     const accessToken = authSession?.tokens?.accessToken?.payload;
-    console.log(accessToken);
 
     if (!accessToken) {
       console.error("User is not authenticated. Cannot like the photo.");
       return;
     }
-    
-    //try {
-        const response = await fetch(
-          "https://nlkcug9ut8.execute-api.us-east-1.amazonaws.com/dev/photos/likes",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: accessToken.sub
-            },
-            body: JSON.stringify({
-              username: accessToken.username,
-              photo: path,
-              liked: "Y",
-            }),
-          }
-        );
-        console.log("--------")
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+
+    try {
+      const response = await fetch(
+        "https://u2stec7ki5.execute-api.us-east-1.amazonaws.com/main/photos/likes",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: accessToken.sub || "",
+          },
+          body: JSON.stringify({
+            username: accessToken.username,
+            photo: path,
+            liked: "Y",
+          }),
         }
-    
-        const result = await response.json();
-        console.log("Like Response:", result);
-    
-        setLikeCount(result.totalLikes || 0);
-      //} catch (error) {
-      //  console.error("Error liking the photo:", error);
-      //}
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Like Response:", result);
+      setLikeCount(result.totalLikes || 0);
+    } catch (error) {
+      console.error("Error liking the photo:", error);
+    }
   };
-  */}
 
   return (
     <div className="p-6 portfolio-image-wrapper">
@@ -101,11 +91,7 @@ const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
         <hr />
         <Row className="mt-4">
           <Col className="col-4 text-center">
-            <Heart
-              size={20}
-              className="like-icon"
-            />
-            {/* onClick={handleLikeClick} */}
+            <Heart size={20} className="like-icon" onClick={handleLikeClick} />
             <div className="like-count">{likeCount}</div>
           </Col>
           <Col className="col-4 text-center">

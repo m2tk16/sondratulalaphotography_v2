@@ -11,7 +11,13 @@ import Portfolio from "./Portfolio/portfolio";
 import Contact from "./Contact/contact";
 import Footer from "./Footer/footer";
 
+
+const redirectSignIn = window.location.origin;
+const redirectSignOut = window.location.origin;
+awsConfig.oauth.redirectSignIn = redirectSignIn + "/";
+awsConfig.oauth.redirectSignOut = redirectSignOut + "/";
 Amplify.configure(awsConfig);
+
 
 function App() {
   return (

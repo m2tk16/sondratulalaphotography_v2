@@ -1,54 +1,43 @@
-const AWS = require('aws-sdk');
-AWS.config.update({ region: 'us-east-1' });
-const ses = new AWS.SES();
+/* Amplify Params - DO NOT EDIT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */const { handleRequestInformation } = require('./handlers/requestInformation');
+const { handleLikePhoto } = require('./handlers/likePhoto');
 
 exports.handler = async (event) => {
-    const { firstName, lastName, email, subject, message } = JSON.parse(event.body);
+  const path = event.path || '';
+  const method = event.httpMethod || '';
+    console.log(path)
+  //try {
+    if (path.endsWith('/contact/submit') && method === 'POST') {
+      console.log("Routing to contact submission handler");
+      return await handleRequestInformation(event);
+    }
 
-    const emailParams = {
-        Source: 'info-contact@sondratulalaphotography.com',
-        Destination: {
-            ToAddresses: ['sondratulalaphotography@gmail.com'],
-        },
-        Message: {
-            Subject: {
-                Data: `Contact Form Submission: ${subject}`,
-            },
-            Body: {
-                Text: {
-                    Data: `
-                        You have a new contact form submission:
-                        
-                        First Name: ${firstName}
-                        Last Name: ${lastName}
-                        Email: ${email}
-                        Message: ${message}
-                    `,
-                },
-            },
-        },
+    if (path.endsWith('/photos/likes') && method === 'POST') {
+      return await handleLikePhoto(event);
+    }
+
+    return {
+      statusCode: 404,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify({ message: 'Route not found' }),
     };
 
-    try {
-        await ses.sendEmail(emailParams).promise();
-        return {
-            statusCode: 200,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-            body: JSON.stringify({ message: 'Email sent successfully' }),
-        };
-        
-    } catch (error) {
-        console.error('Error sending email:', error);
-        return {
-            statusCode: 500,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            },
-            body: JSON.stringify({ message: 'Failed to send email', error }),
-        };
-    }
+    /*
+  } catch (error) {
+    console.error("Lambda handler error:", error);
+    return {
+      statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify({ message: 'Internal server error', error: error.message }),
+    };
+    
+  }*/
 };

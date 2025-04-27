@@ -1,5 +1,7 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "firstName": "Martin",
+  "lastName": "Tulala",
+  "email": "m2tk16@gmail.com",
+  "subject": "Tips on photography",
+  "message": "asdf"
 }
