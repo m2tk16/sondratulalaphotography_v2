@@ -24,7 +24,7 @@
       "function": {
         "sondratulalaphotogradcd4b5ed": {
           "deploymentBucketName": "amplify-sondratulalaphotogra-main-496bb-deployment",
-          "s3Key": "amplify-builds/sondratulalaphotogradcd4b5ed-436c6c6c746a44496e70-build.zip"
+          "s3Key": "amplify-builds/sondratulalaphotogradcd4b5ed-4c4c386b327432305a31-build.zip"
         }
       },
       "api": {

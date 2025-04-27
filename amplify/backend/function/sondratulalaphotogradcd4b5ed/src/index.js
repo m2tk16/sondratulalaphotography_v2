@@ -1,14 +1,13 @@
-/* Amplify Params - DO NOT EDIT
-	ENV
-	REGION
-Amplify Params - DO NOT EDIT */const { handleRequestInformation } = require('./handlers/requestInformation');
+const { handleRequestInformation } = require('./handlers/requestInformation');
 const { handleLikePhoto } = require('./handlers/likePhoto');
 
 exports.handler = async (event) => {
   const path = event.path || '';
   const method = event.httpMethod || '';
-    console.log(path)
-  //try {
+  console.log("Incoming path:", path);
+  console.log("Incoming method:", method);
+  console.log("Incoming event:", JSON.stringify(event));
+  try {
     if (path.endsWith('/contact/submit') && method === 'POST') {
       console.log("Routing to contact submission handler");
       return await handleRequestInformation(event);
@@ -27,7 +26,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({ message: 'Route not found' }),
     };
 
-    /*
+    
   } catch (error) {
     console.error("Lambda handler error:", error);
     return {
