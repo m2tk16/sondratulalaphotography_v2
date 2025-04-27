@@ -35,7 +35,7 @@ const Contact = () => {
         setShowToast(false);
 
         try {
-            const response = await fetch('https://u2stec7ki5.execute-api.us-east-1.amazonaws.com/main/contact/submit/', {
+            const response = await fetch('https://u2stec7ki5.execute-api.us-east-1.amazonaws.com/main/contact/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
