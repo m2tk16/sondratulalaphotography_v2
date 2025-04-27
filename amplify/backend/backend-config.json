@@ -54,6 +54,32 @@
     }
   },
   "hosting": {},
+  "parameters": {
+    "AMPLIFY_auth_sondratulalaphotograaaef21f8_googleClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "sondratulalaphotograaaef21f8"
+        }
+      ]
+    },
+    "AMPLIFY_function_sondratulalaphotogradcd4b5ed_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sondratulalaphotogradcd4b5ed"
+        }
+      ]
+    },
+    "AMPLIFY_function_sondratulalaphotogradcd4b5ed_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sondratulalaphotogradcd4b5ed"
+        }
+      ]
+    }
+  },
   "storage": {
     "sondratulalaphotographys3": {
       "dependsOn": [],
