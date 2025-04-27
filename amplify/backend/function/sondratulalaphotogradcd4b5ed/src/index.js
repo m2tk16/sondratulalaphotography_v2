@@ -8,13 +8,13 @@ const { handleLikePhoto } = require('./handlers/likePhoto');
 
 exports.handler = async (event) => {
   console.log(event)
+
+  console.log("Incoming path:", event.path);
+  console.log("Incoming method:", event.httpMethod);
+  console.log("Incoming event body:", JSON.stringify(event.body));
   try {
     const path = event.path || '';
     const method = event.httpMethod || '';
-
-    console.log("Incoming path:", path);
-    console.log("Incoming method:", method);
-    console.log("Incoming event body:", JSON.stringify(event.body));
 
     if (path.endsWith('/contact/submit') && method === 'POST') {
       console.log("Routing to contact submission handler");
