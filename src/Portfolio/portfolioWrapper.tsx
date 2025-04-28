@@ -51,7 +51,7 @@ const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
 
     try {
       const response = await fetch(
-        "https://4ghll7avyb.execute-api.us-east-1.amazonaws.com/main/photos/likes",
+        "https://wco3y6e125.execute-api.us-east-1.amazonaws.com/main/photos/likes",
         {
           method: "POST",
           headers: {
