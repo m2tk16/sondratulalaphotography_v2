@@ -5,9 +5,10 @@ Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 
 ## STP-2026.07.19-02 - Navigation and mobile-like follow-up
 
-Status: candidate
+Status: deployed - real-phone authenticated retest pending
 Date: 2026-07-19
 Target: existing single Amplify environment
+Frontend deployment: completed 2026-07-19, Amplify job 43
 
 ### Implemented
 
@@ -33,6 +34,16 @@ Target: existing single Amplify environment
 - Production like CORS preflight: passed.
 - The reported phone failure did not reach Lambda; local authenticated mobile
   retest is pending.
+- Release commit `e1bd57e` pushed to `main`.
+- Amplify job 43 build, deploy, and verification: passed with backend build
+  skipped.
+- Production deep routes and the new JavaScript bundle return HTTP 200 with
+  correct content types.
+- Deployed bundle contains the direct bearer-token like request and
+  expired-session handling.
+- Post-deployment CORS preflight passed; the verified Lambda hash was
+  unchanged.
+- Real-phone authenticated like/unlike and route-scroll retest: pending.
 
 ## STP-2026.07.19-01 - Portfolio P0 redesign
 

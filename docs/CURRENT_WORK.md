@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Add and release consistent top-of-page positioning plus resilient authenticated
-likes for restored mobile sessions.
+Confirm the deployed route-scroll and restored-mobile-session like fixes on a
+real phone.
 
 ## Current state
 
@@ -144,20 +144,27 @@ likes for restored mobile sessions.
   and calls the bearer-token endpoint directly, avoiding optional Identity Pool
   credential resolution in restored mobile sessions. Expired sessions receive
   an actionable sign-out/sign-in message.
+- Commits through `e1bd57e` are pushed to `main`. Amplify Hosting job 43
+  completed its frontend-only build, deploy, and verification successfully.
+- Production routes return HTTP 200 and the deployed
+  `/assets/index-DlkHVv3k.js` bundle contains the direct like endpoint and
+  expired-session handling.
+- Post-deployment checks confirm like CORS is healthy,
+  `AMPLIFY_SKIP_BACKEND_BUILD=true` remains set, and the live Lambda still
+  matches verified hash
+  `WMVpcBASGoGMJNCT5OPYjyuuQRXgRMMfOKqpSVd9Bik=`.
 
 ## Next steps
 
-1. Run lint, the production build, and regression tests for the mobile-like
-   follow-up.
-2. Review local route transitions and an authenticated like.
-3. With explicit approval, push the pending follow-up commits to `main` for a
-   frontend-only Amplify deployment.
+1. On the phone that reported the issue, hard-refresh the production site.
+2. Confirm route changes open at the top and like/unlike works while signed in.
+3. If the site reports that the sign-in expired, sign out and sign in once,
+   then retry.
 
 ## Resume point after interruption
 
-The P0 redesign is deployed. The local branch contains the unpushed deployment
-record commit plus the route-scroll change. Resume with the checks and release
-steps listed above.
+The follow-up is deployed through Amplify job 43. Resume with the real-phone
+checks listed above.
 
 ## Known risks and blockers
 
