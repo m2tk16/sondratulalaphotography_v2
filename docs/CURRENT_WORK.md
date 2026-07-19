@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Add and release consistent top-of-page positioning after client-side route
-changes.
+Add and release consistent top-of-page positioning plus resilient authenticated
+likes for restored mobile sessions.
 
 ## Current state
 
@@ -136,12 +136,22 @@ changes.
   scroll position.
 - ESLint, the production build, and all 10 backend regression tests pass with
   the route-scroll change.
+- Production diagnostics for the reported phone like failure confirmed the
+  tested JWT Lambda is still deployed and public counts remain healthy. The
+  failed phone write did not reach Lambda, and the authenticated API CORS
+  preflight passes.
+- The like client now force-refreshes its Cognito access token before a write
+  and calls the bearer-token endpoint directly, avoiding optional Identity Pool
+  credential resolution in restored mobile sessions. Expired sessions receive
+  an actionable sign-out/sign-in message.
 
 ## Next steps
 
-1. Review the local route transition behavior.
-2. With explicit approval, push the pending documentation and scroll-reset
-   commits to `main` for a frontend-only Amplify deployment.
+1. Run lint, the production build, and regression tests for the mobile-like
+   follow-up.
+2. Review local route transitions and an authenticated like.
+3. With explicit approval, push the pending follow-up commits to `main` for a
+   frontend-only Amplify deployment.
 
 ## Resume point after interruption
 

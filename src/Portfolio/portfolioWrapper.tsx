@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { get, post } from "aws-amplify/api";
+import { get } from "aws-amplify/api";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Heart, HeartFill } from "react-bootstrap-icons";
 import GetImage from "../Utilities/getImage";
@@ -7,7 +7,9 @@ import UseAuth from "../Utilities/auth";
 import type { Photo } from "./photoData";
 
 const PUBLIC_API = "api4593058b";
-const PRIVATE_API = "apid5657c10";
+const LIKE_ENDPOINT =
+  "https://5rvjxmddfc.execute-api.us-east-1.amazonaws.com/main/photos/likes";
+const EXPIRED_SESSION = "EXPIRED_SESSION";
 
 const PortfolioWrapper = ({ photo }: { photo: Photo }) => {
   const { user, signIn } = UseAuth();
@@ -50,29 +52,44 @@ const PortfolioWrapper = ({ photo }: { photo: Photo }) => {
     setLiking(true);
     setLikeError("");
     try {
-      const session = await fetchAuthSession();
+      // Refresh before every write so a browser-restored mobile session cannot
+      // send an expired cached token.
+      const session = await fetchAuthSession({ forceRefresh: true });
       const accessToken = session.tokens?.accessToken?.toString();
       if (!accessToken) {
-        throw new Error("A valid sign-in session is required.");
+        throw new Error(EXPIRED_SESSION);
       }
 
-      const operation = post({
-        apiName: PRIVATE_API,
-        path: "/photos/likes",
-        options: {
-          body: { photo: photo.path },
-          headers: { Authorization: `Bearer ${accessToken}` },
+      // Use the bearer-token API directly. The Lambda verifies the Cognito
+      // token server-side, so this request does not need Identity Pool
+      // credentials that may be unavailable in a restored mobile session.
+      const response = await fetch(LIKE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({ photo: photo.path }),
       });
-      const response = await operation.response;
-      const body = (await response.body.json()) as {
+      const body = (await response.json()) as {
         liked?: boolean;
+        message?: string;
         totalLikes?: number;
       };
+      if (!response.ok) {
+        throw new Error(
+          response.status === 401 ? EXPIRED_SESSION : body.message,
+        );
+      }
+
       setLiked(Boolean(body.liked));
       setLikeCount(body.totalLikes ?? likeCount);
-    } catch {
-      setLikeError("Could not save your like.");
+    } catch (error) {
+      setLikeError(
+        error instanceof Error && error.message === EXPIRED_SESSION
+          ? "Your sign-in expired. Sign out, then sign in again."
+          : "Could not save your like. Please try again.",
+      );
     } finally {
       setLiking(false);
     }

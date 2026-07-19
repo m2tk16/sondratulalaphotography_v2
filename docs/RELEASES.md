@@ -3,7 +3,7 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
-## STP-2026.07.19-02 - Route scroll reset
+## STP-2026.07.19-02 - Navigation and mobile-like follow-up
 
 Status: candidate
 Date: 2026-07-19
@@ -15,6 +15,13 @@ Target: existing single Amplify environment
   changes.
 - Preserve the current scroll position during updates that do not navigate to
   a different route.
+- Force-refresh the Cognito access token immediately before authenticated like
+  writes.
+- Send bearer-token like requests directly to the API, avoiding optional
+  Identity Pool credential resolution that can fail in restored mobile
+  sessions.
+- Show an actionable sign-out/sign-in message when a session cannot be
+  refreshed.
 
 ### Verification
 
@@ -22,6 +29,10 @@ Target: existing single Amplify environment
 - `npm run build`: passed.
 - `npm test`: all 10 backend regression tests passed.
 - Local route-transition review: pending.
+- Live Lambda hash still matches the tested JWT package.
+- Production like CORS preflight: passed.
+- The reported phone failure did not reach Lambda; local authenticated mobile
+  retest is pending.
 
 ## STP-2026.07.19-01 - Portfolio P0 redesign
 
