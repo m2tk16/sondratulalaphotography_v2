@@ -45,6 +45,9 @@ run.
   `openid email profile` scopes.
 - Clone Cognito authorization endpoint: HTTP 302 redirect to
   `accounts.google.com` with the clone `/oauth2/idpresponse` callback.
+- Clone like route: API Gateway authorization is `NONE` so the direct bearer
+  request reaches Lambda; Lambda performs Cognito JWT verification before any
+  write. A valid unsigned request is rejected by Lambda with HTTP 401.
 - Public like count: HTTP 200 with total `0`.
 - Suppressed contact request: HTTP 200 with `suppressed: true`.
 - Invalid Studio token: HTTP 401.
@@ -67,7 +70,9 @@ The Google User Pool provider is enabled with a valid credential supplied at
 deployment time from a local downloaded JSON file. The clone Cognito redirect
 is registered in Google, and a non-interactive authorization check reaches
 Google successfully. No secret was copied into project files or source control.
-A real-browser sign-in and authenticated Studio smoke test remain pending.
+A real-browser sign-in and Studio upload succeeded. Like/unlike requires a
+post-fix browser retest; the remaining authenticated lifecycle checks are still
+pending.
 
 The legacy direct `accounts.google.com` Identity Pool provider is omitted from
 the clone because Amplify CLI 14.4 generated an invalid nested template for

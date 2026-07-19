@@ -21,6 +21,8 @@ Target: Gen 1 `gentest` environment; production unchanged
   owns an environment-specific permission.
 - Resolved frontend REST endpoints from generated Amplify configuration instead
   of hardcoded production URLs.
+- Changed the like route from legacy API Gateway AWS-IAM authorization to the
+  existing Lambda-verified Cognito bearer-token boundary.
 - Recorded existing browser-level image lazy loading and expanded the Studio
   metadata-editing backlog item.
 
@@ -40,6 +42,8 @@ Target: Gen 1 `gentest` environment; production unchanged
   provider reports the expected client and scopes, and authorization redirects
   to Google through the clone callback.
 - The Google client secret is absent from project files and source control.
+- The repaired clone like route is deployed with gateway authorization `NONE`;
+  a valid unsigned request reaches Lambda and is rejected with HTTP 401.
 - `npm test`: all 12 backend tests passed.
 - `npm run lint`: passed.
 - `npm run build`: passed.

@@ -203,13 +203,21 @@ requesting approval for Phase 3 migration generation.
   redirects to `accounts.google.com`.
 - The Google client secret was loaded from the local downloaded credential at
   deployment time and is absent from project files and source control.
+- The first clone like attempt was rejected by API Gateway before reaching
+  Lambda because the migrated route still required legacy AWS-IAM signing while
+  the client uses a Cognito bearer token. The clone route now has no gateway
+  authorizer; Lambda remains the authentication boundary and verifies the
+  access token, issuer, token use, and app client before writing.
+- The repaired clone route is deployed, the root stack is `UPDATE_COMPLETE`,
+  Amplify reports no pending changes, and a valid unsigned request reaches
+  Lambda and is rejected with HTTP 401.
 
 ## Next steps
 
 1. Complete a real-browser Google sign-in and Studio access test against the
    local frontend configured for `gentest`.
-2. Run the clone acceptance checklist for likes, contact suppression, upload,
-   activation, deactivation, and deletion.
+2. Retest like/unlike, then complete the remaining clone acceptance checklist
+   for contact suppression, upload, activation, deactivation, and deletion.
 3. Request separate approval before any migration `lock`, `generate`,
    `refactor`, or Gen 2 deployment.
 
