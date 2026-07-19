@@ -36,6 +36,10 @@ Target: Gen 1 `gentest` environment; production unchanged
 - Production root, Lambda, Cognito, S3 objects, and likes data remained intact.
 - Read-only `amplify gen2-migration assess` supports all reported resources;
   only the Lambda custom policy requires manual post-generation code.
+- Clone Google OAuth is configured through a runtime-only secret, the Cognito
+  provider reports the expected client and scopes, and authorization redirects
+  to Google through the clone callback.
+- The Google client secret is absent from project files and source control.
 - `npm test`: all 12 backend tests passed.
 - `npm run lint`: passed.
 - `npm run build`: passed.
@@ -43,9 +47,8 @@ Target: Gen 1 `gentest` environment; production unchanged
 
 ### Deferred
 
-- Clone Google sign-in uses an intentionally disabled rehearsal credential
-  until the real secret can be entered securely.
-- Full Studio authenticated smoke testing on the clone waits for clone sign-in.
+- Real-browser Google sign-in and full Studio authenticated smoke testing on
+  the clone require user acceptance.
 - Existing-photo metadata editing remains a separate post-migration product
   feature.
 

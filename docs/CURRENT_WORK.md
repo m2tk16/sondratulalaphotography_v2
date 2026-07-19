@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Design the isolated clone resource map for Phase 2 from the accepted Phase 1
-production baseline.
+Complete authenticated acceptance testing on the isolated Phase 2 clone before
+requesting approval for Phase 3 migration generation.
 
 ## Current state
 
@@ -197,12 +197,19 @@ production baseline.
 - Authenticated production acceptance passed after Phase 1: contact submission,
   like and unlike across several accounts, Studio upload, portfolio appearance,
   deactivation, and permanent deletion all work.
+- Google OAuth is now configured on the isolated `gentest` User Pool with a
+  securely supplied credential. The clone root stack is `UPDATE_COMPLETE`,
+  Amplify reports no pending changes, and the Cognito authorization endpoint
+  redirects to `accounts.google.com`.
+- The Google client secret was loaded from the local downloaded credential at
+  deployment time and is absent from project files and source control.
 
 ## Next steps
 
-1. Review `docs/GEN2_PHASE2_ASSESSMENT.md`.
-2. Decide whether to securely enable Google sign-in on the clone before Phase
-   3.
+1. Complete a real-browser Google sign-in and Studio access test against the
+   local frontend configured for `gentest`.
+2. Run the clone acceptance checklist for likes, contact suppression, upload,
+   activation, deactivation, and deletion.
 3. Request separate approval before any migration `lock`, `generate`,
    `refactor`, or Gen 2 deployment.
 
@@ -211,10 +218,11 @@ production baseline.
 Phase 1 backend, frontend deployment, and authenticated production acceptance
 are complete. The isolated `gentest` Gen 1 clone is deployed and verified;
 details and the read-only migration assessment are recorded in
-`docs/GEN2_PHASE2_ASSESSMENT.md`. Browser-level image lazy loading is already
-implemented. Editing all metadata on existing Studio entries is recorded as a
-separate post-migration product change. No migration `lock`, `generate`,
-`refactor`, or Gen 2 deployment command has been run.
+`docs/GEN2_PHASE2_ASSESSMENT.md`. Google OAuth is configured on the clone and
+awaits a real-browser sign-in/Studio smoke test. Browser-level image lazy
+loading is already implemented. Editing all metadata on existing Studio
+entries is recorded as a separate post-migration product change. No migration
+`lock`, `generate`, `refactor`, or Gen 2 deployment command has been run.
 
 ## Known risks and blockers
 
@@ -234,8 +242,8 @@ separate post-migration product change. No migration `lock`, `generate`,
 - The official Gen 2 migration tool is in Developer Preview and operates on
   production CloudFormation resources. Use the documented blue/green process
   with human supervision and explicit approval at every mutation gate.
-- The clone Google provider intentionally uses a disabled rehearsal credential.
-  Google sign-in remains a deferred clone test until the real secret is entered
-  securely and its redirect is registered.
+- Clone Google OAuth is deployed and redirects to Google. A human browser
+  sign-in is still required to verify consent, callback completion, and Studio
+  visibility.
 - The assessment supports every reported resource. The Lambda custom policy is
   the only reported manual post-generation item.

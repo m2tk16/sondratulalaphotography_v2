@@ -26,7 +26,7 @@ const awsmobile = {
             "openid",
             "profile"
         ],
-        "redirectSignIn": "https://sondratulalaphotography.com/,http://localhost:5173/,http://localhost:3000/,http://localhost:5173/,http://localhost:3000/,https://sondratulalaphotography.com/,http://localhost:3001/",
+        "redirectSignIn": "https://sondratulalaphotography.com/,http://localhost:5173/,http://localhost:3000/,http://localhost:3001/",
         "redirectSignOut": "https://sondratulalaphotography.com/,http://localhost:5173/,http://localhost:3000/,http://localhost:3001/",
         "responseType": "code"
     },

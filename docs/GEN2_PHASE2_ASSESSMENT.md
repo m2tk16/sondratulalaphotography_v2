@@ -41,6 +41,10 @@ run.
 - Clone S3 bucket: empty.
 - Clone likes table: active, on-demand, correct composite key, zero items.
 - Clone Cognito User Pool: zero users and distinct from production.
+- Clone Google identity provider: configured with the expected client ID and
+  `openid email profile` scopes.
+- Clone Cognito authorization endpoint: HTTP 302 redirect to
+  `accounts.google.com` with the clone `/oauth2/idpresponse` callback.
 - Public like count: HTTP 200 with total `0`.
 - Suppressed contact request: HTTP 200 with `suppressed: true`.
 - Invalid Studio token: HTTP 401.
@@ -57,13 +61,13 @@ run.
 - Production likes contain eight current records after the user's multi-account
   acceptance testing; no clone test used that table.
 
-## Known clone limitation
+## Clone authentication state
 
-The Google User Pool provider exists in the clone so migration assessment sees
-the correct auth shape, but it uses an intentionally invalid rehearsal secret.
-Google sign-in is therefore disabled until the real provider secret is entered
-through a secure local/AWS prompt and the clone Cognito redirect is registered.
-No secret was copied into source control.
+The Google User Pool provider is enabled with a valid credential supplied at
+deployment time from a local downloaded JSON file. The clone Cognito redirect
+is registered in Google, and a non-interactive authorization check reaches
+Google successfully. No secret was copied into project files or source control.
+A real-browser sign-in and authenticated Studio smoke test remain pending.
 
 The legacy direct `accounts.google.com` Identity Pool provider is omitted from
 the clone because Amplify CLI 14.4 generated an invalid nested template for
@@ -73,7 +77,7 @@ that field. The application uses the Cognito User Pool hosted UI path.
 
 Before migration `lock` or `generate`:
 
-1. Decide whether clone Google sign-in must be enabled for the rehearsal.
+1. Complete clone Google sign-in and authenticated Studio acceptance testing.
 2. Review the generated manual Gen 2 IAM plan for the clone S3 bucket and likes
    table.
 3. Confirm the clone-only DynamoDB table created inside the Lambda nested stack
