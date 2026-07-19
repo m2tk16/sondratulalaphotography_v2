@@ -211,14 +211,22 @@ requesting approval for Phase 3 migration generation.
 - The repaired clone route is deployed, the root stack is `UPDATE_COMPLETE`,
   Amplify reports no pending changes, and a valid unsigned request reaches
   Lambda and is rejected with HTTP 401.
+- Authenticated clone acceptance passed with two Google accounts: an approved
+  admin uploaded a photograph and liked it, a non-admin account added the
+  second like, and the admin permanently deleted the photograph. The portfolio
+  returned to its empty state.
+- The clone contact form accepted the request but did not deliver email, as
+  designed, because `CONTACT_DELIVERY_ENABLED=false`.
+- Post-test inspection found only the empty portfolio manifest in clone S3, two
+  clone Cognito users, and two orphaned like records for the deleted test
+  photograph. Cleaning related likes during permanent deletion is now tracked
+  as a product/data-integrity follow-up.
 
 ## Next steps
 
-1. Complete a real-browser Google sign-in and Studio access test against the
-   local frontend configured for `gentest`.
-2. Retest like/unlike, then complete the remaining clone acceptance checklist
-   for contact suppression, upload, activation, deactivation, and deletion.
-3. Request separate approval before any migration `lock`, `generate`,
+1. Review the manual Gen 2 IAM and clone-table representation documented in the
+   Phase 2 assessment.
+2. Request separate approval before any migration `lock`, `generate`,
    `refactor`, or Gen 2 deployment.
 
 ## Resume point after interruption
@@ -226,20 +234,16 @@ requesting approval for Phase 3 migration generation.
 Phase 1 backend, frontend deployment, and authenticated production acceptance
 are complete. The isolated `gentest` Gen 1 clone is deployed and verified;
 details and the read-only migration assessment are recorded in
-`docs/GEN2_PHASE2_ASSESSMENT.md`. Google OAuth is configured on the clone and
-awaits a real-browser sign-in/Studio smoke test. Browser-level image lazy
-loading is already implemented. Editing all metadata on existing Studio
-entries is recorded as a separate post-migration product change. No migration
-`lock`, `generate`, `refactor`, or Gen 2 deployment command has been run.
+`docs/GEN2_PHASE2_ASSESSMENT.md`. Google OAuth, two-account likes, Studio
+upload, public display, and permanent deletion passed on the clone. Contact
+delivery was correctly suppressed. Browser-level image lazy loading is already
+implemented. Editing all metadata on existing Studio entries and cleaning
+orphaned likes during permanent deletion are recorded as separate product
+changes. No migration `lock`, `generate`, `refactor`, or Gen 2 deployment
+command has been run.
 
 ## Known risks and blockers
 
-- The deployed Lambda code currently differs from the function version tracked
-  by CloudFormation because the Amplify root deployment role cannot update the
-  Auth nested stack. Hosting builds are protected by
-  `AMPLIFY_SKIP_BACKEND_BUILD=true`, but a manual backend push could overwrite
-  the direct Lambda deployment unless the Cognito permission issue is repaired
-  or the function change is reconciled through CloudFormation first.
 - Ports `3000`, `3001`, and `5173` are registered Cognito callbacks. OAuth must
   be tested in a regular browser rather than VS Code's embedded preview.
 - The current like-count implementation scans the likes table. This is
@@ -247,11 +251,10 @@ entries is recorded as a separate post-migration product change. No migration
   data model before scale.
 - The manifest JSON in S3 is a transitional metadata store. Moving photograph
   metadata and likes to AppSync is recommended before comments or purchasing.
+- Permanent photograph deletion currently leaves related DynamoDB like records
+  behind. Delete those records transactionally when the data model is revised.
 - The official Gen 2 migration tool is in Developer Preview and operates on
   production CloudFormation resources. Use the documented blue/green process
   with human supervision and explicit approval at every mutation gate.
-- Clone Google OAuth is deployed and redirects to Google. A human browser
-  sign-in is still required to verify consent, callback completion, and Studio
-  visibility.
 - The assessment supports every reported resource. The Lambda custom policy is
   the only reported manual post-generation item.

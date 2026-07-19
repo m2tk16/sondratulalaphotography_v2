@@ -44,6 +44,14 @@ Target: Gen 1 `gentest` environment; production unchanged
 - The Google client secret is absent from project files and source control.
 - The repaired clone like route is deployed with gateway authorization `NONE`;
   a valid unsigned request reaches Lambda and is rejected with HTTP 401.
+- Authenticated clone acceptance passed with an admin and non-admin Google
+  account: upload, portfolio appearance, incremental likes from one to two,
+  and permanent deletion all worked.
+- Contact submission passed with delivery intentionally suppressed by the
+  clone-only `CONTACT_DELIVERY_ENABLED=false` guard.
+- Post-test state contains only the empty portfolio manifest in clone S3 and
+  two test users. The two like records remain after photograph deletion, so
+  related-like cleanup is recorded in the product backlog.
 - `npm test`: all 12 backend tests passed.
 - `npm run lint`: passed.
 - `npm run build`: passed.
@@ -51,10 +59,10 @@ Target: Gen 1 `gentest` environment; production unchanged
 
 ### Deferred
 
-- Real-browser Google sign-in and full Studio authenticated smoke testing on
-  the clone require user acceptance.
 - Existing-photo metadata editing remains a separate post-migration product
   feature.
+- Cleaning related like records during permanent photograph deletion remains a
+  separate product/data-integrity feature.
 
 ## STP-2026.07.19-03 - Amplify Gen 2 migration discovery
 

@@ -20,6 +20,7 @@ Sondra's priorities become clearer.
 - [ ] Let Sondra edit all existing photograph metadata (title, category,
   location, capture date, description, featured status, alt text) and reorder
   photographs after upload.
+- [ ] Remove all related like records when a photograph is permanently deleted.
 - [ ] Add dedicated collection pages and shareable photograph detail routes.
 - [ ] Add accessible full-screen lightbox browsing.
 - [ ] Add image alt text as a required admin field.

@@ -38,9 +38,13 @@ run.
   - `CONTACT_DELIVERY_ENABLED=false`.
 - Lambda role has only inline log, clone S3, and clone DynamoDB permissions.
   It has no attached SES policy.
-- Clone S3 bucket: empty.
-- Clone likes table: active, on-demand, correct composite key, zero items.
-- Clone Cognito User Pool: zero users and distinct from production.
+- Clone S3 bucket started empty. After acceptance testing and permanent
+  deletion, only `public/images/portfolio/manifest.json` remains.
+- Clone likes table: active, on-demand, and correct composite key. It started
+  empty and now contains two orphaned test-like records for the deleted
+  photograph.
+- Clone Cognito User Pool: distinct from production and contains the two Google
+  accounts used for acceptance.
 - Clone Google identity provider: configured with the expected client ID and
   `openid email profile` scopes.
 - Clone Cognito authorization endpoint: HTTP 302 redirect to
@@ -51,8 +55,13 @@ run.
 - Public like count: HTTP 200 with total `0`.
 - Suppressed contact request: HTTP 200 with `suppressed: true`.
 - Invalid Studio token: HTTP 401.
-- Unsigned private like request: HTTP 403.
-- Clone likes table remained empty after smoke tests.
+- Unsigned private like request after the route fix: HTTP 401 from Lambda.
+- Authenticated like testing: admin like produced total `1`; a non-admin Google
+  account produced total `2`.
+- Studio acceptance: upload, public appearance, and permanent deletion passed;
+  the gallery returned to empty.
+- Contact acceptance: submission succeeded and email was correctly suppressed
+  because clone delivery is disabled.
 
 ## Production no-change verification
 
@@ -70,9 +79,8 @@ The Google User Pool provider is enabled with a valid credential supplied at
 deployment time from a local downloaded JSON file. The clone Cognito redirect
 is registered in Google, and a non-interactive authorization check reaches
 Google successfully. No secret was copied into project files or source control.
-A real-browser sign-in and Studio upload succeeded. Like/unlike requires a
-post-fix browser retest; the remaining authenticated lifecycle checks are still
-pending.
+Real-browser sign-in succeeded for an approved admin and a non-admin Google
+account. Studio upload/deletion and cross-account incremental likes passed.
 
 The legacy direct `accounts.google.com` Identity Pool provider is omitted from
 the clone because Amplify CLI 14.4 generated an invalid nested template for
@@ -82,10 +90,11 @@ that field. The application uses the Cognito User Pool hosted UI path.
 
 Before migration `lock` or `generate`:
 
-1. Complete clone Google sign-in and authenticated Studio acceptance testing.
-2. Review the generated manual Gen 2 IAM plan for the clone S3 bucket and likes
+1. Review the generated manual Gen 2 IAM plan for the clone S3 bucket and likes
    table.
-3. Confirm the clone-only DynamoDB table created inside the Lambda nested stack
+2. Confirm the clone-only DynamoDB table created inside the Lambda nested stack
    will be represented manually in Gen 2.
+3. Decide whether orphaned-like cleanup belongs in the migration or the
+   post-migration product backlog.
 4. Obtain separate explicit approval for `lock`, `generate`, and any Gen 2
    deployment.
