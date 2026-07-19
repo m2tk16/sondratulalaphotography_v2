@@ -1,14 +1,33 @@
-const AWS = require('aws-sdk');
-AWS.config.update({ region: 'us-east-1' });
+const AWS = require("aws-sdk");
+AWS.config.update({ region: process.env.REGION || "us-east-1" });
 const ses = new AWS.SES();
 
-exports.handleRequestInformation = async (event) => {
-  const { firstName, lastName, email, subject, message } = JSON.parse(event.body || '{}');
+const response = (statusCode, body) => ({
+  statusCode,
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  },
+  body: JSON.stringify(body),
+});
+
+const createRequestInformationHandler =
+  (sesClient, environment = process.env) => async (event) => {
+  const { firstName, lastName, email, subject, message } = JSON.parse(
+    event.body || "{}",
+  );
+
+  if (environment.CONTACT_DELIVERY_ENABLED !== "true") {
+    return response(200, {
+      message: "Contact delivery is disabled in this rehearsal environment.",
+      suppressed: true,
+    });
+  }
 
   const emailParams = {
-    Source: 'info-contact@sondratulalaphotography.com',
+    Source: "info-contact@sondratulalaphotography.com",
     Destination: {
-      ToAddresses: ['sondratulalaphotography@gmail.com'],
+      ToAddresses: ["sondratulalaphotography@gmail.com"],
     },
     Message: {
       Subject: {
@@ -30,24 +49,13 @@ exports.handleRequestInformation = async (event) => {
   };
 
   try {
-    await ses.sendEmail(emailParams).promise();
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({ message: 'Email sent successfully' }),
-    };
+    await sesClient.sendEmail(emailParams).promise();
+    return response(200, { message: "Email sent successfully" });
   } catch (error) {
-    console.error('Error sending email:', error);
-    return {
-      statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({ message: 'Failed to send email', error }),
-    };
+    console.error("Error sending email:", error);
+    return response(500, { message: "Failed to send email" });
   }
 };
+
+exports.handleRequestInformation = createRequestInformationHandler(ses);
+exports.createRequestInformationHandler = createRequestInformationHandler;

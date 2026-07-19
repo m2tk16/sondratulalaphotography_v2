@@ -6,7 +6,30 @@
       "dynamodb:Scan"
     ],
     "Resource": [
-      "arn:aws:dynamodb:*:*:table/SondraTulalaPhotography-PhotoLikes"
+      {
+        "Fn::Sub": [
+          "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TableName}",
+          {
+            "TableName": {
+              "Fn::If": [
+                "IsProduction",
+                "SondraTulalaPhotography-PhotoLikes",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "SondraTulalaPhotography-PhotoLikes-",
+                      {
+                        "Ref": "env"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
     ]
   },
   {
@@ -16,7 +39,16 @@
       "s3:PutObject"
     ],
     "Resource": [
-      "arn:aws:s3:::sondratulalaphotogra25f72088efde4213955fdfd598b496bb-main/public/images/portfolio/*"
+      {
+        "Fn::Sub": [
+          "arn:aws:s3:::${BucketName}/public/images/portfolio/*",
+          {
+            "BucketName": {
+              "Ref": "storagesondratulalaphotographys3BucketName"
+            }
+          }
+        ]
+      }
     ]
   }
 ]

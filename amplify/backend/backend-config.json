@@ -62,7 +62,23 @@
   "function": {
     "sondratulalaphotogradcd4b5ed": {
       "build": true,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb"
+          ],
+          "category": "auth",
+          "resourceName": "sondratulalaphotograaaef21f8"
+        },
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "sondratulalaphotographys3"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }

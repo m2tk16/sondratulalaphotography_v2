@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.14.0\",\"stackType\":\"function-Lambda\",\"metadata\":{\"whyContinueWithGen1\":\"\"}}",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"14.4.0\",\"stackType\":\"function-Lambda\",\"metadata\":{\"whyContinueWithGen1\":\"\"}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -11,6 +11,15 @@
       "Type": "String"
     },
     "env": {
+      "Type": "String"
+    },
+    "authsondratulalaphotograaaef21f8UserPoolId": {
+      "Type": "String"
+    },
+    "authsondratulalaphotograaaef21f8AppClientIDWeb": {
+      "Type": "String"
+    },
+    "storagesondratulalaphotographys3BucketName": {
       "Type": "String"
     },
     "s3Key": {
@@ -25,9 +34,62 @@
         },
         "NONE"
       ]
+    },
+    "IsProduction": {
+      "Fn::Equals": [
+        {
+          "Ref": "env"
+        },
+        "main"
+      ]
+    },
+    "IsRehearsal": {
+      "Fn::Not": [
+        {
+          "Condition": "IsProduction"
+        }
+      ]
     }
   },
   "Resources": {
+    "ClonePhotoLikesTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Condition": "IsRehearsal",
+      "Properties": {
+        "TableName": {
+          "Fn::Join": [
+            "",
+            [
+              "SondraTulalaPhotography-PhotoLikes-",
+              {
+                "Ref": "env"
+              }
+            ]
+          ]
+        },
+        "BillingMode": "PAY_PER_REQUEST",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "username",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "photo",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "username",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "photo",
+            "KeyType": "RANGE"
+          }
+        ]
+      }
+    },
     "LambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Metadata": {
@@ -69,6 +131,39 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "USER_POOL_ID": {
+              "Ref": "authsondratulalaphotograaaef21f8UserPoolId"
+            },
+            "USER_POOL_CLIENT_ID": {
+              "Ref": "authsondratulalaphotograaaef21f8AppClientIDWeb"
+            },
+            "PHOTO_BUCKET": {
+              "Ref": "storagesondratulalaphotographys3BucketName"
+            },
+            "PHOTO_LIKES_TABLE": {
+              "Fn::If": [
+                "IsProduction",
+                "SondraTulalaPhotography-PhotoLikes",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "SondraTulalaPhotography-PhotoLikes-",
+                      {
+                        "Ref": "env"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            "CONTACT_DELIVERY_ENABLED": {
+              "Fn::If": [
+                "IsProduction",
+                "true",
+                "false"
+              ]
             }
           }
         },
@@ -81,22 +176,6 @@
         "Runtime": "nodejs18.x",
         "Layers": [],
         "Timeout": 25
-      }
-    },
-    "PublicApiGatewayInvokePermission": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "LambdaFunction",
-            "Arn"
-          ]
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Sub": "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:wco3y6e125/*/*/*"
-        }
       }
     },
     "LambdaExecutionRole": {
@@ -195,7 +274,30 @@
                 "dynamodb:Scan"
               ],
               "Resource": [
-                "arn:aws:dynamodb:*:*:table/SondraTulalaPhotography-PhotoLikes"
+                {
+                  "Fn::Sub": [
+                    "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${TableName}",
+                    {
+                      "TableName": {
+                        "Fn::If": [
+                          "IsProduction",
+                          "SondraTulalaPhotography-PhotoLikes",
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "SondraTulalaPhotography-PhotoLikes-",
+                                {
+                                  "Ref": "env"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
               ],
               "Effect": "Allow"
             },
@@ -206,7 +308,16 @@
                 "s3:PutObject"
               ],
               "Resource": [
-                "arn:aws:s3:::sondratulalaphotogra25f72088efde4213955fdfd598b496bb-main/public/images/portfolio/*"
+                {
+                  "Fn::Sub": [
+                    "arn:aws:s3:::${BucketName}/public/images/portfolio/*",
+                    {
+                      "BucketName": {
+                        "Ref": "storagesondratulalaphotographys3BucketName"
+                      }
+                    }
+                  ]
+                }
               ],
               "Effect": "Allow"
             }

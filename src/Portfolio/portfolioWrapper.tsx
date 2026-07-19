@@ -4,11 +4,13 @@ import { fetchAuthSession } from "aws-amplify/auth";
 import { Heart, HeartFill } from "react-bootstrap-icons";
 import GetImage from "../Utilities/getImage";
 import UseAuth from "../Utilities/auth";
+import {
+  PRIVATE_LIKE_API_URL,
+  PUBLIC_API_NAME,
+} from "../config/backend";
 import type { Photo } from "./photoData";
 
-const PUBLIC_API = "api4593058b";
-const LIKE_ENDPOINT =
-  "https://5rvjxmddfc.execute-api.us-east-1.amazonaws.com/main/photos/likes";
+const LIKE_ENDPOINT = `${PRIVATE_LIKE_API_URL}/photos/likes`;
 const EXPIRED_SESSION = "EXPIRED_SESSION";
 
 const PortfolioWrapper = ({ photo }: { photo: Photo }) => {
@@ -23,7 +25,7 @@ const PortfolioWrapper = ({ photo }: { photo: Photo }) => {
     const loadCount = async () => {
       try {
         const operation = get({
-          apiName: PUBLIC_API,
+          apiName: PUBLIC_API_NAME,
           path: "/photos/likes/count",
           options: { queryParams: { photo: photo.path } },
         });

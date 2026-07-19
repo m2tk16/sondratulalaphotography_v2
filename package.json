@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "test": "node --test amplify/backend/function/sondratulalaphotogradcd4b5ed/src/handlers/likePhoto.test.js amplify/backend/function/sondratulalaphotogradcd4b5ed/src/handlers/adminPhoto.test.js",
+    "test": "node --test amplify/backend/function/sondratulalaphotogradcd4b5ed/src/handlers/likePhoto.test.js amplify/backend/function/sondratulalaphotogradcd4b5ed/src/handlers/adminPhoto.test.js amplify/backend/function/sondratulalaphotogradcd4b5ed/src/handlers/requestInformation.test.js",
     "preview": "vite preview"
   },
   "dependencies": {

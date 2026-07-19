@@ -3,6 +3,52 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-04 - Isolated Gen 2 migration rehearsal baseline
+
+Status: deployed - isolated clone only
+Date: 2026-07-19
+Target: Gen 1 `gentest` environment; production unchanged
+
+### Implemented
+
+- Created the `gen2-rehearsal` branch and documented the Phase 2 isolation map.
+- Deployed distinct clone Cognito, Identity Pool, S3, Lambda, REST APIs, and an
+  empty on-demand likes table.
+- Parameterized Lambda auth, storage, and likes configuration by environment.
+- Scoped clone IAM to only the clone bucket and clone likes table.
+- Disabled contact email delivery outside production.
+- Removed the production-API-specific Lambda invoke permission; each REST stack
+  owns an environment-specific permission.
+- Resolved frontend REST endpoints from generated Amplify configuration instead
+  of hardcoded production URLs.
+- Recorded existing browser-level image lazy loading and expanded the Studio
+  metadata-editing backlog item.
+
+### Verification
+
+- `amplify status`: no pending clone changes.
+- Clone root and nested stacks: complete.
+- Clone storage, likes table, and User Pool: empty.
+- Clone Lambda environment and IAM contain only clone resources and no SES
+  permission.
+- Clone public count, suppressed contact, invalid Studio token, and unsigned
+  like-write checks passed.
+- Production root, Lambda, Cognito, S3 objects, and likes data remained intact.
+- Read-only `amplify gen2-migration assess` supports all reported resources;
+  only the Lambda custom policy requires manual post-generation code.
+- `npm test`: all 12 backend tests passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- No migration `lock`, `generate`, `refactor`, or Gen 2 deployment was run.
+
+### Deferred
+
+- Clone Google sign-in uses an intentionally disabled rehearsal credential
+  until the real secret can be entered securely.
+- Full Studio authenticated smoke testing on the clone waits for clone sign-in.
+- Existing-photo metadata editing remains a separate post-migration product
+  feature.
+
 ## STP-2026.07.19-03 - Amplify Gen 2 migration discovery
 
 Status: deployed - Phase 1 complete

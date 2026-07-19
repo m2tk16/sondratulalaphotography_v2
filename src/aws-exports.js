@@ -6,21 +6,21 @@ const awsmobile = {
     "aws_cloud_logic_custom": [
         {
             "name": "api4593058b",
-            "endpoint": "https://wco3y6e125.execute-api.us-east-1.amazonaws.com/main",
+            "endpoint": "https://wih6fo5l5k.execute-api.us-east-1.amazonaws.com/gentest",
             "region": "us-east-1"
         },
         {
             "name": "apid5657c10",
-            "endpoint": "https://5rvjxmddfc.execute-api.us-east-1.amazonaws.com/main",
+            "endpoint": "https://x3d82dv9qb.execute-api.us-east-1.amazonaws.com/gentest",
             "region": "us-east-1"
         }
     ],
-    "aws_cognito_identity_pool_id": "us-east-1:5340cb1e-27f6-43aa-b966-44e7c93d9e78",
+    "aws_cognito_identity_pool_id": "us-east-1:9aa03d30-490e-4a9b-ae75-0eec62bd2386",
     "aws_cognito_region": "us-east-1",
-    "aws_user_pools_id": "us-east-1_Ag1DJ56zy",
-    "aws_user_pools_web_client_id": "6q431rsrfrbteccluagbdl5ucs",
+    "aws_user_pools_id": "us-east-1_fhyEhGyB1",
+    "aws_user_pools_web_client_id": "570fsn8ba7t0prioh62et7ejb2",
     "oauth": {
-        "domain": "sondratulalaphotograaaef21f8-aaef21f8-main.auth.us-east-1.amazoncognito.com",
+        "domain": "sondratulalaphotograaaef21f8-aaef21f8-gentest.auth.us-east-1.amazoncognito.com",
         "scope": [
             "email",
             "openid",
@@ -51,7 +51,7 @@ const awsmobile = {
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
     ],
-    "aws_user_files_s3_bucket": "sondratulalaphotogra25f72088efde4213955fdfd598b496bb-main",
+    "aws_user_files_s3_bucket": "sondratulalaphotogra25f72088efde4213955fdfd598b9bd46-gentest",
     "aws_user_files_s3_bucket_region": "us-east-1"
 };
 

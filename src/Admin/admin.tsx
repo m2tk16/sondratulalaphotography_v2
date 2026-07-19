@@ -8,10 +8,8 @@ import {
   safeFileName,
   type Photo,
 } from "../Portfolio/photoData";
+import { PUBLIC_API_URL } from "../config/backend";
 import "./admin.css";
-
-const ADMIN_API =
-  "https://wco3y6e125.execute-api.us-east-1.amazonaws.com/main";
 
 const adminRequest = async <T,>(
   path: string,
@@ -23,7 +21,7 @@ const adminRequest = async <T,>(
   if (!idToken) {
     throw new Error("An authenticated session is required.");
   }
-  const response = await fetch(`${ADMIN_API}${path}`, {
+  const response = await fetch(`${PUBLIC_API_URL}${path}`, {
     method,
     headers: {
       Authorization: `Bearer ${idToken}`,

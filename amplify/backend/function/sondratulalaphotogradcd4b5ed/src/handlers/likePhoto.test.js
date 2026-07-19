@@ -1,5 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+process.env.PHOTO_LIKES_TABLE = "PhotoLikesTest";
 const { createLikeHandler } = require("./likePhoto");
 
 const request = (result) => ({ promise: async () => result });

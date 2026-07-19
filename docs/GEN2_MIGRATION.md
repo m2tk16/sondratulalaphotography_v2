@@ -156,7 +156,7 @@ explicit approval and a recorded rollback point.
 
 ## Immediate next action
 
-Phase 1 is complete. Prepare a concrete isolation map for the cloned Gen 1
-environment, including a separate S3 bucket, likes table, Cognito resources,
-REST APIs, Lambda policies, and safe SES behavior. Do not create the clone or
-run `lock`, `generate`, or `refactor` without explicit approval.
+Phase 2 is complete through clone deployment, isolation verification, and the
+read-only assessment. Review `docs/GEN2_PHASE2_ASSESSMENT.md`, resolve or accept
+the deferred clone Google sign-in limitation, and request separate explicit
+approval before migration `lock`, `generate`, `refactor`, or Gen 2 deployment.

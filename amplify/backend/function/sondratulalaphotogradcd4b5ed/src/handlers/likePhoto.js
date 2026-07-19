@@ -2,14 +2,23 @@ const AWS = require("aws-sdk");
 const { CognitoJwtVerifier } = require("aws-jwt-verify");
 
 const ddb = new AWS.DynamoDB.DocumentClient();
-const tokenVerifier = CognitoJwtVerifier.create({
-  userPoolId: process.env.USER_POOL_ID || "us-east-1_Ag1DJ56zy",
-  tokenUse: "access",
-  clientId: process.env.USER_POOL_CLIENT_ID || "6q431rsrfrbteccluagbdl5ucs",
-});
-
-const TABLE_NAME =
-  process.env.PHOTO_LIKES_TABLE || "SondraTulalaPhotography-PhotoLikes";
+let tokenVerifier;
+const requiredConfig = (name) => {
+  const value = process.env[name];
+  if (!value) throw new Error(`Missing required configuration: ${name}`);
+  return value;
+};
+const getTokenVerifier = () => {
+  if (!tokenVerifier) {
+    tokenVerifier = CognitoJwtVerifier.create({
+      userPoolId: requiredConfig("USER_POOL_ID"),
+      tokenUse: "access",
+      clientId: requiredConfig("USER_POOL_CLIENT_ID"),
+    });
+  }
+  return tokenVerifier;
+};
+const tableName = () => requiredConfig("PHOTO_LIKES_TABLE");
 const headers = {
   "Access-Control-Allow-Headers":
     "Content-Type,Authorization,X-Amz-Date,X-Amz-Security-Token",
@@ -30,7 +39,7 @@ const countLikes = async (documentClient, photo) => {
   do {
     const result = await documentClient
       .scan({
-        TableName: TABLE_NAME,
+        TableName: tableName(),
         FilterExpression: "photo = :photo AND liked = :liked",
         ExpressionAttributeValues: {
           ":photo": photo,
@@ -61,7 +70,7 @@ const getAuthenticatedUsername = async (event, verifier) => {
 };
 
 const createLikeHandler =
-  (documentClient, verifier = tokenVerifier) => async (event) => {
+  (documentClient, verifier) => async (event) => {
   try {
     const method = event.httpMethod || "";
     const photo =
@@ -79,14 +88,17 @@ const createLikeHandler =
 
     // Validate the Cognito User Pool access token server-side and derive the
     // identity from Cognito rather than accepting one from the browser.
-    const username = await getAuthenticatedUsername(event, verifier);
+    const username = await getAuthenticatedUsername(
+      event,
+      verifier || getTokenVerifier(),
+    );
     if (!username) {
       return response(401, { message: "Sign in to like a photograph." });
     }
 
     const existing = await documentClient
       .get({
-        TableName: TABLE_NAME,
+        TableName: tableName(),
         Key: { username, photo },
       })
       .promise();
@@ -94,7 +106,7 @@ const createLikeHandler =
 
     await documentClient
       .put({
-        TableName: TABLE_NAME,
+        TableName: tableName(),
         Item: {
           username,
           photo,

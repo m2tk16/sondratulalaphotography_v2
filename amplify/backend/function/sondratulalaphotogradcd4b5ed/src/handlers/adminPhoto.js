@@ -3,14 +3,23 @@ const crypto = require("crypto");
 const { CognitoJwtVerifier } = require("aws-jwt-verify");
 
 const s3 = new AWS.S3({ signatureVersion: "v4" });
-const adminTokenVerifier = CognitoJwtVerifier.create({
-  userPoolId: process.env.USER_POOL_ID || "us-east-1_Ag1DJ56zy",
-  tokenUse: "id",
-  clientId: process.env.USER_POOL_CLIENT_ID || "6q431rsrfrbteccluagbdl5ucs",
-});
-const BUCKET_NAME =
-  process.env.PHOTO_BUCKET ||
-  "sondratulalaphotogra25f72088efde4213955fdfd598b496bb-main";
+let adminTokenVerifier;
+const requiredConfig = (name) => {
+  const value = process.env[name];
+  if (!value) throw new Error(`Missing required configuration: ${name}`);
+  return value;
+};
+const getAdminTokenVerifier = () => {
+  if (!adminTokenVerifier) {
+    adminTokenVerifier = CognitoJwtVerifier.create({
+      userPoolId: requiredConfig("USER_POOL_ID"),
+      tokenUse: "id",
+      clientId: requiredConfig("USER_POOL_CLIENT_ID"),
+    });
+  }
+  return adminTokenVerifier;
+};
+const bucketName = () => requiredConfig("PHOTO_BUCKET");
 const MANIFEST_KEY = "public/images/portfolio/manifest.json";
 const PHOTO_PREFIX = "public/images/portfolio/";
 const ADMIN_EMAILS = new Set([
@@ -64,7 +73,8 @@ const createRequireAdmin = (verifier) => async (event) => {
     return email;
   };
 
-const requireAdmin = createRequireAdmin(adminTokenVerifier);
+const requireAdmin = (event) =>
+  createRequireAdmin(getAdminTokenVerifier())(event);
 const readBody = (event) => {
   try {
     return JSON.parse(event.body || "{}");
@@ -102,7 +112,7 @@ const writeManifest = async (photos) => {
   const body = validateManifest(photos);
   await s3
     .putObject({
-      Bucket: BUCKET_NAME,
+      Bucket: bucketName(),
       Key: MANIFEST_KEY,
       Body: body,
       ContentType: "application/json",
@@ -133,7 +143,7 @@ exports.handleAdminPhoto = async (event) => {
       }
       const key = `${PHOTO_PREFIX}${crypto.randomUUID()}.${extension}`;
       const uploadUrl = await s3.getSignedUrlPromise("putObject", {
-        Bucket: BUCKET_NAME,
+        Bucket: bucketName(),
         Key: key,
         ContentType: contentType,
         Expires: 300,
@@ -151,7 +161,7 @@ exports.handleAdminPhoto = async (event) => {
       if (!key.startsWith(PHOTO_PREFIX) || key === MANIFEST_KEY) {
         return response(400, { message: "Invalid photograph path." });
       }
-      await s3.deleteObject({ Bucket: BUCKET_NAME, Key: key }).promise();
+      await s3.deleteObject({ Bucket: bucketName(), Key: key }).promise();
       await writeManifest(body.photos);
       return response(200, { message: "Photograph deleted." });
     }

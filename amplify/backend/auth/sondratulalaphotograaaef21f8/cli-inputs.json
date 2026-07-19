@@ -71,10 +71,8 @@
     "permissions": [],
     "userPoolGroups": false,
     "adminQueries": false,
-    "authProviders": [
-      "accounts.google.com"
-    ],
-    "thirdPartyAuth": true,
+    "authProviders": [],
+    "thirdPartyAuth": false,
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"email\",\"openid\",\"profile\"],\"CallbackURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"https://sondratulalaphotography.com/\",\"http://localhost:3001/\"],\"LogoutURLs\":[\"https://sondratulalaphotography.com/\",\"http://localhost:5173/\",\"http://localhost:3000/\",\"http://localhost:3001/\"]}"
   }
 }

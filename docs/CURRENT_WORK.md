@@ -200,14 +200,21 @@ production baseline.
 
 ## Next steps
 
-1. Design the Phase 2 clone isolation map and request approval before creating
-   any AWS resources.
+1. Review `docs/GEN2_PHASE2_ASSESSMENT.md`.
+2. Decide whether to securely enable Google sign-in on the clone before Phase
+   3.
+3. Request separate approval before any migration `lock`, `generate`,
+   `refactor`, or Gen 2 deployment.
 
 ## Resume point after interruption
 
 Phase 1 backend, frontend deployment, and authenticated production acceptance
-are complete. Resume with the Phase 2 isolation map. No migration `lock`,
-`generate`, `refactor`, or clone command has been run.
+are complete. The isolated `gentest` Gen 1 clone is deployed and verified;
+details and the read-only migration assessment are recorded in
+`docs/GEN2_PHASE2_ASSESSMENT.md`. Browser-level image lazy loading is already
+implemented. Editing all metadata on existing Studio entries is recorded as a
+separate post-migration product change. No migration `lock`, `generate`,
+`refactor`, or Gen 2 deployment command has been run.
 
 ## Known risks and blockers
 
@@ -227,3 +234,8 @@ are complete. Resume with the Phase 2 isolation map. No migration `lock`,
 - The official Gen 2 migration tool is in Developer Preview and operates on
   production CloudFormation resources. Use the documented blue/green process
   with human supervision and explicit approval at every mutation gate.
+- The clone Google provider intentionally uses a disabled rehearsal credential.
+  Google sign-in remains a deferred clone test until the real secret is entered
+  securely and its redirect is registered.
+- The assessment supports every reported resource. The Lambda custom policy is
+  the only reported manual post-generation item.

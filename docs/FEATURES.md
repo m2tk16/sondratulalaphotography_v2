@@ -14,8 +14,12 @@ Sondra's priorities become clearer.
 ## Near term
 
 - [ ] Move photograph metadata and likes to AppSync/GraphQL.
+- [x] Lazy-load portfolio images at the browser level as they approach the
+  viewport.
 - [ ] Add thumbnail and responsive-image generation after upload.
-- [ ] Let Sondra edit metadata and reorder photographs after upload.
+- [ ] Let Sondra edit all existing photograph metadata (title, category,
+  location, capture date, description, featured status, alt text) and reorder
+  photographs after upload.
 - [ ] Add dedicated collection pages and shareable photograph detail routes.
 - [ ] Add accessible full-screen lightbox browsing.
 - [ ] Add image alt text as a required admin field.

@@ -1,8 +1,8 @@
 import { useState, type FormEvent } from "react";
+import { PUBLIC_API_URL } from "../config/backend";
 import "./contact.css";
 
-const CONTACT_API =
-  "https://wco3y6e125.execute-api.us-east-1.amazonaws.com/main/contact/send-email";
+const CONTACT_API = `${PUBLIC_API_URL}/contact/send-email`;
 
 const Contact = () => {
   const [formData, setFormData] = useState({
