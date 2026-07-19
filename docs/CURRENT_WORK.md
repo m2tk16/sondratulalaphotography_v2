@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Confirm the deployed route-scroll and restored-mobile-session like fixes on a
-real phone.
+Prepare a safe Amplify Gen 1-to-Gen 2 migration, beginning with a read-only
+baseline and an isolated rehearsal plan.
 
 ## Current state
 
@@ -153,18 +153,39 @@ real phone.
   `AMPLIFY_SKIP_BACKEND_BUILD=true` remains set, and the live Lambda still
   matches verified hash
   `WMVpcBASGoGMJNCT5OPYjyuuQRXgRMMfOKqpSVd9Bik=`.
+- Real-phone verification passed for the restored-session like fix and route
+  behavior. Release `STP-2026.07.19-02` is accepted.
+- Gen 2 migration discovery is documented in `docs/GEN2_MIGRATION.md`.
+- The current toolchain has Node 22.13, TypeScript 5.6, Amplify UI 6, and CDK
+  bootstrap version 30. `aws-amplify` must be upgraded from 6.12.1 to at least
+  6.16.2.
+- The only Amplify backend environment is production `main`; an isolated clone
+  is required before migration rehearsal.
+- The Gen 1 root stack is `UPDATE_ROLLBACK_COMPLETE`, while the migration lock
+  accepts only `UPDATE_COMPLETE` or `CREATE_COMPLETE`.
+- The known missing `cognito-identity:ListTagsForResource` deployment
+  permission and direct Lambda/CloudFormation drift must be resolved before the
+  Gen 1 CLI v14 prerequisite deployment can succeed.
+- The aggregate read-only before-state is recorded in
+  `docs/GEN2_BASELINE.md`. It confirms 17 intact manifest references, 5 like
+  records, 5 estimated Cognito users, and the verified Lambda hash.
+- Current protection gaps: S3 versioning, DynamoDB point-in-time recovery and
+  deletion protection, and Cognito deletion protection are disabled.
+- A least-privilege, single-resource permission proposal is documented in
+  `docs/GEN2_IAM_PROPOSAL.md`; it has not been applied.
 
 ## Next steps
 
-1. On the phone that reported the issue, hard-refresh the production site.
-2. Confirm route changes open at the top and like/unlike works while signed in.
-3. If the site reports that the sign-in expired, sign out and sign in once,
-   then retry.
+1. Review the baseline and IAM proposal.
+2. Request approval before applying IAM, installing migration tooling,
+   deploying Gen 1, or creating the isolated clone.
+3. After approval, repair Gen 1 deployability and re-run the production
+   acceptance checks before cloning.
 
 ## Resume point after interruption
 
-The follow-up is deployed through Amplify job 43. Resume with the real-phone
-checks listed above.
+Read `docs/GEN2_MIGRATION.md` and resume at Phase 0. No migration command that
+locks, generates, refactors, deploys, or creates AWS resources has been run.
 
 ## Known risks and blockers
 
@@ -181,5 +202,6 @@ checks listed above.
   data model before scale.
 - The manifest JSON in S3 is a transitional metadata store. Moving photograph
   metadata and likes to AppSync is recommended before comments or purchasing.
-- Amplify Gen 1 is in maintenance mode; a Gen 2 migration should be planned
-  separately, without blocking this P0.
+- The official Gen 2 migration tool is in Developer Preview and operates on
+  production CloudFormation resources. Use the documented blue/green process
+  with human supervision and explicit approval at every mutation gate.

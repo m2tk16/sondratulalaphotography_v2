@@ -5,11 +5,11 @@ Sondra's priorities become clearer.
 
 ## P0 completion
 
-- [ ] Desktop and mobile visual QA.
-- [ ] Live Google login and logout verification.
-- [ ] Admin upload, deactivate, reactivate, and delete smoke tests.
-- [ ] Public like-count and authenticated like-toggle smoke tests.
-- [ ] Contact form production smoke test.
+- [x] Desktop and mobile visual QA.
+- [x] Live Google login and logout verification.
+- [x] Admin upload, deactivate, reactivate, and delete smoke tests.
+- [x] Public like-count and authenticated like-toggle smoke tests.
+- [x] Contact form production smoke test.
 
 ## Near term
 
@@ -47,7 +47,11 @@ errors could charge customers or create incorrect orders.
 
 ## Platform and operations
 
-- [ ] Plan Amplify Gen 1 to Gen 2 migration.
+- [x] Plan Amplify Gen 1 to Gen 2 migration.
+- [ ] Repair Gen 1 deployment permissions and reconcile the tracked Lambda
+  artifact before migration.
+- [ ] Rehearse Amplify Gen 2 migration in an isolated non-production
+  environment.
 - [ ] Migrate Lambda handlers from AWS SDK for JavaScript v2 to modular v3
   clients.
 - [ ] Add automated unit and component testing with Vitest and React Testing

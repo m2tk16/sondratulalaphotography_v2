@@ -3,9 +3,35 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-03 - Amplify Gen 2 migration discovery
+
+Status: candidate - planning and read-only baseline complete
+Date: 2026-07-19
+Target: isolated rehearsal before production migration
+
+### Implemented
+
+- Documented the AWS-recommended blue/green Gen 1-to-Gen 2 migration strategy.
+- Inventoried the current Cognito, S3, DynamoDB, REST API, Lambda, IAM, Hosting,
+  CloudFormation, and CDK state without changing AWS resources.
+- Recorded the migration blockers, approval gates, acceptance tests, rollback
+  principles, and stateful-resource protections.
+- Prepared a least-privilege IAM proposal for the missing Cognito Identity Pool
+  tag-read permission.
+
+### Verification
+
+- Confirmed all 17 manifest records reference existing S3 images.
+- Confirmed the production Lambda remains active on the verified JWT code hash.
+- Confirmed Node 22, TypeScript 5.6, Amplify UI 6, and CDK bootstrap version 30.
+- Confirmed only production `main` exists and its root stack is
+  `UPDATE_ROLLBACK_COMPLETE`.
+- Confirmed no migration lock, generation, refactor, clone, IAM change, or
+  backend deployment was performed.
+
 ## STP-2026.07.19-02 - Navigation and mobile-like follow-up
 
-Status: deployed - real-phone authenticated retest pending
+Status: deployed
 Date: 2026-07-19
 Target: existing single Amplify environment
 Frontend deployment: completed 2026-07-19, Amplify job 43
@@ -43,7 +69,7 @@ Frontend deployment: completed 2026-07-19, Amplify job 43
   expired-session handling.
 - Post-deployment CORS preflight passed; the verified Lambda hash was
   unchanged.
-- Real-phone authenticated like/unlike and route-scroll retest: pending.
+- Real-phone authenticated like/unlike and route-scroll retest: passed.
 
 ## STP-2026.07.19-01 - Portfolio P0 redesign
 
