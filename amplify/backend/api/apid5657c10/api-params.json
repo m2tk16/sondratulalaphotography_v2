@@ -1,0 +1,20 @@
+{
+  "paths": [
+    {
+      "path": "/main/photos/likes",
+      "cors": {
+        "AllowMethods": ["OPTIONS", "POST", "GET"],
+        "AllowHeaders": [
+          "Content-Type",
+          "Authorization",
+          "X-Amz-Date",
+          "X-Api-Key",
+          "X-Amz-Security-Token",
+          "X-Amz-User-Agent",
+          "x-amz-content-sha256"
+        ],
+        "AllowOrigin": "*"
+      }
+    }
+  ]
+}

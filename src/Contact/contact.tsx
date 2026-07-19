@@ -1,171 +1,118 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import "./contact.css";
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Toast from 'react-bootstrap/Toast';
-import Card from 'react-bootstrap/Card';
+
+const CONTACT_API =
+  "https://wco3y6e125.execute-api.us-east-1.amazonaws.com/main/contact/send-email";
 
 const Contact = () => {
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        subject: '',
-        message: '',
-    });
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState("");
+  const [isError, setIsError] = useState(false);
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [responseMessage, setResponseMessage] = useState('');
-    const [showToast, setShowToast] = useState(false);
-    const [toastVariant, setToastVariant] = useState('dark');
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setStatus("");
+    setIsError(false);
+    try {
+      const response = await fetch(CONTACT_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) throw new Error("Request failed.");
+      setStatus("Thank you—your message is on its way to Sondra.");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch {
+      setIsError(true);
+      setStatus("Your message could not be sent. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        setFormData((prev) => ({ ...prev, [id]: value }));
-    };
+  const update = (field: keyof typeof formData, value: string) =>
+    setFormData((current) => ({ ...current, [field]: value }));
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        e.preventDefault();
-        setIsSubmitting(true);
-        setResponseMessage('');
-        setShowToast(false);
-
-        try {
-            const response = await fetch(' https://wco3y6e125.execute-api.us-east-1.amazonaws.com/main/contact/send-email', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-            await response.json();
-
-            if (response.ok) {
-                setToastVariant(toastVariant);
-                setResponseMessage('Your message has been sent!');
-            } else {
-                setToastVariant(toastVariant);
-                setResponseMessage('Failed to send your message.');
-            }
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            setToastVariant(toastVariant);
-            setResponseMessage('An error occurred. Please try again.');
-        } finally {
-            setShowToast(true);
-            setIsSubmitting(false);
-        }
-    };
-
-    return (
-        <>
-            <Row className="justify-content-center g-4">
-                <Col xs={12} md={12} className="text-center p-4">
-                    <Card className="contact-me-title">
-                        <div className="font-loader">Contact Me!</div>
-                    </Card>
-
-                </Col>
-            </Row>
-            <Row className="d-flex justify-content-center align-items-center px-5">
-                <Col sm={6} md={4} className="text-center mb-4 mt-4">
-                    Have a question or just curious about photography tips, my journey, or the options I offer? 
-                    I’d love to hear from you! Feel free to send a message, and I’ll get back to you as soon as I can. 
-                    Let’s connect and make your photography experience even better!
-                </Col>
-            </Row>
-            <Form onSubmit={handleSubmit}>
-                <Row className="px-5">
-                    <Col md={12}>
-                        <div className="content-wrapper">
-                            <Col sm={{ span: 2, offset: 5 }} className="mb-4">
-                                <FloatingLabel controlId="firstName" label="First Name">
-                                    <Form.Control 
-                                        type="text" 
-                                        size="sm" 
-                                        placeholder="John" 
-                                        required 
-                                        value={formData.firstName} 
-                                        onChange={handleChange} 
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm={{ span: 2, offset: 5 }} className="mb-4">
-                                <FloatingLabel controlId="lastName" label="Last Name">
-                                    <Form.Control 
-                                        type="text" 
-                                        size="sm" 
-                                        placeholder="Doe" 
-                                        value={formData.lastName} 
-                                        onChange={handleChange} 
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm={{ span: 2, offset: 5 }} className="mb-4">
-                                <FloatingLabel controlId="email" label="Email address" className="mb-3">
-                                    <Form.Control 
-                                        type="email" 
-                                        placeholder="name@example.com" 
-                                        required 
-                                        value={formData.email} 
-                                        onChange={handleChange} 
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm={{ span: 2, offset: 5 }} className="mb-4">
-                                <FloatingLabel controlId="subject" label="Subject" className="mb-3">
-                                    <Form.Control 
-                                        type="text" 
-                                        size="sm" 
-                                        placeholder="Subject" 
-                                        required 
-                                        value={formData.subject} 
-                                        onChange={handleChange} 
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm={{ span: 4, offset: 4 }} className="mb-4">
-                                <FloatingLabel controlId="message" label="Message">
-                                    <Form.Control
-                                        as="textarea"
-                                        placeholder="Leave a message here"
-                                        style={{ height: '100px', resize: "vertical" }}
-                                        size="sm"
-                                        required
-                                        value={formData.message}
-                                        onChange={handleChange}
-                                    />
-                                </FloatingLabel>
-                            </Col>
-                            <Col sm={{ span: 4, offset: 4 }} className="mb-4 text-center">
-                                <Button variant="outline-secondary" type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? 'Submitting...' : 'Submit'}
-                                </Button>
-                                <Toast 
-                                    className="mt-3 mx-auto"
-                                    show={showToast} 
-                                    onClose={() => setShowToast(false)} 
-                                    bg={toastVariant} 
-                                    delay={3000} 
-                                    autohide
-                                >
-                                    <Toast.Header className="d-flex justify-content-between align-items-center">
-                                        <strong className="mx-auto">Email Status</strong>
-                                    </Toast.Header>
-                                    <Toast.Body>{responseMessage}</Toast.Body>
-                                </Toast>
-                            </Col>
-                        </div>
-                    </Col>
-                </Row>
-            </Form>
-        </>
-    );
+  return (
+    <div className="contact-page">
+      <header className="page-intro">
+        <p className="eyebrow">Get in touch</p>
+        <h1>Let’s start a conversation.</h1>
+        <p>
+          Ask about a photograph, share a thought, or simply say hello. Sondra
+          would love to hear from you.
+        </p>
+      </header>
+      <form className="contact-form" onSubmit={handleSubmit}>
+        <label>
+          First name
+          <input
+            autoComplete="given-name"
+            onChange={(event) => update("firstName", event.target.value)}
+            required
+            value={formData.firstName}
+          />
+        </label>
+        <label>
+          Last name
+          <input
+            autoComplete="family-name"
+            onChange={(event) => update("lastName", event.target.value)}
+            value={formData.lastName}
+          />
+        </label>
+        <label className="full-field">
+          Email
+          <input
+            autoComplete="email"
+            onChange={(event) => update("email", event.target.value)}
+            required
+            type="email"
+            value={formData.email}
+          />
+        </label>
+        <label className="full-field">
+          Subject
+          <input
+            onChange={(event) => update("subject", event.target.value)}
+            required
+            value={formData.subject}
+          />
+        </label>
+        <label className="full-field">
+          Message
+          <textarea
+            onChange={(event) => update("message", event.target.value)}
+            required
+            rows={7}
+            value={formData.message}
+          />
+        </label>
+        <button className="primary-button" disabled={isSubmitting} type="submit">
+          {isSubmitting ? "Sending…" : "Send message"}
+        </button>
+        {status && (
+          <p className={`form-status ${isError ? "error" : ""}`} role="status">
+            {status}
+          </p>
+        )}
+      </form>
+    </div>
+  );
 };
 
 export default Contact;

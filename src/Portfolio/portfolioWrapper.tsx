@@ -1,108 +1,120 @@
-import React, { useState, useEffect } from "react";
-import "./portfolio.css";
+import { useEffect, useState } from "react";
+import { get, post } from "aws-amplify/api";
+import { fetchAuthSession } from "aws-amplify/auth";
+import { Heart, HeartFill } from "react-bootstrap-icons";
 import GetImage from "../Utilities/getImage";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import { Heart, CurrencyBitcoin } from "react-bootstrap-icons";
-import { FaPaypal } from "react-icons/fa";
-import ExtractAndFormat from "../Utilities/titleFormatter";
-import { fetchAuthSession } from "@aws-amplify/auth";
+import UseAuth from "../Utilities/auth";
+import type { Photo } from "./photoData";
 
-interface PortfolioWrapperProps {
-  path: string;
-}
+const PUBLIC_API = "api4593058b";
+const PRIVATE_API = "apid5657c10";
 
-// ✅ Use inferred return type from fetchAuthSession
-type AuthSessionType = Awaited<ReturnType<typeof fetchAuthSession>>;
-
-const PortfolioWrapper: React.FC<PortfolioWrapperProps> = ({ path }) => {
-  const [isVisible, setIsVisible] = useState(false);
+const PortfolioWrapper = ({ photo }: { photo: Photo }) => {
+  const { user, signIn } = UseAuth();
   const [likeCount, setLikeCount] = useState(0);
-  const [authSession, setAuthSession] = useState<AuthSessionType | null>(null);
-  const title = <ExtractAndFormat path={path} />;
+  const [liked, setLiked] = useState(false);
+  const [liking, setLiking] = useState(false);
+  const [likeError, setLikeError] = useState("");
 
   useEffect(() => {
-    setIsVisible(true);
-    setLikeCount(1);
-  }, []);
-
-  useEffect(() => {
-    setIsVisible(true);
-
-    const fetchUserSession = async () => {
+    let active = true;
+    const loadCount = async () => {
       try {
-        const session = await fetchAuthSession();
-        setAuthSession(session);
-      } catch (error) {
-        console.error("Error fetching session:", error);
+        const operation = get({
+          apiName: PUBLIC_API,
+          path: "/photos/likes/count",
+          options: { queryParams: { photo: photo.path } },
+        });
+        const response = await operation.response;
+        const body = (await response.body.json()) as { totalLikes?: number };
+        if (active) {
+          setLikeCount(body.totalLikes ?? 0);
+        }
+      } catch {
+        // Likes are supplementary; photographs should remain available even
+        // while the API is being deployed.
       }
     };
-
-    fetchUserSession();
-  }, []);
+    void loadCount();
+    return () => {
+      active = false;
+    };
+  }, [photo.path]);
 
   const handleLikeClick = async () => {
-    const accessToken = authSession?.tokens?.accessToken?.payload;
-
-    if (!accessToken) {
-      console.error("User is not authenticated. Cannot like the photo.");
+    if (!user) {
+      await signIn();
       return;
     }
 
+    setLiking(true);
+    setLikeError("");
     try {
-      const response = await fetch(
-        "https://wco3y6e125.execute-api.us-east-1.amazonaws.com/main/photos/likes",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: accessToken.sub || "",
-          },
-          body: JSON.stringify({
-            username: accessToken.username,
-            photo: path,
-            liked: "Y",
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      const session = await fetchAuthSession();
+      const accessToken = session.tokens?.accessToken?.toString();
+      if (!accessToken) {
+        throw new Error("A valid sign-in session is required.");
       }
 
-      const result = await response.json();
-      console.log("Like Response:", result);
-      setLikeCount(result.totalLikes || 0);
-    } catch (error) {
-      console.error("Error liking the photo:", error);
+      const operation = post({
+        apiName: PRIVATE_API,
+        path: "/photos/likes",
+        options: {
+          body: { photo: photo.path },
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      });
+      const response = await operation.response;
+      const body = (await response.body.json()) as {
+        liked?: boolean;
+        totalLikes?: number;
+      };
+      setLiked(Boolean(body.liked));
+      setLikeCount(body.totalLikes ?? likeCount);
+    } catch {
+      setLikeError("Could not save your like.");
+    } finally {
+      setLiking(false);
     }
   };
 
   return (
-    <div className="p-6 portfolio-image-wrapper">
-      <GetImage
-        imagePath={path}
-        className={`home-image ${isVisible ? "visible" : ""}`}
-      />
-      <Col>
-        <Row className="mt-3">
-          <div className="image-title">{title}</div>
-        </Row>
-        <hr />
-        <Row className="mt-4">
-          <Col className="col-4 text-center">
-            <Heart size={20} className="like-icon" onClick={handleLikeClick} />
-            <div className="like-count">{likeCount}</div>
-          </Col>
-          <Col className="col-4 text-center">
-            <CurrencyBitcoin size={30} />
-          </Col>
-          <Col className="col-4 text-center">
-            <FaPaypal size={30} />
-          </Col>
-        </Row>
-      </Col>
-    </div>
+    <article className="photo-card">
+      <div className="photo-frame">
+        <GetImage imagePath={photo.path} className="portfolio-image" />
+        {photo.featured && <span className="featured-label">Featured</span>}
+      </div>
+      <div className="photo-details">
+        <div>
+          <p className="photo-category">{photo.category}</p>
+          <h2>{photo.title}</h2>
+          {(photo.location || photo.capturedAt) && (
+            <p className="photo-meta">
+              {[photo.location, photo.capturedAt].filter(Boolean).join(" · ")}
+            </p>
+          )}
+          {photo.description && (
+            <p className="photo-description">{photo.description}</p>
+          )}
+        </div>
+        <button
+          aria-label={
+            user
+              ? `${liked ? "Remove like from" : "Like"} ${photo.title}`
+              : `Sign in to like ${photo.title}`
+          }
+          className={`like-button ${liked ? "liked" : ""}`}
+          disabled={liking}
+          onClick={handleLikeClick}
+          title={user ? "Like this photograph" : "Sign in with Google to like"}
+          type="button"
+        >
+          {liked ? <HeartFill aria-hidden /> : <Heart aria-hidden />}
+          <span>{likeCount}</span>
+        </button>
+      </div>
+      {likeError && <p className="inline-error">{likeError}</p>}
+    </article>
   );
 };
 

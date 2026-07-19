@@ -1,13 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { Amplify } from 'aws-amplify';
-import amplifyconfig from './amplifyconfiguration.json';
-Amplify.configure(amplifyconfig);
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { Amplify } from "aws-amplify";
+import awsConfig from "./aws-exports";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
+import App from "./App";
 
-createRoot(document.getElementById('root')!).render(
+const origin = window.location.origin;
+awsConfig.oauth.redirectSignIn = `${origin}/`;
+awsConfig.oauth.redirectSignOut = `${origin}/`;
+Amplify.configure(awsConfig);
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />
   </StrictMode>,
-)
+);

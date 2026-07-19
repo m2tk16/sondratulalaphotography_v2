@@ -1,144 +1,66 @@
-.body {
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Italiana&display=swap");
+
+:root {
+  font-family: "DM Sans", sans-serif;
+  color: #28251f;
+  background: #f3f0e9;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #28251f;
+  --muted: #706b61;
+  --paper: #f3f0e9;
+  --cream: #e9e3d8;
+  --line: rgba(40, 37, 31, 0.18);
+  --accent: #7d6d57;
+  --display: "Italiana", Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #000;
-  color:#85888a;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--paper);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
 
-
-.navbar {
-  background-color: #000;
-  color: #85888a;
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
-.nav-link {
-  color: #85888a !important;
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
-.nav-item {
-  color: #85888a;
+a {
+  color: inherit;
 }
 
-.footer-links {
-  text-align: left;
-  text-decoration: none;
-  color:#85888a;
-  font-size: .8em;
+img {
+  display: block;
+  max-width: 100%;
 }
 
-.footer-year {
-  text-align: center;
-}
-
-.footer-unsubscribe {
-  text-align: center;
-}
-
-.footer-link-title {
-  font-size:1em;
-  font-weight: 600;
-  color:#85888a;
-}
-
-.footer-contact-title {
-  font-size:1em;
-  font-weight: 600;
-  color:#85888a;
-}
-
-.footer-year {
-  padding-bottom: 3vw;
-  color:#85888a;
-}
-
-.email {
-  font-size:.5em;
-}
-
-
-.home-body {
-  text-align: center;
-}
-
-.home-about {
-  font-size: .8em;
-  margin-left: 4vw;
-  margin-right: 4vw;
-  margin-bottom: 1vw;
-}
-
-.page-about {
-  font-size: .8em;
-  text-align: center;
-  padding:.5em;
-}
-
-.home-column {
-  padding-bottom:4vw;
-}
-
-.page-about-row {
-  display: inline-block;
-}
-
-.page-row-spacer {
-  padding-top:1em;
-}
-
-.unsubscribe-text {
-  padding-left:2em;
-  padding-right:2em;
-  padding-bottom:2em;
-}
-
-.subscribe-row{
-  padding-top:1em;
-}
-
-.subscribe-column{
-  font-size: .8em;
-}
-
-.subscribe-column.button{
-  font-size: .8em;
-  padding-left:1em;
-}
-
-.footer-container {
-  text-align:center;
-}
-
-.subscribe-route-title{
-  text-align:center;
-}
-
-.home-content-wrapper {
-  margin-top:1em;
-}
-
-.font-loader {
-  font-family: "Sacramento";
-  color:#85888a;
-  font-size:1.2em;
-}
-
-.custom-toggler {
-  color: #85888a;
-}
-
-.navbar-toggler {
-background-color: #85888a !important;
-}
-
-.content-wrapper {
-  text-align: center;
+::selection {
+  color: #fff;
+  background: var(--accent);
 }

@@ -5,13 +5,11 @@ Amplify Params - DO NOT EDIT */
 
 const { handleRequestInformation } = require('./handlers/requestInformation');
 const { handleLikePhoto } = require('./handlers/likePhoto');
+const { handleAdminPhoto } = require('./handlers/adminPhoto');
 
 exports.handler = async (event) => {
-  console.log(event)
-
   console.log("Incoming path:", event.path);
   console.log("Incoming method:", event.httpMethod);
-  console.log("Incoming event body:", JSON.stringify(event.body));
   try {
     const path = event.path || '';
     const method = event.httpMethod || '';
@@ -24,6 +22,14 @@ exports.handler = async (event) => {
     if (path.endsWith('/photos/likes') && method === 'POST') {
       console.log("Routing to photo like handler");
       return await handleLikePhoto(event);
+    }
+
+    if (path.endsWith('/photos/likes/count') && method === 'GET') {
+      return await handleLikePhoto(event);
+    }
+
+    if (path.includes('/admin/') && ['POST', 'PUT', 'DELETE', 'OPTIONS'].includes(method)) {
+      return await handleAdminPhoto(event);
     }
 
     console.warn("Route not found for", path, method);

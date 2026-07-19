@@ -1,61 +1,42 @@
-import "./about.css";
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Card from 'react-bootstrap/Card';
 import GetImage from "../Utilities/getImage";
+import "./about.css";
 
-const About = () => {
-    const isVisible = true;
-    return (
-        <>
-            <Row className="justify-content-center g-4">
-                <Col xs={12} md={12} className="text-center p-4">
-                    <Card className="about-me-title">
-                        <div className="font-loader">Behind the Lens: My Story</div>
-                    </Card>
-                </Col>
-            </Row>
-            <Row className="justify-content-center g-4">
-                <Col xs={12} md={6} className="text-center p-4">
-                    <Card className="about-me-card">
-                        <Card.Body>
-                            Hi there! Welcome to my photography website! My name is Alessandra, and I am so excited to share my pictures with you. 
-                            Photography is a hobby that makes me really happy, and this website is a way for me to show my work and connect with 
-                            people who also enjoy beautiful moments. My gallery has photos of landscapes, still-life scenes, and even some fun 
-                            pictures of my Labrador, Loki.
-
-                            I started taking photos because I wanted to do something creative outside of work. After taking a few classes and 
-                            practicing on my own, I’ve found that photography helps me slow down and enjoy the little details in life. I’m 
-                            still learning and getting better at it, but I love every step of the journey. Each picture I take is special to 
-                            me, and I hope you’ll enjoy seeing my progress.<br></br><br></br>
-
-                            My husband Martin and I, along with our dog Loki, currently live in Tennessee. Before this, we were originally 
-                            from the New Jersey (NJ) and New York (NY) area, where the views inspired me to start taking pictures. The natural 
-                            beauty of those states drove my interest in photography, and I’ve been capturing moments ever since. Now, I’m 
-                            continuing to grow my skills while living in Tennessee, focusing on peaceful vistas and unique close-ups of everyday 
-                            moments. Whether it’s a foggy morning or Loki being silly, I try to capture scenes that bring smiles or a 
-                            sense of calm.<br></br><br></br>
-
-                            Thanks so much for visiting my website and looking at my photos. I hope you like what you see and can feel the 
-                            happiness I find in photography. If you want to share your thoughts or just say hi, feel free to reach out through 
-                            my contact page. Let’s celebrate life’s beauty together!
-                            </Card.Body>
-                    </Card>
-                </Col>
-                
-                <Col xs={12} md={6} className="text-center p-4">
-                    <Card className="about-me-card">
-                        <Card.Body>
-                            <GetImage
-                                imagePath="public/images/about/deserted.webp"
-                                className={`home-image ${isVisible ? "visible" : ""}`}
-                            />
-                    </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-        </>
-    )
-}
+const About = () => (
+  <div className="about-page">
+    <header className="page-intro">
+      <p className="eyebrow">Behind the lens</p>
+      <h1>Finding wonder in familiar places.</h1>
+    </header>
+    <section className="about-story">
+      <div className="about-image-wrap">
+        <GetImage
+          imagePath="public/images/about/deserted.webp"
+          className="about-image"
+        />
+      </div>
+      <div className="about-copy">
+        <p className="eyebrow">Hello, I’m Sondra</p>
+        <h2>Photography helps me slow down and truly see.</h2>
+        <p>
+          What began as a creative outlet quickly became a way to notice the
+          changing light, peaceful vistas, and small details that make everyday
+          life beautiful. Classes gave me a foundation, but curiosity continues
+          to be my favorite teacher.
+        </p>
+        <p>
+          My husband Martin, our Labrador Loki, and I now call Tennessee home.
+          Before moving south, the landscapes of New Jersey and New York first
+          inspired me to carry a camera. Those places—and the calm of a foggy
+          morning—still shape the way I see.
+        </p>
+        <p>
+          This collection includes landscapes, still life, and the occasional
+          joyful appearance from Loki. I hope each photograph offers a small
+          pause and a reason to smile.
+        </p>
+      </div>
+    </section>
+  </div>
+);
 
 export default About;

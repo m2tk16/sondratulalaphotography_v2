@@ -1,50 +1,47 @@
-# React + TypeScript + Vite
+# Sondra Tulala Photography
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AWS Amplify, React, and TypeScript photography portfolio for Sondra Tulala.
+The site provides a public gallery, Google authentication, authenticated likes,
+and a private portfolio-management studio.
 
-Currently, two official plugins are available:
+## Local development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```text
+npm install
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Verification
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```text
+npm run lint
+npm test
+npm run build
 ```
+
+The current automated tests cover the authenticated like handler. Frontend
+component tests are not configured yet. See `AGENTS.md` for when and how that
+test setup should be introduced.
+
+## Project documentation
+
+- [Project steering](AGENTS.md)
+- [Current work and resume point](docs/CURRENT_WORK.md)
+- [Release and learning log](docs/RELEASES.md)
+- [Feature ideas](docs/FEATURES.md)
+
+## Architecture direction
+
+- S3 stores original photographs and generated image files.
+- Lambda handles event-driven workflows such as email, signed uploads, image
+  processing, and future payment webhooks.
+- AppSync/GraphQL is the preferred direction for structured photograph
+  metadata, likes, comments, users, and future commerce records.
+
+The project currently has one Amplify environment. A separate environment
+should be introduced when the risk signals documented in `AGENTS.md` appear.
+
+## Deployment safety
+
+This project uses live AWS resources. Review the Amplify backend diff and get
+explicit approval before running `amplify push` or publishing.

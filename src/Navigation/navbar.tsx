@@ -1,52 +1,69 @@
-import { Container, Navbar, Nav } from "react-bootstrap";
-import "./navbar.css";
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { List, X } from "react-bootstrap-icons";
 import UseAuth from "../Utilities/auth";
-import SacFont from "../Utilities/fonts";
-
-
+import "./navbar.css";
 
 const NavBar = () => {
-  SacFont();
-  const { user, signInWithRedirect, signOut } = UseAuth();
+  const { user, loading, signingIn, authError, signIn, signOutUser } = UseAuth();
+  const [open, setOpen] = useState(false);
+  const closeMenu = () => setOpen(false);
 
   return (
-    <Navbar collapseOnSelect expand="sm" sticky="top" className="navbar">
-      <Container>
-        <Navbar.Brand href="/">
-          <div className="font-loader">Sondra Tulala Photography</div>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
-          <Nav className="align-items-center mx-auto text-center">
-            <Nav.Link href="/" className="nav-link fs-5">
-              Home
-            </Nav.Link>
-            <Nav.Link href="/about" className="nav-link fs-5">
-              About
-            </Nav.Link>
-            <Nav.Link href="/portfolio" className="nav-link fs-5">
-              Portfolio
-            </Nav.Link>
-            <Nav.Link href="/contact" className="nav-link fs-5">
-              Contact
-            </Nav.Link>
-            {user && user.username !== "" ? (
-              <Nav.Link className="nav-link fs-5" onClick={() => signOut()}>
-                Sign Out
-              </Nav.Link>
-            ) : (
-              <Nav.Link
-                className="nav-link fs-5"
-                onClick={() => signInWithRedirect({ provider: "Google" })}
-              >
-                Sign In
-              </Nav.Link>
-            )}
-          </Nav>
-           {user && <div className="user">{user.username}</div>}
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <header className="site-header">
+      <Link className="wordmark" onClick={closeMenu} to="/">
+        <span>Sondra Tulala</span>
+        <small>Photography</small>
+      </Link>
+      <button
+        aria-expanded={open}
+        aria-label={open ? "Close navigation" : "Open navigation"}
+        className="menu-toggle"
+        onClick={() => setOpen(!open)}
+        type="button"
+      >
+        {open ? <X aria-hidden /> : <List aria-hidden />}
+      </button>
+      <nav className={open ? "primary-nav open" : "primary-nav"} aria-label="Main navigation">
+        <NavLink onClick={closeMenu} to="/">Home</NavLink>
+        <NavLink onClick={closeMenu} to="/portfolio">Portfolio</NavLink>
+        <NavLink onClick={closeMenu} to="/about">About</NavLink>
+        <NavLink onClick={closeMenu} to="/contact">Contact</NavLink>
+        {user?.isAdmin && (
+          <NavLink onClick={closeMenu} to="/admin">Studio</NavLink>
+        )}
+        {!loading &&
+          (user ? (
+            <button
+              className="auth-link"
+              disabled={signingIn}
+              onClick={() => {
+                closeMenu();
+                void signOutUser();
+              }}
+              type="button"
+            >
+              Sign out
+            </button>
+          ) : (
+            <button
+              className="auth-link"
+              onClick={() => {
+                closeMenu();
+                void signIn();
+              }}
+              type="button"
+            >
+              {signingIn ? "Opening Google…" : "Sign in"}
+            </button>
+          ))}
+      </nav>
+      {authError && (
+        <p className="auth-error-banner" role="alert">
+          {authError}
+        </p>
+      )}
+    </header>
   );
 };
 
