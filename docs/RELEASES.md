@@ -3,6 +3,26 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-02 - Route scroll reset
+
+Status: candidate
+Date: 2026-07-19
+Target: existing single Amplify environment
+
+### Implemented
+
+- Reset the browser window to the top whenever the client-side route pathname
+  changes.
+- Preserve the current scroll position during updates that do not navigate to
+  a different route.
+
+### Verification
+
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm test`: all 10 backend regression tests passed.
+- Local route-transition review: pending.
+
 ## STP-2026.07.19-01 - Portfolio P0 redesign
 
 Status: deployed - final authenticated production smoke pending

@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Complete the final authenticated production smoke test for the deployed
-photography portfolio P0 release.
+Add and release consistent top-of-page positioning after client-side route
+changes.
 
 ## Current state
 
@@ -129,23 +129,25 @@ photography portfolio P0 release.
 - Final backend regression checks passed: the Flowers like count remains two,
   unsigned likes return HTTP 401, and an invalid Studio ID token returns HTTP
   401 with the ID-token verifier response.
+- The production authenticated review passed and the redesigned site was
+  accepted.
+- A router-level scroll reset now moves the window to the top whenever the URL
+  pathname changes, preventing a new page from inheriting the previous page's
+  scroll position.
+- ESLint, the production build, and all 10 backend regression tests pass with
+  the route-scroll change.
 
 ## Next steps
 
-1. In a regular browser, hard-refresh
-   `https://sondratulalaphotography.com`.
-2. Confirm production Google sign-in, like/unlike, and Studio visibility for an
-   approved account.
-3. Optionally perform a safe Studio deactivate/reactivate check and submit the
-   contact form once from production.
-4. Record any follow-up defect; otherwise close release
-   `STP-2026.07.19-01`.
+1. Review the local route transition behavior.
+2. With explicit approval, push the pending documentation and scroll-reset
+   commits to `main` for a frontend-only Amplify deployment.
 
 ## Resume point after interruption
 
-The code and production frontend are deployed. Start with the authenticated
-production smoke test listed above. The working tree should be clean; record
-the smoke result in this file and `docs/RELEASES.md`.
+The P0 redesign is deployed. The local branch contains the unpushed deployment
+record commit plus the route-scroll change. Resume with the checks and release
+steps listed above.
 
 ## Known risks and blockers
 

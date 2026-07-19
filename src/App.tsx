@@ -1,4 +1,11 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import "@aws-amplify/ui-react/styles.css";
 import "./App.css";
 import About from "./About/about";
@@ -10,6 +17,16 @@ import NavBar from "./Navigation/navbar";
 import Portfolio from "./Portfolio/portfolio";
 import { AuthProvider } from "./Utilities/auth";
 import UseAuth from "./Utilities/auth";
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname]);
+
+  return null;
+};
 
 const AdminRoute = () => {
   const { user, loading } = UseAuth();
@@ -30,6 +47,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <div className="site-shell">
           <NavBar />
           <main>
