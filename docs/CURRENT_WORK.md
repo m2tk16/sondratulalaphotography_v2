@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Prepare the redesigned photography portfolio P0 for review and deployment to
-the existing single Amplify environment.
+Complete the final authenticated production smoke test for the deployed
+photography portfolio P0 release.
 
 ## Current state
 
@@ -111,35 +111,50 @@ the existing single Amplify environment.
 - The production Amplify Hosting build configuration is now frontend-only, so
   a `main` push will not retrigger the blocked Cognito backend deployment. The
   same build specification is stored in `amplify.yml`.
+- Release commit `7889cef` is pushed to `origin/main`.
+- Amplify Hosting jobs 41 and 42 completed successfully with backend builds
+  skipped. Job 42 is the active production deployment.
+- The `main` branch has automatic builds enabled and
+  `AMPLIFY_SKIP_BACKEND_BUILD=true`. Failed jobs 38 and 39 rolled back safely;
+  job 40 was stopped and also completed rollback.
+- The production SPA rewrite now excludes static asset extensions. Direct
+  requests to `/portfolio`, `/about`, `/contact`, and `/admin` return the app,
+  while JavaScript, CSS, and image assets retain their correct content types.
+- Production public-route and asset smoke tests passed on
+  `https://sondratulalaphotography.com`.
+- A failed Amplify backend rollback briefly restored the older Lambda package.
+  The tested Studio JWT package was redeployed directly afterward. AWS reports
+  the function active with code hash
+  `WMVpcBASGoGMJNCT5OPYjyuuQRXgRMMfOKqpSVd9Bik=`.
+- Final backend regression checks passed: the Flowers like count remains two,
+  unsigned likes return HTTP 401, and an invalid Studio ID token returns HTTP
+  401 with the ID-token verifier response.
 
 ## Next steps
 
-1. Create the approved source-control release commit and push `main`.
-2. Monitor the automatic production Amplify Hosting deployment.
-3. Perform a production-site smoke test after the frontend is published.
-4. Mark release `STP-2026.07.19-01` complete or record follow-up fixes.
+1. In a regular browser, hard-refresh
+   `https://sondratulalaphotography.com`.
+2. Confirm production Google sign-in, like/unlike, and Studio visibility for an
+   approved account.
+3. Optionally perform a safe Studio deactivate/reactivate check and submit the
+   contact form once from production.
+4. Record any follow-up defect; otherwise close release
+   `STP-2026.07.19-01`.
 
 ## Resume point after interruption
 
-Start by running:
-
-```text
-git status --short
-npm run lint
-npm run build
-```
-
-Then review `docs/RELEASES.md`, release `STP-2026.07.19-01`. The access-token
-like fix is deployed directly to Lambda. Do not commit, push source control, or
-publish the frontend until the user explicitly approves those actions.
+The code and production frontend are deployed. Start with the authenticated
+production smoke test listed above. The working tree should be clean; record
+the smoke result in this file and `docs/RELEASES.md`.
 
 ## Known risks and blockers
 
 - The deployed Lambda code currently differs from the function version tracked
   by CloudFormation because the Amplify root deployment role cannot update the
-  Auth nested stack. A future successful Amplify push could overwrite the
-  direct Lambda deployment unless the Cognito permission issue is repaired or
-  the function change is reconciled through CloudFormation first.
+  Auth nested stack. Hosting builds are protected by
+  `AMPLIFY_SKIP_BACKEND_BUILD=true`, but a manual backend push could overwrite
+  the direct Lambda deployment unless the Cognito permission issue is repaired
+  or the function change is reconciled through CloudFormation first.
 - Ports `3000`, `3001`, and `5173` are registered Cognito callbacks. OAuth must
   be tested in a regular browser rather than VS Code's embedded preview.
 - The current like-count implementation scans the likes table. This is

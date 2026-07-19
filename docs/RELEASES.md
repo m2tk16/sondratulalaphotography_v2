@@ -5,11 +5,11 @@ Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 
 ## STP-2026.07.19-01 - Portfolio P0 redesign
 
-Status: candidate - backend deployed
+Status: deployed - final authenticated production smoke pending
 Date: 2026-07-19
 Target: existing single Amplify environment
 Backend deployment: completed 2026-07-19
-Frontend deployment: pending
+Frontend deployment: completed 2026-07-19
 
 ### Implemented
 
@@ -61,7 +61,24 @@ Frontend deployment: pending
 - Amplify Hosting production build configuration changed to frontend-only and
   recorded in `amplify.yml`, preventing the blocked Cognito backend stack from
   running during frontend releases.
-- Frontend production deployment: pending.
+- Source release commit `7889cef` pushed to `origin/main`.
+- Amplify Hosting jobs 41 and 42 succeeded with
+  `AMPLIFY_SKIP_BACKEND_BUILD=true`; job 42 is the active production
+  deployment.
+- Earlier hosting jobs 38 and 39 failed during the known Auth permission issue
+  and rolled back safely. Job 40 was stopped and completed rollback.
+- Production SPA routes `/portfolio`, `/about`, `/contact`, and `/admin`
+  return HTTP 200. The deployed JavaScript, CSS, and representative image
+  assets also return HTTP 200 with the correct content types.
+- Replaced the broad SPA wildcard with an extension-excluding rewrite so deep
+  links resolve to `index.html` without rewriting static assets.
+- After a failed backend rollback restored the older function package, the
+  tested Studio JWT Lambda package was redeployed directly. Its live code hash
+  again matches `WMVpcBASGoGMJNCT5OPYjyuuQRXgRMMfOKqpSVd9Bik=`.
+- Final backend regression smoke passed: Flowers retains two likes, unsigned
+  likes return HTTP 401, and invalid Studio ID tokens return HTTP 401 from the
+  ID-token verifier.
+- Authenticated production-site smoke test: pending.
 
 ### Barriers, decisions, and reusable lessons
 
