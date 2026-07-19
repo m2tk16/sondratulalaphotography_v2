@@ -55,7 +55,7 @@ errors could charge customers or create incorrect orders.
 - [x] Plan Amplify Gen 1 to Gen 2 migration.
 - [ ] Repair Gen 1 deployment permissions and reconcile the tracked Lambda
   artifact before migration.
-- [ ] Rehearse Amplify Gen 2 migration in an isolated non-production
+- [x] Rehearse Amplify Gen 2 migration in an isolated non-production
   environment.
 - [ ] Migrate Lambda handlers from AWS SDK for JavaScript v2 to modular v3
   clients.

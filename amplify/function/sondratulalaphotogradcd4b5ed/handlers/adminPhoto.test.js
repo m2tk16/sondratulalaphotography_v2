@@ -1,6 +1,6 @@
-const test = require("node:test");
-const assert = require("node:assert/strict");
-const { createRequireAdmin } = require("./adminPhoto");
+import test from "node:test";
+import assert from "node:assert/strict";
+import { createRequireAdmin } from "./adminPhoto.js";
 
 test("requires an ID token for Studio operations", async () => {
   const verifier = {

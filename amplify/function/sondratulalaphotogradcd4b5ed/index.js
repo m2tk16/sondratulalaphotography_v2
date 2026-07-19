@@ -3,11 +3,11 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const { handleRequestInformation } = require('./handlers/requestInformation');
-const { handleLikePhoto } = require('./handlers/likePhoto');
-const { handleAdminPhoto } = require('./handlers/adminPhoto');
+import { handleRequestInformation } from './handlers/requestInformation.js';
+import { handleLikePhoto } from './handlers/likePhoto.js';
+import { handleAdminPhoto } from './handlers/adminPhoto.js';
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   console.log("Incoming path:", event.path);
   console.log("Incoming method:", event.httpMethod);
   try {
@@ -50,7 +50,7 @@ exports.handler = async (event) => {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify({ message: 'Internal server error', error: error.message }),
+      body: JSON.stringify({ message: 'Internal server error' }),
     };
   }
 };

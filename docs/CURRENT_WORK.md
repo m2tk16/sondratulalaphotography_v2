@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Run the approved Phase 3 lock, generation, manual Gen 2 reconciliation, and
-isolated sandbox deployment against the accepted `gentest` clone.
+Prepare Phase 4 browser acceptance against the deployed isolated Gen 2
+`gen2rehearsal` sandbox. Do not run migration `refactor`.
 
 ## Current state
 
@@ -221,28 +221,37 @@ isolated sandbox deployment against the accepted `gentest` clone.
   clone Cognito users, and two orphaned like records for the deleted test
   photograph. Cleaning related likes during permanent deletion is now tracked
   as a product/data-integrity follow-up.
+- Phase 3 is complete. The Gen 1 `gentest` clone is locked, the generated Gen 2
+  backend is manually reconciled, and the isolated `gen2rehearsal` sandbox is
+  deployed with an `UPDATE_COMPLETE` root stack.
+- The Gen 2 sandbox has separate empty Cognito, S3, DynamoDB, Lambda, and REST
+  API resources. Production remains unchanged and the migration `refactor`
+  command has not been run.
+- The migrated Lambda uses Node 20, 512 MB, and least-privilege access to only
+  the sandbox bucket and likes table. Live smoke tests passed for public count,
+  unsigned-like rejection, Studio-token rejection, and suppressed contact
+  submission.
+- The rehearsal frontend now consumes generated Gen 2 outputs. Phase 4 Google
+  sign-in requires the new Cognito `/oauth2/idpresponse` redirect URI recorded
+  in `docs/GEN2_PHASE3_REHEARSAL.md`.
 
 ## Next steps
 
-1. Lock only the accepted `gentest` Gen 1 environment.
-2. Generate and review the Gen 2 TypeScript backend.
-3. Recreate the manual IAM and clone-only likes table, validate locally, and
-   deploy an isolated one-time Gen 2 sandbox.
-4. Stop before any stateful `refactor`; Phase 4 functional acceptance is a
-   separate gate.
+1. Add the exact Gen 2 sandbox Cognito redirect URI to the Google OAuth client.
+2. Run Phase 4 two-account browser acceptance against the local rehearsal
+   frontend.
+3. Record the acceptance results and stop before migration `refactor`.
 
 ## Resume point after interruption
 
-Phase 1 backend, frontend deployment, and authenticated production acceptance
-are complete. The isolated `gentest` Gen 1 clone is deployed and verified;
-details and the read-only migration assessment are recorded in
-`docs/GEN2_PHASE2_ASSESSMENT.md`. Google OAuth, two-account likes, Studio
-upload, public display, and permanent deletion passed on the clone. Contact
-delivery was correctly suppressed. Browser-level image lazy loading is already
-implemented. Editing all metadata on existing Studio entries and cleaning
-orphaned likes during permanent deletion are recorded as separate product
-changes. No migration `lock`, `generate`, `refactor`, or Gen 2 deployment
-command has been run.
+Phase 3 is complete and recorded in `docs/GEN2_PHASE3_REHEARSAL.md`. The Gen 1
+clone is locked, the generated Gen 2 backend is reconciled, and the isolated
+Gen 2 sandbox is deployed. Local tests, lint, build, infrastructure isolation,
+and unauthenticated API smoke tests pass. Add the documented Google redirect
+URI, then run Phase 4 browser acceptance. Browser-level image lazy loading is
+already implemented. Editing all metadata on existing Studio entries and
+cleaning orphaned likes during permanent deletion remain separate product
+changes. No migration `refactor` command has been run.
 
 ## Known risks and blockers
 

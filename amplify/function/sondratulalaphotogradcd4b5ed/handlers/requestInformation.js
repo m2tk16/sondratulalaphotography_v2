@@ -1,4 +1,4 @@
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 AWS.config.update({ region: process.env.REGION || "us-east-1" });
 const ses = new AWS.SES();
 
@@ -57,5 +57,5 @@ const createRequestInformationHandler =
   }
 };
 
-exports.handleRequestInformation = createRequestInformationHandler(ses);
-exports.createRequestInformationHandler = createRequestInformationHandler;
+export const handleRequestInformation = createRequestInformationHandler(ses);
+export { createRequestInformationHandler };

@@ -1,8 +1,6 @@
-const test = require("node:test");
-const assert = require("node:assert/strict");
-const {
-  createRequestInformationHandler,
-} = require("./requestInformation");
+import test from "node:test";
+import assert from "node:assert/strict";
+import { createRequestInformationHandler } from "./requestInformation.js";
 
 test("suppresses contact delivery outside the production environment", async () => {
   let sendCount = 0;

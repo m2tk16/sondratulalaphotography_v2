@@ -1,6 +1,6 @@
-const AWS = require("aws-sdk");
-const crypto = require("crypto");
-const { CognitoJwtVerifier } = require("aws-jwt-verify");
+import AWS from "aws-sdk";
+import crypto from "node:crypto";
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 const s3 = new AWS.S3({ signatureVersion: "v4" });
 let adminTokenVerifier;
@@ -121,7 +121,7 @@ const writeManifest = async (photos) => {
     .promise();
 };
 
-exports.handleAdminPhoto = async (event) => {
+export const handleAdminPhoto = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return response(204, {});
   }
@@ -175,4 +175,4 @@ exports.handleAdminPhoto = async (event) => {
   }
 };
 
-exports.createRequireAdmin = createRequireAdmin;
+export { createRequireAdmin };

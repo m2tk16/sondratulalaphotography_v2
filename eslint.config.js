@@ -8,6 +8,7 @@ export default tseslint.config(
   {
     ignores: [
       'dist',
+      '.amplify/**',
       'amplify/#current-cloud-backend/**',
       'amplify-codegen-temp/models/models/**',
       'src/aws-exports.js',

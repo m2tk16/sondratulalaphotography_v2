@@ -1,7 +1,7 @@
-const test = require("node:test");
-const assert = require("node:assert/strict");
+import test from "node:test";
+import assert from "node:assert/strict";
 process.env.PHOTO_LIKES_TABLE = "PhotoLikesTest";
-const { createLikeHandler } = require("./likePhoto");
+const { createLikeHandler } = await import("./likePhoto.js");
 
 const request = (result) => ({ promise: async () => result });
 

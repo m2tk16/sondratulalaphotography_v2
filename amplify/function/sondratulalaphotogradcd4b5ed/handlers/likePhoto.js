@@ -1,5 +1,5 @@
-const AWS = require("aws-sdk");
-const { CognitoJwtVerifier } = require("aws-jwt-verify");
+import AWS from "aws-sdk";
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 const ddb = new AWS.DynamoDB.DocumentClient();
 let tokenVerifier;
@@ -126,5 +126,5 @@ const createLikeHandler =
   }
 };
 
-exports.handleLikePhoto = createLikeHandler(ddb);
-exports.createLikeHandler = createLikeHandler;
+export const handleLikePhoto = createLikeHandler(ddb);
+export { createLikeHandler };

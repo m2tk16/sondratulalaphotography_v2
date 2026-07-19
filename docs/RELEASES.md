@@ -3,6 +3,56 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-05 - Isolated Gen 2 sandbox
+
+Status: deployed - isolated sandbox only
+Date: 2026-07-19
+Target: Gen 2 `gen2rehearsal` sandbox; production unchanged
+
+### Implemented
+
+- Locked only the accepted Gen 1 `gentest` clone and confirmed production has
+  no deny-update stack policy.
+- Generated the Gen 2 TypeScript backend and manually removed hardcoded clone
+  references from the active sandbox path while preserving the inactive
+  clone-bucket mapping for the later refactor gate.
+- Recreated isolated Cognito, S3, DynamoDB, Lambda, and REST API resources.
+- Restored scoped Lambda IAM, JWT verification, Studio authorization, REST
+  routes, suppressed contact delivery, and stable frontend API output keys.
+- Converted migrated handlers and tests to ESM and moved the Lambda to Node 20
+  with 512 MB for reliable cold starts.
+- Switched the rehearsal frontend to generated `amplify_outputs.json`.
+- Kept branch resource-retention protection while allowing disposable
+  sandboxes to clean up normally.
+
+### Verification
+
+- Gen 2 root stack is `UPDATE_COMPLETE`; no `refactor` was run.
+- Sandbox S3, DynamoDB, and Cognito data are empty.
+- Lambda IAM is limited to the sandbox bucket and likes table and contains no
+  SES permission.
+- All REST application methods use API Gateway authorization `NONE`; Lambda
+  performs token validation where required.
+- Public count returns HTTP 200/0, unsigned likes return 401, invalid Studio
+  tokens return 401, and contact returns 200 with delivery suppressed.
+- All 12 backend tests, ESLint, and the production frontend build pass.
+- Production Lambda remains active with the verified Phase 1 code hash.
+- The Gen 1 clone remains locked and `UPDATE_COMPLETE`.
+
+### Deployment note
+
+- The first create rolled back on one stale CDK asset encrypted with a deleted
+  KMS key. The failed sandbox was fully cleaned up, only that undecryptable
+  cache object was removed, and the clean retry succeeded without changing
+  shared IAM.
+
+### Phase 4 gate
+
+- Add the sandbox Cognito redirect URI documented in
+  `docs/GEN2_PHASE3_REHEARSAL.md` to Google, then run the two-account browser
+  acceptance workflow.
+- Do not run migration `refactor` without new explicit approval.
+
 ## STP-2026.07.19-04 - Isolated Gen 2 migration rehearsal baseline
 
 Status: deployed - isolated clone only

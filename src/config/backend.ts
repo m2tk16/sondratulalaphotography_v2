@@ -1,17 +1,20 @@
-import awsConfig from "../aws-exports";
+import amplifyOutputs from "../../amplify_outputs.json";
 
 type RestApiConfig = {
   endpoint: string;
-  name: string;
+  region: string;
+  apiName: string;
 };
 
 export const PUBLIC_API_NAME = "api4593058b";
 export const PRIVATE_LIKE_API_NAME = "apid5657c10";
 
-const restApis = (awsConfig.aws_cloud_logic_custom ?? []) as RestApiConfig[];
+const restApis = amplifyOutputs.custom?.API as
+  | Record<string, RestApiConfig>
+  | undefined;
 
 const endpointFor = (name: string) => {
-  const endpoint = restApis.find((api) => api.name === name)?.endpoint;
+  const endpoint = restApis?.[name]?.endpoint;
   if (!endpoint) {
     throw new Error(`Missing Amplify REST API configuration for ${name}.`);
   }
