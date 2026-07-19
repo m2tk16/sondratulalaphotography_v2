@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Design the isolated clone resource map for Phase 2 after confirming the
-deployed Phase 1 client upgrade with an authenticated browser session.
+Design the isolated clone resource map for Phase 2 from the accepted Phase 1
+production baseline.
 
 ## Current state
 
@@ -194,19 +194,20 @@ deployed Phase 1 client upgrade with an authenticated browser session.
 - Production routes and the new JavaScript/CSS assets return HTTP 200 with the
   correct content types. The deployed bundle retains the restored-mobile
   session fix.
+- Authenticated production acceptance passed after Phase 1: contact submission,
+  like and unlike across several accounts, Studio upload, portfolio appearance,
+  deactivation, and permanent deletion all work.
 
 ## Next steps
 
-1. Re-test Google sign-in, like/unlike, Studio visibility, and route scrolling
-   in production after the dependency upgrade.
-2. Design the Phase 2 clone isolation map and request approval before creating
+1. Design the Phase 2 clone isolation map and request approval before creating
    any AWS resources.
 
 ## Resume point after interruption
 
-Phase 1 backend and frontend deployment is complete. Resume with the
-authenticated production smoke test, then the Phase 2 isolation map. No
-migration `lock`, `generate`, `refactor`, or clone command has been run.
+Phase 1 backend, frontend deployment, and authenticated production acceptance
+are complete. Resume with the Phase 2 isolation map. No migration `lock`,
+`generate`, `refactor`, or clone command has been run.
 
 ## Known risks and blockers
 

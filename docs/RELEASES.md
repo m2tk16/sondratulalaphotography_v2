@@ -44,6 +44,9 @@ Target: isolated rehearsal before production migration
   correct content types.
 - Root stack, Lambda hash, and backend-skip protection remained unchanged after
   the frontend deployment.
+- Authenticated production acceptance passed: contact submission, likes and
+  unlikes across several accounts, Studio upload, public appearance,
+  deactivation, and permanent deletion all work.
 
 ## STP-2026.07.19-02 - Navigation and mobile-like follow-up
 

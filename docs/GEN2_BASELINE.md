@@ -178,3 +178,6 @@ Completed: 2026-07-19
   Lambda hash remains
   `HM9SlqGaPcwb2Ugy4n+82rwfIdylTj7JJWvRGN1+mz8=`, and
   `AMPLIFY_SKIP_BACKEND_BUILD=true` remains set.
+- Final authenticated production acceptance passed for contact submission,
+  likes and unlikes across several accounts, Studio upload, public portfolio
+  appearance, deactivation, and permanent deletion.
