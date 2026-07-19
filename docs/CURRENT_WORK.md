@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Complete authenticated acceptance testing on the isolated Phase 2 clone before
-requesting approval for Phase 3 migration generation.
+Run the approved Phase 3 lock, generation, manual Gen 2 reconciliation, and
+isolated sandbox deployment against the accepted `gentest` clone.
 
 ## Current state
 
@@ -224,10 +224,12 @@ requesting approval for Phase 3 migration generation.
 
 ## Next steps
 
-1. Review the manual Gen 2 IAM and clone-table representation documented in the
-   Phase 2 assessment.
-2. Request separate approval before any migration `lock`, `generate`,
-   `refactor`, or Gen 2 deployment.
+1. Lock only the accepted `gentest` Gen 1 environment.
+2. Generate and review the Gen 2 TypeScript backend.
+3. Recreate the manual IAM and clone-only likes table, validate locally, and
+   deploy an isolated one-time Gen 2 sandbox.
+4. Stop before any stateful `refactor`; Phase 4 functional acceptance is a
+   separate gate.
 
 ## Resume point after interruption
 
