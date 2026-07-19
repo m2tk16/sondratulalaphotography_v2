@@ -1,0 +1,11 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadSondraTulalaIdentityPoolTags",
+      "Effect": "Allow",
+      "Action": "cognito-identity:ListTagsForResource",
+      "Resource": "arn:aws:cognito-identity:us-east-1:178450627339:identitypool/us-east-1:5340cb1e-27f6-43aa-b966-44e7c93d9e78"
+    }
+  ]
+}

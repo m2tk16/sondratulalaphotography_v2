@@ -44,24 +44,22 @@ modernize the data model in a separate release.
 
 ### Must be resolved before migration commands
 
-1. `aws-amplify` is `6.12.1`; AWS requires `6.16.2` or later.
-2. The Gen 1 migration CLI must be pinned to `@aws-amplify/cli@^14.4.0`.
-3. The only backend environment is production `main`; create and validate an
+1. Resolved: `aws-amplify` is 6.18.0.
+2. Resolved: Gen 1 migration CLI 14.4.0 is verified.
+3. Open: the only backend environment is production `main`; create and validate an
    isolated clone first.
-4. The Gen 1 root stack is `UPDATE_ROLLBACK_COMPLETE`. The migration lock
-   validates only `UPDATE_COMPLETE` or `CREATE_COMPLETE`.
-5. The deployment role lacks
-   `cognito-identity:ListTagsForResource`, which already prevents a clean Gen 1
-   deployment.
-6. The live Lambda package differs from the function artifact currently owned
-   by CloudFormation. Reconcile the verified JWT package before cloning.
-7. The Lambda custom policy hardcodes the production S3 bucket and likes table.
+4. Resolved: the Gen 1 root stack is `UPDATE_COMPLETE`.
+5. Resolved: the deployment role has a single-resource
+   `cognito-identity:ListTagsForResource` permission.
+6. Resolved: the live Lambda package is reconciled through CloudFormation and
+   `amplify status` reports no changes.
+7. Open: the Lambda custom policy hardcodes the production S3 bucket and likes table.
    Those references must be replaced with isolated clone resources during the
    rehearsal.
-8. The live Lambda role has attached SES and invoke policies that are not fully
+8. Open: the live Lambda role has attached SES and invoke policies that are not fully
    represented in `custom-policies.json`; Gen 2 must define only the permissions
    actually required.
-9. The frontend imports generated `aws-exports.js` and also hardcodes API
+9. Open: the frontend imports generated `aws-exports.js` and also hardcodes API
    endpoints in Contact, Portfolio, and Studio. Gen 2 should consume
    `amplify_outputs.json` and resolve endpoints from one typed configuration
    module.
@@ -158,7 +156,7 @@ explicit approval and a recorded rollback point.
 
 ## Immediate next action
 
-Review `docs/GEN2_BASELINE.md` and `docs/GEN2_IAM_PROPOSAL.md`. With explicit
-approval, apply the narrowly scoped permission and prepare the Gen 1 CLI v14
-reconciliation deployment. Do not run `lock`, `generate`, `refactor`,
-`amplify push`, or create an AWS environment without explicit approval.
+Phase 1 is complete. Prepare a concrete isolation map for the cloned Gen 1
+environment, including a separate S3 bucket, likes table, Cognito resources,
+REST APIs, Lambda policies, and safe SES behavior. Do not create the clone or
+run `lock`, `generate`, or `refactor` without explicit approval.

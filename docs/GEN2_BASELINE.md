@@ -144,3 +144,28 @@ These are recommendations only and have not been applied:
 
 Each protection change must be checked against the migration tool and approved
 before execution.
+
+## Phase 1 reconciliation
+
+Completed: 2026-07-19
+
+- Added the scoped Identity Pool tag-read permission documented in
+  `GEN2_IAM_PROPOSAL.md`.
+- Upgraded `aws-amplify` to 6.18.0, Amplify UI React to 6.15.4, React Router
+  DOM to 7.18.1, and the Gen 2 backend CLI to 1.8.3.
+- Verified Gen 1 CLI 14.4.0.
+- Removed unused duplicate direct Amplify module dependencies and moved the
+  backend CLI to development dependencies.
+- Lint, production build, all 10 tests, and Lambda syntax checks passed.
+- Production dependency audit has no high or critical findings; one moderate
+  Babel runtime advisory remains.
+- Reconciled the verified JWT Lambda through Gen 1 CloudFormation and removed
+  contact form payload logging.
+- Root stack and all nested stacks reached `UPDATE_COMPLETE`.
+- `amplify status` reports no pending changes in any category.
+- Live Lambda hash exactly matches the generated `latest-build.zip`:
+  `HM9SlqGaPcwb2Ugy4n+82rwfIdylTj7JJWvRGN1+mz8=`.
+- Cognito callbacks remained unchanged.
+- Manifest integrity remains 17 records with zero missing references.
+- Public count returned HTTP 200 with two likes; unsigned likes and invalid
+  Studio tokens returned HTTP 401; contact CORS preflight returned HTTP 200.

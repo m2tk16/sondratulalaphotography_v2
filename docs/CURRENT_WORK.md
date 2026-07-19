@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Prepare a safe Amplify Gen 1-to-Gen 2 migration, beginning with a read-only
-baseline and an isolated rehearsal plan.
+Complete and publish Phase 1 of the Amplify Gen 2 migration preparation, then
+design the isolated clone resource map for Phase 2.
 
 ## Current state
 
@@ -172,20 +172,36 @@ baseline and an isolated rehearsal plan.
 - Current protection gaps: S3 versioning, DynamoDB point-in-time recovery and
   deletion protection, and Cognito deletion protection are disabled.
 - A least-privilege, single-resource permission proposal is documented in
-  `docs/GEN2_IAM_PROPOSAL.md`; it has not been applied.
+  `docs/GEN2_IAM_PROPOSAL.md`; it is applied and verified.
+- `aws-amplify` is upgraded to 6.18.0. Amplify UI React, React Router DOM, and
+  the Gen 2 backend CLI were also updated within their existing major versions;
+  unused duplicate Amplify modules were removed.
+- Lint, production build, all 10 tests, Lambda syntax checks, and the
+  high/critical production dependency audit pass.
+- Gen 1 CLI 14.4.0 successfully reconciled the verified JWT Lambda through
+  CloudFormation. Contact form field/body logging was removed from the deployed
+  handler.
+- The root and every nested stack are `UPDATE_COMPLETE`; `amplify status`
+  reports no pending backend changes.
+- The live Lambda hash exactly matches the generated CloudFormation artifact:
+  `HM9SlqGaPcwb2Ugy4n+82rwfIdylTj7JJWvRGN1+mz8=`.
+- Post-deployment no-write checks passed for Cognito callbacks, all 17 manifest
+  references, public like count, unsigned-like rejection, Studio token
+  rejection, and contact CORS.
 
 ## Next steps
 
-1. Review the baseline and IAM proposal.
-2. Request approval before applying IAM, installing migration tooling,
-   deploying Gen 1, or creating the isolated clone.
-3. After approval, repair Gen 1 deployability and re-run the production
-   acceptance checks before cloning.
+1. Commit and push the Phase 1 source/tooling changes and monitor the protected
+   frontend-only build.
+2. Re-test the production frontend after the dependency upgrade.
+3. Design the Phase 2 clone isolation map and request approval before creating
+   any AWS resources.
 
 ## Resume point after interruption
 
-Read `docs/GEN2_MIGRATION.md` and resume at Phase 0. No migration command that
-locks, generates, refactors, deploys, or creates AWS resources has been run.
+Phase 1 backend reconciliation is complete. Resume with the Phase 1 source
+commit/frontend deployment, then the Phase 2 isolation map. No migration
+`lock`, `generate`, `refactor`, or clone command has been run.
 
 ## Known risks and blockers
 

@@ -1,6 +1,6 @@
 # Gen 1 Deployment IAM Proposal
 
-Status: proposal only - not applied
+Status: applied and verified 2026-07-19
 Date: 2026-07-19
 
 ## Problem
@@ -42,14 +42,17 @@ Document:
 
 ## Validation plan
 
-1. Apply only the proposed inline policy after explicit approval.
-2. Confirm it appears on `amplifyconsole-backend-role`.
-3. Run a reviewed Gen 1 CLI v14 deployment that reconciles the verified Lambda
+1. Applied only the proposed inline policy after explicit approval.
+2. Confirmed it appears on `amplifyconsole-backend-role`.
+3. Ran a reviewed Gen 1 CLI v14 deployment that reconciled the verified Lambda
    package and current tracked backend.
-4. Confirm the root stack ends in `UPDATE_COMPLETE`.
-5. Confirm Cognito callbacks, user count, S3 manifest integrity, likes, Studio,
+4. Confirmed the root stack ended in `UPDATE_COMPLETE`.
+5. Confirmed Cognito callbacks, S3 manifest integrity, likes, Studio
+   authorization,
    and contact behavior remain unchanged.
-6. Confirm the live Lambda code hash matches the newly tracked build artifact.
+6. Confirmed the live Lambda code hash exactly matches the newly tracked build
+   artifact:
+   `HM9SlqGaPcwb2Ugy4n+82rwfIdylTj7JJWvRGN1+mz8=`.
 
 ## Rollback
 

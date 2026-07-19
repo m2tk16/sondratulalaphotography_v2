@@ -4,7 +4,6 @@ const ses = new AWS.SES();
 
 exports.handleRequestInformation = async (event) => {
   const { firstName, lastName, email, subject, message } = JSON.parse(event.body || '{}');
-  console.log(firstName, lastName, email, subject, message)
 
   const emailParams = {
     Source: 'info-contact@sondratulalaphotography.com',

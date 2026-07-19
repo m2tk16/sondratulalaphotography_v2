@@ -5,7 +5,7 @@ Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 
 ## STP-2026.07.19-03 - Amplify Gen 2 migration discovery
 
-Status: candidate - planning and read-only baseline complete
+Status: candidate - Phase 1 backend complete, frontend publish pending
 Date: 2026-07-19
 Target: isolated rehearsal before production migration
 
@@ -27,7 +27,17 @@ Target: isolated rehearsal before production migration
 - Confirmed only production `main` exists and its root stack is
   `UPDATE_ROLLBACK_COMPLETE`.
 - Confirmed no migration lock, generation, refactor, clone, IAM change, or
-  backend deployment was performed.
+  backend deployment was performed during discovery.
+- Applied and verified the scoped Identity Pool tag-read permission.
+- Upgraded Amplify/client tooling and removed redundant direct dependencies.
+- Lint, build, all 10 tests, Lambda syntax, and the high/critical production
+  dependency audit passed.
+- Gen 1 CLI 14.4.0 reconciliation completed successfully; the root and nested
+  stacks are `UPDATE_COMPLETE`.
+- CloudFormation now owns the verified JWT Lambda artifact, and the live hash
+  matches `latest-build.zip`.
+- Removed contact submission payload logging from the deployed Lambda.
+- Post-deployment no-write backend regression suite passed.
 
 ## STP-2026.07.19-02 - Navigation and mobile-like follow-up
 
