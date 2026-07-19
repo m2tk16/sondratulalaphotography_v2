@@ -169,3 +169,12 @@ Completed: 2026-07-19
 - Manifest integrity remains 17 records with zero missing references.
 - Public count returned HTTP 200 with two likes; unsigned likes and invalid
   Studio tokens returned HTTP 401; contact CORS preflight returned HTTP 200.
+- Phase 1 commit `3fe51fa` was pushed to `main`.
+- Amplify Hosting job 44 completed its frontend-only build, deploy, and
+  verification successfully.
+- Production deep routes and upgraded JavaScript/CSS assets return HTTP 200
+  with correct content types.
+- After the frontend deployment, the root stack remains `UPDATE_COMPLETE`, the
+  Lambda hash remains
+  `HM9SlqGaPcwb2Ugy4n+82rwfIdylTj7JJWvRGN1+mz8=`, and
+  `AMPLIFY_SKIP_BACKEND_BUILD=true` remains set.

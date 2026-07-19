@@ -4,8 +4,8 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Complete and publish Phase 1 of the Amplify Gen 2 migration preparation, then
-design the isolated clone resource map for Phase 2.
+Design the isolated clone resource map for Phase 2 after confirming the
+deployed Phase 1 client upgrade with an authenticated browser session.
 
 ## Current state
 
@@ -188,20 +188,25 @@ design the isolated clone resource map for Phase 2.
 - Post-deployment no-write checks passed for Cognito callbacks, all 17 manifest
   references, public like count, unsigned-like rejection, Studio token
   rejection, and contact CORS.
+- Phase 1 source commit `3fe51fa` is pushed to `main`.
+- Amplify Hosting job 44 completed its frontend-only build, deploy, and
+  verification successfully; the backend-skip guard remains enabled.
+- Production routes and the new JavaScript/CSS assets return HTTP 200 with the
+  correct content types. The deployed bundle retains the restored-mobile
+  session fix.
 
 ## Next steps
 
-1. Commit and push the Phase 1 source/tooling changes and monitor the protected
-   frontend-only build.
-2. Re-test the production frontend after the dependency upgrade.
-3. Design the Phase 2 clone isolation map and request approval before creating
+1. Re-test Google sign-in, like/unlike, Studio visibility, and route scrolling
+   in production after the dependency upgrade.
+2. Design the Phase 2 clone isolation map and request approval before creating
    any AWS resources.
 
 ## Resume point after interruption
 
-Phase 1 backend reconciliation is complete. Resume with the Phase 1 source
-commit/frontend deployment, then the Phase 2 isolation map. No migration
-`lock`, `generate`, `refactor`, or clone command has been run.
+Phase 1 backend and frontend deployment is complete. Resume with the
+authenticated production smoke test, then the Phase 2 isolation map. No
+migration `lock`, `generate`, `refactor`, or clone command has been run.
 
 ## Known risks and blockers
 

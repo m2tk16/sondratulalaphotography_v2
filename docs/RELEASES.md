@@ -5,7 +5,7 @@ Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 
 ## STP-2026.07.19-03 - Amplify Gen 2 migration discovery
 
-Status: candidate - Phase 1 backend complete, frontend publish pending
+Status: deployed - Phase 1 complete
 Date: 2026-07-19
 Target: isolated rehearsal before production migration
 
@@ -38,6 +38,12 @@ Target: isolated rehearsal before production migration
   matches `latest-build.zip`.
 - Removed contact submission payload logging from the deployed Lambda.
 - Post-deployment no-write backend regression suite passed.
+- Phase 1 commit `3fe51fa` pushed to `main`.
+- Amplify Hosting job 44 frontend-only build, deploy, and verification passed.
+- Production routes and upgraded JavaScript/CSS assets return HTTP 200 with
+  correct content types.
+- Root stack, Lambda hash, and backend-skip protection remained unchanged after
+  the frontend deployment.
 
 ## STP-2026.07.19-02 - Navigation and mobile-like follow-up
 
