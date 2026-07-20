@@ -397,18 +397,18 @@ separate approval.
   expected URL set.
 - Visitor-facing location copy now reflects Tennessee only; references to New
   York and New Jersey were removed from the homepage and About story.
-- ESLint and the production build pass for the Tennessee-only copy change;
-  production deployment is pending approval.
+- ESLint and the production build pass for the Tennessee-only copy change.
+  Amplify Hosting job 49 completed build, deploy, and verification on commit
+  `d7b2cc3`; the live bundle contains Tennessee and neither former state.
 - The accepted Gen 2 candidate has not yet received the stricter manifest and
   homepage validator; local Studio and viewer acceptance are pending.
 
 ## Next steps
 
-1. Obtain approval to deploy the Tennessee-only location copy.
-2. Run authenticated production acceptance in a regular browser: Google
+1. Run authenticated production acceptance in a regular browser: Google
    sign-in, like/unlike across accounts, Studio edit/reorder/homepage selection,
    upload/deactivate/reactivate/delete, and contact delivery.
-3. Keep the Gen 1 backend intact through an observation window before any
+2. Keep the Gen 1 backend intact through an observation window before any
    separate decommissioning decision.
 
 ## Resume point after interruption

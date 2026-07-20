@@ -5,7 +5,7 @@ Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 
 ## STP-2026.07.20-01 - Current Tennessee location copy
 
-Status: candidate - locally verified; production deployment pending approval
+Status: deployed
 Date: 2026-07-20
 Target: production frontend
 
@@ -19,6 +19,10 @@ Target: production frontend
 
 - Visitor-facing source contains no New York or New Jersey references.
 - ESLint and the production build pass.
+- Amplify Hosting job 49 completed build, deploy, and verification on commit
+  `d7b2cc3`.
+- The live JavaScript bundle contains Tennessee and the revised About copy and
+  contains no New York or New Jersey references.
 
 ## STP-2026.07.19-19 - Gen 2 production frontend cutover
 
