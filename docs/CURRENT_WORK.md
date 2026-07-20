@@ -6,8 +6,10 @@ Last updated: 2026-07-19
 
 Phase 5 production preparation has started after successful Phase 4 browser
 acceptance. The Gen 1 clone is unlocked and the read-only production
-assessment passed. Await separate explicit approval before locking production;
-do not deploy, refactor, cut over, or decommission yet.
+assessment passed. The approved normal production lock stopped on understood
+production drift before mutation. Await explicit approval before repeating
+the production lock with `--skip-validations`; do not deploy, refactor, cut
+over, or decommission yet.
 
 ## Current state
 
@@ -275,11 +277,19 @@ do not deploy, refactor, cut over, or decommission yet.
 - The read-only production assessment passed. Both REST APIs, Cognito, S3, and
   Lambda support generation; Cognito and S3 support later stateful refactor.
   The Lambda custom policy remains the only manual code item.
+- The approved normal production lock did not apply. After correcting the
+  temporary CLI credential source, validation identified the intentional
+  Phase 1 Lambda permission replacement, the approved extra Cognito callback,
+  stale API Gateway trust on the Lambda role, and non-functional REST API
+  description drift.
+- All unexecuted validation change sets were deleted. Production remains
+  unlocked and `UPDATE_COMPLETE`, and the project migration marker is absent.
 
 ## Next steps
 
-1. Review the successful production assessment and rollback baseline.
-2. Obtain separate explicit approval before locking production `main`.
+1. Review the documented production drift and rollback baseline.
+2. Obtain explicit approval before running the production lock with
+   `--skip-validations`.
 3. Stop before generation, parallel deployment, stateful refactor, frontend
    cutover, or decommission unless each gate is separately approved.
 
@@ -291,9 +301,11 @@ healthy, while the auth nested stack remains `UPDATE_ROLLBACK_COMPLETE`.
 The Gen 1 clone is unlocked, the project migration marker is absent, and the
 production assessment passed. All reported resources support generation;
 Cognito and S3 also support later stateful refactor. The Lambda custom policy
-is the only manual generation item. The next gate is locking production
-`main`, which requires separate explicit approval. No production lock,
-deployment, refactor, cutover, or decommission has occurred.
+is the only manual generation item. The approved normal production lock
+stopped before mutation on understood production drift, and all validation
+artifacts were deleted. The next gate is the CLI-recommended production lock
+with `--skip-validations`, which requires separate explicit approval. No
+production lock, deployment, refactor, cutover, or decommission has occurred.
 
 ## Known risks and blockers
 

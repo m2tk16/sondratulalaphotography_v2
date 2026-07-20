@@ -132,3 +132,47 @@ manually reconciled Gen 2 sandbox.
 The assessment did not modify or lock production. The next gate is a
 production lock, which requires separate explicit approval and a recorded
 rollback point.
+
+## Production lock attempt
+
+The user explicitly approved the production `main` lock gate. A fresh rollback
+point recorded:
+
+- production root `UPDATE_COMPLETE` with no stack policy;
+- absent project migration marker;
+- active Lambda hash
+  `HM9SlqGaPcwb2Ugy4n+82rwfIdylTj7JJWvRGN1+mz8=`;
+- 42 S3 objects and manifest ETag
+  `87740ad466a51f71a4e59d300f75e45a`;
+- 8 DynamoDB like records;
+- 5 Cognito users.
+
+The first lock attempt used Amplify Studio credentials and stopped during
+validation because that temporary role lacks
+`cloudformation:DeleteChangeSet`. Its two unexecuted validation change sets
+were inspected and deleted. No lock operation ran.
+
+The temporary checkout was then configured to use the verified local
+`default` AWS profile. Normal validation completed but rejected existing
+production drift:
+
+- The public API stack's original Lambda permission is deleted. Phase 1
+  intentionally replaced it with the tracked, broader public-API permission
+  in the function stack; the live Lambda policy contains the replacement.
+- Both Cognito clients contain every expected callback plus the approved
+  `http://localhost:3001/` callback. CloudFormation drift reports the callback
+  list difference even though the required callbacks are live.
+- The Lambda execution role additionally trusts API Gateway. All current REST
+  integrations have no credentials role, so this trust is stale and is not
+  required by the live API paths.
+- The REST API description is absent while the template expects an empty
+  string; this is non-functional metadata drift.
+
+The validation environment-health and unchanged-auth-stack checks passed.
+Every validation change set was deleted without execution. The project marker
+remains absent, production has no stack policy, and the root remains
+`UPDATE_COMPLETE`.
+
+The CLI recommends `gen2-migration lock --yes --skip-validations`. The drift is
+understood and already represented correctly in the rehearsed Gen 2 backend,
+but bypassing production validation requires a new explicit approval.

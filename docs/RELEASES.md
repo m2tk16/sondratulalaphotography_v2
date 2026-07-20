@@ -3,6 +3,30 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-10 - Production migration lock candidate
+
+Status: candidate - validation bypass approval pending
+Date: 2026-07-19
+Target: production `main` lock; no lock applied
+
+### Prepared
+
+- Recorded the fresh production rollback point: stack status, Lambda hash,
+  S3 object/manifest metadata, likes-table count, and Cognito user count.
+- Ran the normal lock validation using the verified AWS profile.
+- Inspected the intentional/stale production drift and deleted every
+  unexecuted validation change set.
+
+### Blocker
+
+- The normal lock stopped before mutation on the Phase 1 Lambda permission
+  replacement, approved extra Cognito callback, stale Lambda-role API Gateway
+  trust, and non-functional API description difference.
+- Production remains unlocked and `UPDATE_COMPLETE`; the migration marker is
+  absent.
+- The CLI-recommended `--skip-validations` production lock requires a new
+  explicit approval.
+
 ## STP-2026.07.19-09 - Production migration assessment
 
 Status: completed - clone unlock and read-only production assessment
