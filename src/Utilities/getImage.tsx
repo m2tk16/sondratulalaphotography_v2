@@ -57,7 +57,7 @@ const GetImage: React.FC<GetImageProps> = ({
           alt={alt}
           className={className}
           decoding="async"
-          fetchPriority={fetchPriority}
+          {...({ fetchpriority: fetchPriority } as Record<string, string>)}
           src={imageUrl}
           fluid={fluid}
           loading={loading}

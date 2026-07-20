@@ -362,9 +362,13 @@ frontend or decommission Gen 1 without separate approval.
 - Vitest, jsdom, and React Testing Library now cover the stateful viewer.
   Durable routes, title-change compatibility, metadata, direct opening,
   keyboard navigation, close behavior, and missing photographs are tested.
-- Backend/unit tests (25), component tests (3), backend type-checking, ESLint,
+- Backend/unit tests (25), component tests (4), backend type-checking, ESLint,
   and the production build pass. The production dependency audit has no high
   or critical findings; three pre-existing moderate findings remain.
+- The React 18 console warning on viewer images is fixed by emitting the
+  standards-compatible lowercase `fetchpriority` DOM attribute through the
+  typed image wrapper. A component regression test verifies both the attribute
+  and a warning-free render.
 - The accepted Gen 2 candidate has not yet received the stricter manifest and
   homepage validator; local Studio and viewer acceptance are pending.
 

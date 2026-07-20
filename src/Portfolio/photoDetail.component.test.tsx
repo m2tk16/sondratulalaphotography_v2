@@ -86,9 +86,8 @@ describe("shareable photograph viewer", () => {
   test("opens a direct photograph URL and exposes its sharing controls", async () => {
     renderViewer(photoPath(photos[0]));
 
-    expect(
-      await screen.findByRole("heading", { name: "First Light" }),
-    ).toHaveFocus();
+    const heading = await screen.findByRole("heading", { name: "First Light" });
+    await waitFor(() => expect(heading).toHaveFocus());
     expect(
       screen.getByRole("img", { name: photos[0].altText }),
     ).toBeInTheDocument();

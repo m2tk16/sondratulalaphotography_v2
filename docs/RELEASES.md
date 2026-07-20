@@ -3,6 +3,27 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-17 - Warning-free viewer image priority
+
+Status: candidate - local visual confirmation pending
+Date: 2026-07-19
+Target: Gen 2 frontend candidate; frontend cutover remains paused
+
+### Corrected
+
+- Replaced the React 19-style camel-cased image priority property with the
+  React 18-compatible lowercase `fetchpriority` DOM attribute.
+- Added a focused component regression test that renders the real image wrapper
+  and fails if React logs the warning again.
+
+### Verification
+
+- Both component-test files pass with four total tests.
+- ESLint and the production build pass.
+- The remaining provider messages visible in the supplied console originate
+  from installed browser extensions, not application source.
+- No backend deployment or frontend cutover occurred.
+
 ## STP-2026.07.19-16 - Shareable photograph viewer and discovery
 
 Status: candidate - local visual acceptance pending
