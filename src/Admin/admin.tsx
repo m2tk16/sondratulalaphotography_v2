@@ -64,6 +64,14 @@ const editFormFromPhoto = (photo: Photo) => ({
   position: photo.order + 1,
 });
 
+const showDatePicker = (input: HTMLInputElement) => {
+  try {
+    input.showPicker?.();
+  } catch {
+    // Some browsers expose showPicker but restrict when it may be invoked.
+  }
+};
+
 const Admin = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -321,6 +329,8 @@ const Admin = () => {
           <label>
             Date captured
             <input
+              className="date-input"
+              onClick={(event) => showDatePicker(event.currentTarget)}
               onChange={(event) => setForm({ ...form, capturedAt: event.target.value })}
               type="date"
               value={form.capturedAt}
@@ -472,6 +482,8 @@ const Admin = () => {
               <label>
                 Date captured
                 <input
+                  className="date-input"
+                  onClick={(event) => showDatePicker(event.currentTarget)}
                   onChange={(event) =>
                     setEditForm({ ...editForm, capturedAt: event.target.value })
                   }

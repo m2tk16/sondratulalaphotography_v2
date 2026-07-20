@@ -112,6 +112,10 @@
   width: auto;
 }
 
+.date-input {
+  cursor: pointer;
+}
+
 .primary-button,
 .danger-button,
 .dialog-actions button,

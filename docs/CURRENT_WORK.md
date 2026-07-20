@@ -322,6 +322,8 @@ separate approval.
   Existing records without alternative text safely default to their title.
 - The public portfolio now passes stored alternative text to rendered images.
   New uploads require both a title and alternative text.
+- The full capture-date field now opens the native calendar picker in both the
+  upload and edit forms.
 - The Studio manifest boundary now validates every metadata field, category,
   capture date, order, and duplicate ID/path before writing to S3.
 - Backend type-checking, ESLint, the production build, and all 18 automated

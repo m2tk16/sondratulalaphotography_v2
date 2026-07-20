@@ -18,6 +18,8 @@ Target: accepted Gen 2 candidate; frontend cutover remains paused
   collection after a reorder.
 - Required alternative text for new uploads and used it on public portfolio
   images. Existing records fall back to their photograph title.
+- Made the full capture-date field open the native calendar picker in both
+  upload and edit forms, instead of requiring a click directly on its icon.
 - Added server-side validation for all manifest metadata, allowed categories,
   real capture dates, order bounds, and duplicate IDs or paths.
 - Added deterministic metadata/reordering tests and manifest validation tests.
