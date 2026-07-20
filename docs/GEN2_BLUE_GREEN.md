@@ -1,7 +1,7 @@
 # Clean Gen 2 Blue/Green Deployment
 
 Date started: 2026-07-19
-Status: production candidate preparation
+Status: backend candidate deployed; authenticated acceptance pending
 
 ## Decision
 
@@ -20,7 +20,8 @@ No production lock or CloudFormation stack refactor will be used.
 
 - Existing Amplify app `dm7aei9mgulua` continues hosting the production
   frontend and Gen 1 rollback backend.
-- A new backend-only Amplify app will own the Gen 2 production candidate.
+- Backend-only Gen 2 Amplify app: `d15h7apgzubla9`
+  (`sondratulalaphotography-gen2-backend`).
 - Logical Gen 2 branch: `production`.
 - The existing frontend will be switched to the new
   `amplify_outputs.json` only after candidate acceptance.
@@ -29,7 +30,10 @@ No production lock or CloudFormation stack refactor will be used.
 
 ## Data policy
 
-- Copy all 42 existing S3 objects into the new Gen 2 bucket.
+- The 42 source S3 objects consist of 28 files and 14 zero-byte folder
+  markers. All 28 files were copied into the new bucket and verified by key,
+  size, total bytes, and manifest ETag. Folder markers were intentionally not
+  copied.
 - Do not copy the 8 existing likes. Their Cognito subjects belong to the old
   User Pool and would create duplicate votes when users first sign into the
   new pool.
@@ -39,12 +43,17 @@ No production lock or CloudFormation stack refactor will be used.
 
 ## Production protections
 
-- Auth and S3 stateful resources use retain policies on branch deployments.
+- Auth and S3 stateful resources use retain policies on the production branch.
+- The production S3 bucket uses AES-256 server-side encryption, versioning,
+  public-access blocking, and a retain policy.
+- The production User Pool uses Cognito deletion protection and a retain
+  policy.
 - The production likes table uses deletion protection, point-in-time recovery,
   and a retain removal policy.
 - Contact delivery is enabled only when `AWS_BRANCH=production`.
-- SES permission is limited to `ses:SendEmail` from the verified
-  `sondratulalaphotography.com` identity.
+- SES permission is limited to `ses:SendEmail` for the verified sender domain
+  `sondratulalaphotography.com` and verified sandbox recipient
+  `sondratulalaphotography@gmail.com`.
 - Sandbox contact delivery remains suppressed.
 
 ## Gates
@@ -57,3 +66,23 @@ No production lock or CloudFormation stack refactor will be used.
    new backend.
 6. Keep Gen 1 resources through an observation window before any
    decommissioning decision.
+
+## Deployed candidate
+
+- Root stack:
+  `amplify-d15h7apgzubla9-production-branch-45c0080e99`
+- Cognito User Pool: `us-east-1_eQ43OQcYS`
+- Google callback to register:
+  `https://92a0617f43296415834c.auth.us-east-1.amazoncognito.com/oauth2/idpresponse`
+- S3 bucket:
+  `amplify-d15h7apgzubla9-pr-sondratulalaphotogra25f7-85z3yb82cyrd`
+- Likes table: `SondraTulalaPhotography-PhotoLikes-production`
+- Public/Studio/contact API:
+  `https://uieb1nwuih.execute-api.us-east-1.amazonaws.com/prod`
+- Authenticated-like API:
+  `https://waghv1ws21.execute-api.us-east-1.amazonaws.com/prod`
+
+The root stack is `UPDATE_COMPLETE`. The new User Pool and likes table are
+empty by design. Public like count, unsigned-like rejection, unsigned Studio
+rejection, and real contact delivery smoke tests pass. The live Gen 1
+frontend and backend have not been changed.

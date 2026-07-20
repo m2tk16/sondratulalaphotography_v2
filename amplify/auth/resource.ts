@@ -2,6 +2,9 @@ import { defineAuth, secret } from '@aws-amplify/backend';
 import { CfnResource } from 'aws-cdk-lib';
 import type { Backend } from '../backend';
 
+const branchName = process.env.AWS_BRANCH ?? 'sandbox';
+const isProduction = branchName === 'production';
+
 export const auth = defineAuth({
   loginWith: {
     email: {
@@ -45,6 +48,7 @@ export const auth = defineAuth({
 export function applyEscapeHatches(backend: Backend) {
   const cfnUserPool = backend.auth.resources.cfnResources.cfnUserPool;
   cfnUserPool.usernameAttributes = ['email'];
+  cfnUserPool.deletionProtection = isProduction ? 'ACTIVE' : 'INACTIVE';
   cfnUserPool.policies = {
     passwordPolicy: {
       minimumLength: 8,
@@ -58,7 +62,7 @@ export function applyEscapeHatches(backend: Backend) {
   const cfnUserPoolClient =
     backend.auth.resources.cfnResources.cfnUserPoolClient;
   cfnUserPoolClient.allowedOAuthFlows = ['code'];
-  if (process.env.AWS_BRANCH) {
+  if (isProduction) {
     for (const cfnResource of backend.auth.stack.node
       .findAll()
       .filter(

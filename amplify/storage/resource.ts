@@ -3,6 +3,7 @@ import { CfnResource } from 'aws-cdk-lib';
 import type { Backend } from '../backend';
 
 const branchName = process.env.AWS_BRANCH ?? 'sandbox';
+const isProduction = branchName === 'production';
 
 export const storage = defineStorage({
   name: `sondratulalaphotogra25f72088efde4213955fdfd598b9bd46-${branchName}`,
@@ -31,7 +32,10 @@ export function applyEscapeHatches(backend: Backend) {
       },
     ],
   };
-  if (process.env.AWS_BRANCH) {
+  s3Bucket.versioningConfiguration = isProduction
+    ? { status: 'Enabled' }
+    : undefined;
+  if (isProduction) {
     for (const cfnResource of backend.storage.stack.node
       .findAll()
       .filter(

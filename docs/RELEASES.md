@@ -5,7 +5,7 @@ Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 
 ## STP-2026.07.19-11 - Clean Gen 2 production candidate
 
-Status: candidate - deployment pending
+Status: deployed candidate - authenticated acceptance pending
 Date: 2026-07-19
 Target: separate backend-only Gen 2 application
 
@@ -16,15 +16,28 @@ Target: separate backend-only Gen 2 application
 - Added production-only contact delivery and least-privilege SES permission.
 - Added retention, deletion protection, and point-in-time recovery to the new
   production likes table.
+- Added production S3 versioning and Cognito deletion protection.
 - Defined the blue/green data-copy and frontend-cutover gates in
   `docs/GEN2_BLUE_GREEN.md`.
+- Created backend-only Amplify app `d15h7apgzubla9` and deployed logical
+  branch `production`.
+- Copied all 28 real portfolio files while keeping the Gen 2 likes table and
+  User Pool empty by design.
 
 ### Verification
 
 - Backend type-checking, ESLint, production build, and all 13 backend tests
   pass.
+- The root stack is `UPDATE_COMPLETE`. S3 versioning, Cognito deletion
+  protection, DynamoDB deletion protection, and 35-day point-in-time recovery
+  are confirmed live.
+- Source and target portfolios match on all file keys and sizes, total
+  27,874,789 bytes, and manifest ETag.
+- Public count, unsigned-like rejection, unsigned Studio rejection, and real
+  contact email smoke tests pass.
 - Current Gen 1 production remains unlocked and unchanged.
-- Frontend cutover and Gen 1 decommission remain separately approved gates.
+- Google callback registration and authenticated browser acceptance are next.
+  Frontend cutover and Gen 1 decommission remain separately approved gates.
 
 ## STP-2026.07.19-10 - Production migration lock candidate
 

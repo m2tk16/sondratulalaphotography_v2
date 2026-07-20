@@ -290,28 +290,37 @@ frontend or decommission Gen 1 without separate approval.
   point-in-time recovery.
 - Candidate type-checking, ESLint, the production frontend build, and all 13
   backend tests pass.
+- The clean backend-only Gen 2 production candidate is deployed in Amplify app
+  `d15h7apgzubla9`; its root stack is `UPDATE_COMPLETE`.
+- The candidate S3 bucket has encryption, versioning, public-access blocking,
+  and retention. Cognito deletion protection is active. The likes table has
+  deletion protection, 35-day point-in-time recovery, and retention.
+- All 28 real portfolio files (27,874,789 bytes) were copied and match the
+  Gen 1 source by key and size. The manifest ETag is identical. Fourteen
+  zero-byte folder markers were not copied.
+- The candidate User Pool and likes table are empty by design. Existing likes
+  were not copied because their user subjects belong to the Gen 1 User Pool.
+- Candidate API smoke tests pass: public count HTTP 200, unsigned like HTTP
+  401, unsigned Studio HTTP 401, and production contact delivery HTTP 200.
+- The new Google callback URI is recorded in
+  `docs/GEN2_BLUE_GREEN.md`. Authenticated acceptance and frontend cutover
+  remain pending.
 
 ## Next steps
 
-1. Create and deploy the separate backend-only Gen 2 production app.
-2. Copy the 42 production portfolio objects; keep the new likes table empty.
-3. Add the new Cognito Google redirect and run candidate acceptance.
-4. Stop before frontend cutover and request separate approval.
+1. Add the new Cognito callback URI to the existing Google OAuth client.
+2. Run local authenticated acceptance against the candidate: two-account
+   likes, Studio upload/edit/deactivate/reactivate/delete, and sign-out.
+3. Stop before frontend cutover and request separate approval.
 
 ## Resume point after interruption
 
-Phase 3 deployment and Phase 4 authenticated browser acceptance are complete.
-Phase 5 read-only preparation confirmed the production root and Lambda are
-healthy, while the auth nested stack remains `UPDATE_ROLLBACK_COMPLETE`.
-The Gen 1 clone is unlocked, the project migration marker is absent, and the
-production assessment passed. All reported resources support generation;
-Cognito and S3 also support later stateful refactor. The Lambda custom policy
-is the only manual generation item. The approved normal production lock
-stopped before mutation on understood production drift, and all validation
-artifacts were deleted. The user then abandoned the in-place migration path in
-favor of the already-rehearsed clean Gen 2 backend. Candidate configuration
-passes all local checks and is ready for a separate backend-app deployment.
-No production lock, refactor, frontend cutover, or decommission has occurred.
+The in-place Developer Preview migration was abandoned before production
+mutation. A clean backend-only Gen 2 candidate is now deployed in Amplify app
+`d15h7apgzubla9`, protected, populated with the verified portfolio copy, and
+passing unauthenticated API/contact smoke tests. Add the callback URI from
+`docs/GEN2_BLUE_GREEN.md`, then run authenticated acceptance locally. No
+frontend cutover or Gen 1 decommission has occurred.
 
 ## Known risks and blockers
 

@@ -46,7 +46,9 @@ export function configureRuntimeResources(backend: Backend) {
       },
       billingMode: BillingMode.PAY_PER_REQUEST,
       deletionProtection: isProduction,
-      pointInTimeRecovery: isProduction,
+      pointInTimeRecoverySpecification: isProduction
+        ? { pointInTimeRecoveryEnabled: true }
+        : undefined,
     }
   );
 
@@ -60,6 +62,12 @@ export function configureRuntimeResources(backend: Backend) {
             service: 'ses',
             resource: 'identity',
             resourceName: 'sondratulalaphotography.com',
+            arnFormat: ArnFormat.SLASH_RESOURCE_NAME,
+          }),
+          Stack.of(lambda).formatArn({
+            service: 'ses',
+            resource: 'identity',
+            resourceName: 'sondratulalaphotography@gmail.com',
             arnFormat: ArnFormat.SLASH_RESOURCE_NAME,
           }),
         ],
