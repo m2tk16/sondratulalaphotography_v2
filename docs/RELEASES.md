@@ -51,7 +51,10 @@ Target: existing production hosting app with accepted Gen 2 backend
   `AMPLIFY_SKIP_BACKEND_BUILD=true`, and the complete Gen 1 backend remains
   intact for rollback.
 - Added XML to the SPA rewrite exclusions so the deployed sitemap is served as
-  XML after the final release-record hosting job.
+  XML instead of the SPA shell.
+- Final release-record Hosting job 48 completed build, deploy, and verification
+  on commit `1e39898`. The live sitemap returns HTTP 200 as `text/xml` and
+  contains the expected public URLs.
 
 ## STP-2026.07.19-18 - Theme-aware photograph viewer
 

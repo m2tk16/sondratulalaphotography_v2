@@ -391,26 +391,28 @@ separate approval.
   manifest, public like count, unsigned-like rejection, unsigned-Studio
   rejection, and contact CORS.
 - The SPA rewrite now excludes XML as well as other static extensions so the
-  real sitemap can be served after the final release-record deployment.
+  real sitemap is served instead of the SPA shell.
+- Final release-record Hosting job 48 completed build, deploy, and verification
+  on commit `1e39898`. `/sitemap.xml` returns HTTP 200 as `text/xml` with the
+  expected URL set.
 - The accepted Gen 2 candidate has not yet received the stricter manifest and
   homepage validator; local Studio and viewer acceptance are pending.
 
 ## Next steps
 
-1. Confirm the final documentation-only hosting job and corrected sitemap.
-2. Run authenticated production acceptance in a regular browser: Google
+1. Run authenticated production acceptance in a regular browser: Google
    sign-in, like/unlike across accounts, Studio edit/reorder/homepage selection,
    upload/deactivate/reactivate/delete, and contact delivery.
-3. Keep the Gen 1 backend intact through an observation window before any
+2. Keep the Gen 1 backend intact through an observation window before any
    separate decommissioning decision.
 
 ## Resume point after interruption
 
 The accepted Gen 2 backend in Amplify app `d15h7apgzubla9` is deployed,
 protected, populated, and now consumed by the production frontend. Hosting job
-47 completed successfully and public production smoke checks pass. Final
-release-record hosting verification and authenticated browser acceptance are
-next. No Gen 1 decommission has occurred.
+47 completed the cutover, job 48 completed the release-record deployment, and
+public production smoke checks pass. Authenticated browser acceptance is next.
+No Gen 1 decommission has occurred.
 
 ## Known risks and blockers
 
