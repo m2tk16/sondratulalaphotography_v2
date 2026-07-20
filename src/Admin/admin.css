@@ -35,13 +35,15 @@
   font-size: 2rem;
 }
 
-.upload-form {
+.upload-form,
+.edit-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
 }
 
-.upload-form label {
+.upload-form label,
+.edit-form label {
   display: grid;
   gap: 0.55rem;
   color: var(--muted);
@@ -54,6 +56,9 @@
 .upload-form input,
 .upload-form select,
 .upload-form textarea,
+.edit-form input,
+.edit-form select,
+.edit-form textarea,
 .confirm-dialog input {
   width: 100%;
   padding: 0.9rem 1rem;
@@ -67,11 +72,13 @@
   text-transform: none;
 }
 
-.upload-form textarea {
+.upload-form textarea,
+.edit-form textarea {
   resize: vertical;
 }
 
 .upload-form .full-width,
+.edit-form .full-width,
 .file-drop {
   grid-column: 1 / -1;
 }
@@ -93,7 +100,8 @@
   clip: rect(0 0 0 0);
 }
 
-.upload-form .check-label {
+.upload-form .check-label,
+.edit-form .check-label {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -215,8 +223,20 @@ button:disabled {
 
 .confirm-dialog {
   width: min(520px, 100%);
+  max-height: calc(100vh - 2.5rem);
+  overflow-y: auto;
   padding: clamp(1.5rem, 5vw, 3rem);
   background: var(--paper);
+}
+
+.edit-dialog {
+  width: min(760px, 100%);
+}
+
+.edit-checks {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .confirm-dialog h2 {
@@ -239,11 +259,14 @@ button:disabled {
 }
 
 @media (max-width: 720px) {
-  .upload-form {
+  .upload-form,
+  .edit-form {
     grid-template-columns: 1fr;
   }
 
   .upload-form label,
+  .edit-form label,
+  .edit-form .full-width,
   .file-drop {
     grid-column: 1;
   }
@@ -268,6 +291,11 @@ button:disabled {
 
   .dialog-actions {
     align-items: stretch;
+    flex-direction: column;
+  }
+
+  .edit-checks {
+    align-items: flex-start;
     flex-direction: column;
   }
 }

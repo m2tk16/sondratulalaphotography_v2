@@ -15,6 +15,19 @@ export interface Photo {
   id: string;
   path: string;
   title: string;
+  altText: string;
+  description: string;
+  category: string;
+  location: string;
+  capturedAt: string;
+  active: boolean;
+  featured: boolean;
+  order: number;
+}
+
+export interface PhotoMetadataEdits {
+  title: string;
+  altText: string;
   description: string;
   category: string;
   location: string;
@@ -35,6 +48,7 @@ const normalizePhoto = (photo: Partial<Photo>, index: number): Photo => ({
   id: photo.id || photo.path || `photo-${index}`,
   path: photo.path || "",
   title: photo.title || titleFromPath(photo.path || ""),
+  altText: photo.altText || photo.title || titleFromPath(photo.path || ""),
   description: photo.description || "",
   category: photo.category || "Nature",
   location: photo.location || "",
@@ -43,6 +57,39 @@ const normalizePhoto = (photo: Partial<Photo>, index: number): Photo => ({
   featured: photo.featured === true,
   order: Number.isFinite(photo.order) ? Number(photo.order) : index,
 });
+
+export const updatePhotoMetadata = (
+  photos: Photo[],
+  photoId: string,
+  edits: PhotoMetadataEdits,
+): Photo[] => {
+  const orderedPhotos = [...photos].sort((a, b) => a.order - b.order);
+  const currentIndex = orderedPhotos.findIndex((photo) => photo.id === photoId);
+  if (currentIndex < 0) return photos;
+
+  const [currentPhoto] = orderedPhotos.splice(currentIndex, 1);
+  const updatedPhoto: Photo = {
+    ...currentPhoto,
+    title: edits.title.trim(),
+    altText: edits.altText.trim(),
+    description: edits.description.trim(),
+    category: edits.category,
+    location: edits.location.trim(),
+    capturedAt: edits.capturedAt,
+    active: edits.active,
+    featured: edits.featured,
+  };
+  const requestedOrder = Number.isFinite(edits.order)
+    ? Math.trunc(edits.order)
+    : currentIndex;
+  const nextIndex = Math.min(
+    Math.max(requestedOrder, 0),
+    orderedPhotos.length,
+  );
+  orderedPhotos.splice(nextIndex, 0, updatedPhoto);
+
+  return orderedPhotos.map((photo, order) => ({ ...photo, order }));
+};
 
 const loadLegacyPhotos = async (): Promise<Photo[]> => {
   const result = await list({ prefix: "images/portfolio/" });

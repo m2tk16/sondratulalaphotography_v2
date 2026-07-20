@@ -1,6 +1,20 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createRequireAdmin } from "./adminPhoto.js";
+import { createRequireAdmin, validateManifest } from "./adminPhoto.js";
+
+const validPhoto = {
+  id: "flowers",
+  path: "public/images/portfolio/flowers.jpg",
+  title: "Flowers",
+  altText: "Purple flowers clustered along green stems",
+  description: "Spring flowers in soft afternoon light.",
+  category: "Nature",
+  location: "Knoxville, TN",
+  capturedAt: "2026-04-12",
+  active: true,
+  featured: false,
+  order: 0,
+};
 
 test("requires an ID token for Studio operations", async () => {
   const verifier = {
@@ -59,4 +73,40 @@ test("accepts an approved Studio account case-insensitively", async () => {
   });
 
   assert.equal(email, "sondratulalaphotography@gmail.com");
+});
+
+test("accepts complete photograph metadata", () => {
+  const serialized = validateManifest([validPhoto]);
+
+  assert.deepEqual(JSON.parse(serialized), [validPhoto]);
+});
+
+test("rejects incomplete or malformed photograph metadata", () => {
+  const invalidPhotos = [
+    { ...validPhoto, title: " " },
+    { ...validPhoto, altText: "" },
+    { ...validPhoto, category: "Unknown" },
+    { ...validPhoto, capturedAt: "2026-02-30" },
+    { ...validPhoto, active: "yes" },
+    { ...validPhoto, order: -1 },
+  ];
+
+  for (const photo of invalidPhotos) {
+    assert.throws(
+      () => validateManifest([photo]),
+      (error) =>
+        error.statusCode === 400 && /invalid photo metadata/i.test(error.message),
+    );
+  }
+});
+
+test("rejects duplicate photograph IDs and paths", () => {
+  assert.throws(
+    () =>
+      validateManifest([
+        validPhoto,
+        { ...validPhoto, title: "Second record", order: 1 },
+      ]),
+    (error) => error.statusCode === 400,
+  );
 });

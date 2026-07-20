@@ -17,13 +17,13 @@ Sondra's priorities become clearer.
 - [x] Lazy-load portfolio images at the browser level as they approach the
   viewport.
 - [ ] Add thumbnail and responsive-image generation after upload.
-- [ ] Let Sondra edit all existing photograph metadata (title, category,
+- [x] Let Sondra edit all existing photograph metadata (title, category,
   location, capture date, description, featured status, alt text) and reorder
   photographs after upload.
 - [ ] Remove all related like records when a photograph is permanently deleted.
 - [ ] Add dedicated collection pages and shareable photograph detail routes.
 - [ ] Add accessible full-screen lightbox browsing.
-- [ ] Add image alt text as a required admin field.
+- [x] Add image alt text as a required admin field.
 - [ ] Add basic analytics that respects visitor privacy.
 - [ ] Add rate limiting and operational monitoring for public endpoints.
 

@@ -22,6 +22,14 @@ const getAdminTokenVerifier = () => {
 const bucketName = () => requiredConfig("PHOTO_BUCKET");
 const MANIFEST_KEY = "public/images/portfolio/manifest.json";
 const PHOTO_PREFIX = "public/images/portfolio/";
+const PHOTO_CATEGORIES = new Set([
+  "Landscapes",
+  "Nature",
+  "Wildlife",
+  "Architecture",
+  "Still Life",
+  "Featured",
+]);
 const ADMIN_EMAILS = new Set([
   "t.sondra1947@gmail.com",
   "sondratulalaphotography@gmail.com",
@@ -83,6 +91,23 @@ const readBody = (event) => {
   }
 };
 
+const isText = (value, maximum, required = false) =>
+  typeof value === "string" &&
+  value.length <= maximum &&
+  (!required || value.trim().length > 0);
+
+const isCaptureDate = (value) => {
+  if (value === "") return true;
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return (
+    !Number.isNaN(parsed.valueOf()) &&
+    parsed.toISOString().slice(0, 10) === value
+  );
+};
+
 const validateManifest = (photos) => {
   if (!Array.isArray(photos) || photos.length > 1000) {
     throw Object.assign(new Error("Invalid photo manifest."), { statusCode: 400 });
@@ -93,17 +118,37 @@ const validateManifest = (photos) => {
       statusCode: 400,
     });
   }
+  const ids = new Set();
+  const paths = new Set();
   for (const photo of photos) {
     if (
       !photo ||
+      !isText(photo.id, 200, true) ||
       typeof photo.path !== "string" ||
+      photo.path.length > 1024 ||
       !photo.path.startsWith(PHOTO_PREFIX) ||
-      photo.path === MANIFEST_KEY
+      photo.path === MANIFEST_KEY ||
+      !isText(photo.title, 100, true) ||
+      !isText(photo.altText, 250, true) ||
+      !isText(photo.description, 500) ||
+      !isText(photo.category, 100, true) ||
+      !PHOTO_CATEGORIES.has(photo.category) ||
+      !isText(photo.location, 100) ||
+      !isCaptureDate(photo.capturedAt) ||
+      typeof photo.active !== "boolean" ||
+      typeof photo.featured !== "boolean" ||
+      !Number.isInteger(photo.order) ||
+      photo.order < 0 ||
+      photo.order >= 1000 ||
+      ids.has(photo.id) ||
+      paths.has(photo.path)
     ) {
-      throw Object.assign(new Error("Manifest contains an invalid photo path."), {
+      throw Object.assign(new Error("Manifest contains invalid photo metadata."), {
         statusCode: 400,
       });
     }
+    ids.add(photo.id);
+    paths.add(photo.path);
   }
   return serialized;
 };
@@ -175,4 +220,4 @@ export const handleAdminPhoto = async (event) => {
   }
 };
 
-export { createRequireAdmin };
+export { createRequireAdmin, validateManifest };

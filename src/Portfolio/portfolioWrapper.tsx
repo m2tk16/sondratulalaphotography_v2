@@ -135,7 +135,11 @@ const PortfolioWrapper = ({ photo }: { photo: Photo }) => {
   return (
     <article className="photo-card">
       <div className="photo-frame">
-        <GetImage imagePath={photo.path} className="portfolio-image" />
+        <GetImage
+          alt={photo.altText}
+          imagePath={photo.path}
+          className="portfolio-image"
+        />
         {photo.featured && <span className="featured-label">Featured</span>}
       </div>
       <div className="photo-details">

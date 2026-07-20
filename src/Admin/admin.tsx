@@ -1,12 +1,19 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { fetchAuthSession } from "aws-amplify/auth";
-import { Eye, EyeSlash, Trash, Upload } from "react-bootstrap-icons";
+import {
+  Eye,
+  EyeSlash,
+  PencilSquare,
+  Trash,
+  Upload,
+} from "react-bootstrap-icons";
 import GetImage from "../Utilities/getImage";
 import {
   loadPhotos,
   PHOTO_CATEGORIES,
   safeFileName,
   type Photo,
+  updatePhotoMetadata,
 } from "../Portfolio/photoData";
 import { PUBLIC_API_URL } from "../config/backend";
 import "./admin.css";
@@ -37,12 +44,25 @@ const adminRequest = async <T,>(
 
 const EMPTY_FORM = {
   title: "",
+  altText: "",
   description: "",
   category: PHOTO_CATEGORIES[0],
   location: "",
   capturedAt: "",
   featured: false,
 };
+
+const editFormFromPhoto = (photo: Photo) => ({
+  title: photo.title,
+  altText: photo.altText,
+  description: photo.description,
+  category: photo.category,
+  location: photo.location,
+  capturedAt: photo.capturedAt,
+  active: photo.active,
+  featured: photo.featured,
+  position: photo.order + 1,
+});
 
 const Admin = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -52,6 +72,10 @@ const Admin = () => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [editTarget, setEditTarget] = useState<Photo | null>(null);
+  const [editForm, setEditForm] = useState<ReturnType<
+    typeof editFormFromPhoto
+  > | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Photo | null>(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
 
@@ -87,8 +111,8 @@ const Admin = () => {
 
   const handleUpload = async (event: FormEvent) => {
     event.preventDefault();
-    if (!file || !form.title.trim()) {
-      setError("Choose an image and give it a title.");
+    if (!file || !form.title.trim() || !form.altText.trim()) {
+      setError("Choose an image, give it a title, and add alternative text.");
       return;
     }
 
@@ -117,6 +141,7 @@ const Admin = () => {
         id: crypto.randomUUID(),
         path: upload.path,
         title: form.title.trim(),
+        altText: form.altText.trim(),
         description: form.description.trim(),
         category: form.category,
         location: form.location.trim(),
@@ -149,6 +174,41 @@ const Admin = () => {
       );
     } finally {
       setSaving(false);
+    }
+  };
+
+  const openEditor = (photo: Photo) => {
+    setEditTarget(photo);
+    setEditForm(editFormFromPhoto(photo));
+    setError("");
+    setMessage("");
+  };
+
+  const handleEdit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!editTarget || !editForm) return;
+    if (!editForm.title.trim() || !editForm.altText.trim()) {
+      setError("Title and alternative text are required.");
+      return;
+    }
+
+    const nextPhotos = updatePhotoMetadata(photos, editTarget.id, {
+      title: editForm.title,
+      altText: editForm.altText,
+      description: editForm.description,
+      category: editForm.category,
+      location: editForm.location,
+      capturedAt: editForm.capturedAt,
+      active: editForm.active,
+      featured: editForm.featured,
+      order: editForm.position - 1,
+    });
+    try {
+      await persist(nextPhotos, `“${editForm.title.trim()}” was updated.`);
+      setEditTarget(null);
+      setEditForm(null);
+    } catch {
+      // persist already exposes a useful message.
     }
   };
 
@@ -194,7 +254,7 @@ const Admin = () => {
       <header className="page-intro admin-intro">
         <p className="eyebrow">Private studio</p>
         <h1>Portfolio manager</h1>
-        <p>Upload new work and decide what visitors can see.</p>
+        <p>Upload new work, edit every detail, and decide what visitors can see.</p>
       </header>
 
       <section className="admin-panel">
@@ -224,6 +284,18 @@ const Admin = () => {
               placeholder="Into the fog"
               required
               value={form.title}
+            />
+          </label>
+          <label>
+            Alternative text
+            <input
+              maxLength={250}
+              onChange={(event) =>
+                setForm({ ...form, altText: event.target.value })
+              }
+              placeholder="Purple flowers clustered along green stems"
+              required
+              value={form.altText}
             />
           </label>
           <label>
@@ -295,13 +367,25 @@ const Admin = () => {
         <div className="admin-photo-list">
           {sortedPhotos.map((photo) => (
             <article className="admin-photo-row" key={photo.id}>
-              <GetImage imagePath={photo.path} className="admin-thumbnail" />
+              <GetImage
+                alt={photo.altText}
+                imagePath={photo.path}
+                className="admin-thumbnail"
+              />
               <div className="admin-photo-copy">
                 <span>{photo.category}</span>
                 <h3>{photo.title}</h3>
                 <p>{photo.active ? "Visible in portfolio" : "Hidden from portfolio"}</p>
               </div>
               <div className="admin-actions">
+                <button
+                  disabled={saving}
+                  onClick={() => openEditor(photo)}
+                  type="button"
+                >
+                  <PencilSquare aria-hidden />
+                  Edit details
+                </button>
                 <button
                   disabled={saving}
                   onClick={() => void toggleActive(photo)}
@@ -327,6 +411,149 @@ const Admin = () => {
           ))}
         </div>
       </section>
+
+      {editTarget && editForm && (
+        <div className="dialog-backdrop" role="presentation">
+          <section
+            aria-labelledby="edit-title"
+            aria-modal="true"
+            className="confirm-dialog edit-dialog"
+            role="dialog"
+          >
+            <p className="eyebrow">Photograph details</p>
+            <h2 id="edit-title">Edit “{editTarget.title}”</h2>
+            <form className="edit-form" onSubmit={handleEdit}>
+              <label>
+                Title
+                <input
+                  autoFocus
+                  maxLength={100}
+                  onChange={(event) =>
+                    setEditForm({ ...editForm, title: event.target.value })
+                  }
+                  required
+                  value={editForm.title}
+                />
+              </label>
+              <label>
+                Category
+                <select
+                  onChange={(event) =>
+                    setEditForm({ ...editForm, category: event.target.value })
+                  }
+                  value={editForm.category}
+                >
+                  {PHOTO_CATEGORIES.map((category) => (
+                    <option key={category}>{category}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="full-width">
+                Alternative text
+                <input
+                  maxLength={250}
+                  onChange={(event) =>
+                    setEditForm({ ...editForm, altText: event.target.value })
+                  }
+                  required
+                  value={editForm.altText}
+                />
+              </label>
+              <label>
+                Location
+                <input
+                  maxLength={100}
+                  onChange={(event) =>
+                    setEditForm({ ...editForm, location: event.target.value })
+                  }
+                  value={editForm.location}
+                />
+              </label>
+              <label>
+                Date captured
+                <input
+                  onChange={(event) =>
+                    setEditForm({ ...editForm, capturedAt: event.target.value })
+                  }
+                  type="date"
+                  value={editForm.capturedAt}
+                />
+              </label>
+              <label>
+                Portfolio position
+                <select
+                  onChange={(event) =>
+                    setEditForm({
+                      ...editForm,
+                      position: Number(event.target.value),
+                    })
+                  }
+                  value={editForm.position}
+                >
+                  {sortedPhotos.map((_, index) => (
+                    <option key={index} value={index + 1}>
+                      {index + 1}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <div className="edit-checks">
+                <label className="check-label">
+                  <input
+                    checked={editForm.active}
+                    onChange={(event) =>
+                      setEditForm({ ...editForm, active: event.target.checked })
+                    }
+                    type="checkbox"
+                  />
+                  Visible in portfolio
+                </label>
+                <label className="check-label">
+                  <input
+                    checked={editForm.featured}
+                    onChange={(event) =>
+                      setEditForm({
+                        ...editForm,
+                        featured: event.target.checked,
+                      })
+                    }
+                    type="checkbox"
+                  />
+                  Featured photograph
+                </label>
+              </div>
+              <label className="full-width">
+                Description
+                <textarea
+                  maxLength={500}
+                  onChange={(event) =>
+                    setEditForm({
+                      ...editForm,
+                      description: event.target.value,
+                    })
+                  }
+                  rows={4}
+                  value={editForm.description}
+                />
+              </label>
+              <div className="dialog-actions full-width">
+                <button
+                  onClick={() => {
+                    setEditTarget(null);
+                    setEditForm(null);
+                  }}
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button className="primary-button" disabled={saving} type="submit">
+                  {saving ? "Saving…" : "Save details"}
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
 
       {deleteTarget && (
         <div className="dialog-backdrop" role="presentation">

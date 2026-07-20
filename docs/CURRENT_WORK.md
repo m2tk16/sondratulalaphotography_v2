@@ -4,10 +4,11 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-The Developer Preview in-place migration has been abandoned. Build a clean
-parallel Gen 2 production candidate from the accepted rehearsal backend,
-preserving the live Gen 1 backend and frontend as rollback. Do not cut over the
-frontend or decommission Gen 1 without separate approval.
+Keep frontend cutover paused while expanding the accepted Gen 2 Studio so
+every existing photograph's metadata can be edited safely, including ordering
+and accessible alternative text. Preserve the live Gen 1 backend and frontend
+as rollback. Do not cut over the frontend or decommission Gen 1 without
+separate approval.
 
 ## Current state
 
@@ -313,23 +314,36 @@ frontend or decommission Gen 1 without separate approval.
   active like records.
 - The candidate is accepted. Frontend cutover is the next separate approval
   gate; Gen 1 resources remain intact for rollback.
+- Frontend cutover is now paused for Studio metadata editing. Each existing
+  photograph can locally edit its title, category, alternative text, location,
+  capture date, description, visibility, featured status, and portfolio
+  position without changing its immutable ID or S3 path.
+- Reordering produces unique contiguous positions for the entire collection.
+  Existing records without alternative text safely default to their title.
+- The public portfolio now passes stored alternative text to rendered images.
+  New uploads require both a title and alternative text.
+- The Studio manifest boundary now validates every metadata field, category,
+  capture date, order, and duplicate ID/path before writing to S3.
+- Backend type-checking, ESLint, the production build, and all 18 automated
+  tests pass. The accepted Gen 2 candidate has not yet received the stricter
+  manifest validator; local Studio acceptance is pending.
 
 ## Next steps
 
-1. Obtain explicit approval for the frontend cutover.
-2. Publish the frontend with the accepted Gen 2 outputs and verify the custom
-   domain.
-3. Keep the Gen 1 backend intact through an observation window before any
+1. Obtain approval to deploy the stricter manifest validator only to the Gen 2
+   candidate.
+2. Run local Studio field-editing and reordering acceptance.
+3. Obtain explicit approval for the frontend cutover.
+4. Keep the Gen 1 backend intact through an observation window before any
    separate decommissioning decision.
 
 ## Resume point after interruption
 
-The in-place Developer Preview migration was abandoned before production
-mutation. The clean backend-only Gen 2 candidate in Amplify app
-`d15h7apgzubla9` is deployed, protected, populated, and accepted after
-two-account likes, Studio lifecycle, and contact-delivery testing. No frontend
-cutover or Gen 1 decommission has occurred. The next action requires explicit
-frontend-cutover approval.
+The clean backend-only Gen 2 candidate in Amplify app `d15h7apgzubla9` is
+deployed, protected, populated, and accepted after two-account likes, Studio
+lifecycle, and contact-delivery testing. Frontend cutover is paused at the
+user's request while complete Studio metadata editing is implemented. No
+frontend cutover or Gen 1 decommission has occurred.
 
 ## Known risks and blockers
 

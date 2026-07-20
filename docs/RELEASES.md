@@ -3,6 +3,36 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-12 - Complete Studio photograph editing
+
+Status: candidate - Gen 2 backend deployment and acceptance pending
+Date: 2026-07-19
+Target: accepted Gen 2 candidate; frontend cutover remains paused
+
+### Implemented
+
+- Added an accessible Studio edit dialog for title, category, alternative
+  text, location, capture date, description, visibility, featured status, and
+  portfolio position.
+- Preserved photograph IDs and S3 paths while safely renumbering the full
+  collection after a reorder.
+- Required alternative text for new uploads and used it on public portfolio
+  images. Existing records fall back to their photograph title.
+- Added server-side validation for all manifest metadata, allowed categories,
+  real capture dates, order bounds, and duplicate IDs or paths.
+- Added deterministic metadata/reordering tests and manifest validation tests.
+
+### Verification
+
+- Backend type-checking, ESLint, and the production build pass.
+- All 18 automated tests pass.
+- No backend deployment or frontend cutover occurred.
+
+### Next gate
+
+- Deploy the stricter validator only to the accepted Gen 2 candidate after
+  approval, then verify field editing and reordering locally.
+
 ## STP-2026.07.19-11 - Clean Gen 2 production candidate
 
 Status: accepted candidate - frontend cutover pending approval

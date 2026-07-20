@@ -19,9 +19,9 @@ npm test
 npm run build
 ```
 
-The current automated tests cover the authenticated like handler. Frontend
-component tests are not configured yet. See `AGENTS.md` for when and how that
-test setup should be introduced.
+The current automated tests cover authenticated likes, Studio authorization,
+manifest validation, contact delivery, and deterministic photograph-metadata
+editing and ordering. Browser component tests are not configured yet.
 
 ## Project documentation
 
