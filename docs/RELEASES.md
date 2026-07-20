@@ -3,6 +3,23 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.20-01 - Current Tennessee location copy
+
+Status: candidate - locally verified; production deployment pending approval
+Date: 2026-07-20
+Target: production frontend
+
+### Updated
+
+- Simplified the homepage location line to Tennessee.
+- Reworked the About story around Sondra's current Tennessee home and removed
+  the former New York and New Jersey references.
+
+### Verification
+
+- Visitor-facing source contains no New York or New Jersey references.
+- ESLint and the production build pass.
+
 ## STP-2026.07.19-19 - Gen 2 production frontend cutover
 
 Status: deployed - public smoke passed; authenticated acceptance pending

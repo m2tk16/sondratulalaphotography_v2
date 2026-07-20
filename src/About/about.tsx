@@ -24,10 +24,9 @@ const About = () => (
           to be my favorite teacher.
         </p>
         <p>
-          My husband Martin, our Labrador Loki, and I now call Tennessee home.
-          Before moving south, the landscapes of New Jersey and New York first
-          inspired me to carry a camera. Those places—and the calm of a foggy
-          morning—still shape the way I see.
+          My husband Martin, our Labrador Loki, and I call Tennessee home. Its
+          changing seasons, open landscapes, and quiet mornings continue to
+          shape the way I see.
         </p>
         <p>
           This collection includes landscapes, still life, and the occasional

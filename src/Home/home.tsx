@@ -45,7 +45,7 @@ const Home = () => {
         />
         <div className="hero-shade" />
         <div className="hero-copy">
-          <p className="eyebrow">Tennessee · New York · New Jersey</p>
+          <p className="eyebrow">Tennessee</p>
           <h1>
             Beauty lives
             <br />
