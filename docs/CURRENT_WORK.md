@@ -5,11 +5,9 @@ Last updated: 2026-07-19
 ## Current objective
 
 Phase 5 production preparation has started after successful Phase 4 browser
-acceptance. The read-only production reassessment is blocked by the existing
-`gentest` migration marker. The approved normal clone unlock stopped on a
-known Gen 1 Identity Pool role drift pattern. Await explicit approval before
-repeating only the clone unlock with `--skip-validations`; do not lock or
-modify production yet.
+acceptance. The Gen 1 clone is unlocked and the read-only production
+assessment passed. Await separate explicit approval before locking production;
+do not deploy, refactor, cut over, or decommission yet.
 
 ## Current state
 
@@ -225,9 +223,10 @@ modify production yet.
   clone Cognito users, and two orphaned like records for the deleted test
   photograph. Cleaning related likes during permanent deletion is now tracked
   as a product/data-integrity follow-up.
-- Phase 3 is complete. The Gen 1 `gentest` clone is locked, the generated Gen 2
-  backend is manually reconciled, and the isolated `gen2rehearsal` sandbox is
-  deployed with an `UPDATE_COMPLETE` root stack.
+- Phase 3 is complete. The Gen 1 `gentest` clone was locked for the rehearsal,
+  the generated Gen 2 backend is manually reconciled, and the isolated
+  `gen2rehearsal` sandbox is deployed with an `UPDATE_COMPLETE` root stack.
+  Phase 5 has since unlocked the clone.
 - The Gen 2 sandbox has separate empty Cognito, S3, DynamoDB, Lambda, and REST
   API resources. Production remains unchanged and the migration `refactor`
   command has not been run.
@@ -264,35 +263,37 @@ modify production yet.
   `docs/GEN2_PHASE5_PRODUCTION.md`.
 - Production `main` reports no pending Amplify changes and its root stack is
   `UPDATE_COMPLETE`; its auth nested stack is `UPDATE_ROLLBACK_COMPLETE`.
-- The production reassessment did not run because Amplify still marks
+- The initial production reassessment did not run because Amplify still marked
   `gentest` as the migration environment. No production mutation occurred.
 - The approved clone unlock stopped before mutation because CLI drift
   validation detected the two standard Gen 1 Identity Pool trust-policy
   differences. Production reports the same two-resource drift pattern and no
   additional root-stack drift.
+- The user approved the validation bypass. The project migration marker was
+  removed, the clone policy now permits updates, and `gentest` remains
+  `UPDATE_COMPLETE`.
+- The read-only production assessment passed. Both REST APIs, Cognito, S3, and
+  Lambda support generation; Cognito and S3 support later stateful refactor.
+  The Lambda custom policy remains the only manual code item.
 
 ## Next steps
 
-1. Obtain explicit approval to run
-   `gen2-migration lock --rollback --skip-validations` against `gentest` only.
-2. Verify the clone is healthy and unlocked, then rerun the read-only
-   production assessment.
-3. Stop before the separate production-lock gate.
+1. Review the successful production assessment and rollback baseline.
+2. Obtain separate explicit approval before locking production `main`.
+3. Stop before generation, parallel deployment, stateful refactor, frontend
+   cutover, or decommission unless each gate is separately approved.
 
 ## Resume point after interruption
 
 Phase 3 deployment and Phase 4 authenticated browser acceptance are complete.
 Phase 5 read-only preparation confirmed the production root and Lambda are
 healthy, while the auth nested stack remains `UPDATE_ROLLBACK_COMPLETE`.
-Production assessment is blocked because the project still marks `gentest` as
-the migration environment. The normal clone unlock stopped before mutation on
-the standard two-role Amplify drift pattern that also exists in production.
-The next reversible mutation is rolling back only the clone lock with the
-CLI-recommended validation bypass; it requires explicit approval. Browser-level
-image lazy loading is already implemented. Editing all metadata on existing
-Studio entries and cleaning orphaned likes during permanent deletion remain
-separate product changes. No production lock, deployment, cutover,
-decommission, or migration `refactor` command has been run.
+The Gen 1 clone is unlocked, the project migration marker is absent, and the
+production assessment passed. All reported resources support generation;
+Cognito and S3 also support later stateful refactor. The Lambda custom policy
+is the only manual generation item. The next gate is locking production
+`main`, which requires separate explicit approval. No production lock,
+deployment, refactor, cutover, or decommission has occurred.
 
 ## Known risks and blockers
 

@@ -90,3 +90,45 @@ other root-stack drift.
 The CLI recommends repeating the clone rollback with `--skip-validations`.
 Because this bypasses a migration safety guard, it requires a new explicit
 approval even though the detected drift is understood and matches production.
+
+## Clone unlock completion
+
+The user explicitly approved repeating the clone rollback with
+`--skip-validations`.
+
+The non-interactive `--yes` flag accepted the Developer Preview confirmation.
+The CLI removed the project-level `GEN2_MIGRATION_ENVIRONMENT_NAME` marker,
+then its Amplify Studio role failed on
+`cloudformation:GetStackPolicy`. The AWS CLI identity that had already
+verified both policies completed the second approved operation by replacing
+only the clone's deny-update policy with an allow-all-updates policy.
+
+Final verification:
+
+- The project migration marker is absent.
+- `gentest` is `UPDATE_COMPLETE`.
+- The `gentest` root stack policy permits updates.
+- Production remains `UPDATE_COMPLETE` and has no stack policy.
+- Production Lambda remains active with code hash
+  `HM9SlqGaPcwb2Ugy4n+82rwfIdylTj7JJWvRGN1+mz8=`.
+
+## Production assessment result
+
+`amplify gen2-migration assess --yes` completed successfully against `main`.
+
+| Resource | Generate | Stateful refactor |
+| --- | --- | --- |
+| REST API `api4593058b` | supported | not needed |
+| REST API `apid5657c10` | supported | not needed |
+| Cognito `sondratulalaphotograaaef21f8` | supported | supported |
+| S3 `sondratulalaphotographys3` | supported | supported |
+| Lambda `sondratulalaphotogradcd4b5ed` | supported | not needed |
+
+The only reported manual item is
+`function/sondratulalaphotogradcd4b5ed/custom-policies.json`, which requires
+adding code after generation. This matches the rehearsal assessment and the
+manually reconciled Gen 2 sandbox.
+
+The assessment did not modify or lock production. The next gate is a
+production lock, which requires separate explicit approval and a recorded
+rollback point.

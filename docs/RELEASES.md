@@ -3,9 +3,38 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-09 - Production migration assessment
+
+Status: completed - clone unlock and read-only production assessment
+Date: 2026-07-19
+Target: Gen 1 `gentest` unlock; production read-only
+
+### Completed
+
+- Removed the project-level `gentest` migration marker.
+- Replaced only the clone's deny-update stack policy with a permissive update
+  policy after the official rollback partially completed.
+- Verified `gentest` remains `UPDATE_COMPLETE`.
+- Completed `amplify gen2-migration assess --yes` against production `main`.
+
+### Assessment
+
+- Both REST APIs, Cognito, S3, and Lambda support Gen 2 generation.
+- Cognito and S3 support the later stateful-refactor step.
+- The Lambda `custom-policies.json` file is the only reported manual
+  post-generation code item, matching the rehearsal.
+- Production remains `UPDATE_COMPLETE`, unlocked, and on the verified Lambda
+  hash. No production resource or frontend was changed.
+
+### Next gate
+
+- Production lock requires separate explicit approval.
+- Generation, parallel deployment, stateful refactor, cutover, and
+  decommission remain later independent gates.
+
 ## STP-2026.07.19-08 - Phase 5 production reassessment baseline
 
-Status: candidate - read-only preparation
+Status: superseded by STP-2026.07.19-09
 Date: 2026-07-19
 Target: production migration planning; no production mutation
 
