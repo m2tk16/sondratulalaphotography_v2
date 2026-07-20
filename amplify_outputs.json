@@ -1,0 +1,104 @@
+{
+  "auth": {
+    "user_pool_id": "us-east-1_eQ43OQcYS",
+    "aws_region": "us-east-1",
+    "user_pool_client_id": "34krracs9vkcg5nbdruudccu5f",
+    "identity_pool_id": "us-east-1:3d305260-94cc-4a46-b5fa-ea55e9eeac24",
+    "mfa_methods": [],
+    "standard_required_attributes": [
+      "email"
+    ],
+    "username_attributes": [
+      "email"
+    ],
+    "user_verification_types": [
+      "email"
+    ],
+    "groups": [],
+    "mfa_configuration": "NONE",
+    "password_policy": {
+      "min_length": 8,
+      "require_lowercase": false,
+      "require_numbers": false,
+      "require_symbols": false,
+      "require_uppercase": false
+    },
+    "oauth": {
+      "identity_providers": [
+        "GOOGLE"
+      ],
+      "redirect_sign_in_uri": [
+        "http://localhost:3000/",
+        "http://localhost:3001/",
+        "http://localhost:5173/",
+        "https://sondratulalaphotography.com/"
+      ],
+      "redirect_sign_out_uri": [
+        "http://localhost:3000/",
+        "http://localhost:3001/",
+        "http://localhost:5173/",
+        "https://sondratulalaphotography.com/"
+      ],
+      "response_type": "code",
+      "scopes": [
+        "phone",
+        "email",
+        "openid",
+        "profile",
+        "aws.cognito.signin.user.admin"
+      ],
+      "domain": "92a0617f43296415834c.auth.us-east-1.amazoncognito.com"
+    },
+    "unauthenticated_identities_enabled": true
+  },
+  "storage": {
+    "aws_region": "us-east-1",
+    "bucket_name": "amplify-d15h7apgzubla9-pr-sondratulalaphotogra25f7-85z3yb82cyrd",
+    "buckets": [
+      {
+        "name": "sondratulalaphotogra25f72088efde4213955fdfd598b9bd46-production",
+        "bucket_name": "amplify-d15h7apgzubla9-pr-sondratulalaphotogra25f7-85z3yb82cyrd",
+        "aws_region": "us-east-1",
+        "paths": {
+          "public/*": {
+            "guest": [
+              "get",
+              "list"
+            ],
+            "authenticated": [
+              "get",
+              "list"
+            ]
+          },
+          "protected/*": {
+            "authenticated": [
+              "get",
+              "list"
+            ]
+          },
+          "private/*": {
+            "authenticated": [
+              "get",
+              "list"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "version": "1.4",
+  "custom": {
+    "API": {
+      "api4593058b": {
+        "endpoint": "https://uieb1nwuih.execute-api.us-east-1.amazonaws.com/prod",
+        "region": "us-east-1",
+        "apiName": "api4593058b-production"
+      },
+      "apid5657c10": {
+        "endpoint": "https://waghv1ws21.execute-api.us-east-1.amazonaws.com/prod",
+        "region": "us-east-1",
+        "apiName": "apid5657c10-production"
+      }
+    }
+  }
+}

@@ -378,13 +378,18 @@ Gen 1 without separate approval.
   lockfile. Regenerating lock metadata added only those required transitive
   entries; a clean install, all 29 tests, ESLint, the production build, and the
   high/critical audit pass for the retry.
+- Retry job 46 passed the clean install and then failed safely before
+  deployment because the frontend-only host could not generate the ignored
+  `amplify_outputs.json`. The accepted Gen 2 production outputs contain public
+  resource identifiers and endpoints, no Google client secret or credential,
+  and must be tracked for this separate-backend cutover.
 - The accepted Gen 2 candidate has not yet received the stricter manifest and
   homepage validator; local Studio and viewer acceptance are pending.
 
 ## Next steps
 
-1. Push the verified lockfile repair and confirm the retrying Amplify Hosting
-   production job succeeds.
+1. Track the accepted public Gen 2 outputs, push the verified build, and
+   confirm the retrying Amplify Hosting production job succeeds.
 2. Confirm the deployed bundle targets the accepted Gen 2 production outputs.
 3. Smoke-test public routes, static assets, and Gen 2 public API boundaries.
 4. Run authenticated production acceptance in a regular browser.

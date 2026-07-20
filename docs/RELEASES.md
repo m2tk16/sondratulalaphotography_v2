@@ -29,6 +29,10 @@ Target: existing production hosting app with accepted Gen 2 backend
   missing bundled OpenTelemetry entries in `package-lock.json`. The lockfile
   was regenerated without changing declared dependencies; a clean install and
   the complete frontend verification gate pass for the retry.
+- Retry job 46 passed `npm ci` and then failed before deployment because the
+  frontend-only hosting app could not generate the ignored
+  `amplify_outputs.json`. The accepted production outputs contain only public
+  frontend resource identifiers and endpoints and are tracked for the cutover.
 
 ## STP-2026.07.19-18 - Theme-aware photograph viewer
 
