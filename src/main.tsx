@@ -6,6 +6,7 @@ import amplifyOutputs from "../amplify_outputs.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import App from "./App";
+import { applyTheme, readTheme } from "./Utilities/theme";
 
 const origin = window.location.origin;
 const awsConfig = {
@@ -20,6 +21,7 @@ const awsConfig = {
   },
 } as ResourcesConfig;
 Amplify.configure(awsConfig);
+applyTheme(readTheme());
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

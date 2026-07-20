@@ -1,13 +1,22 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { List, X } from "react-bootstrap-icons";
+import { List, MoonStars, Sun, X } from "react-bootstrap-icons";
 import UseAuth from "../Utilities/auth";
+import { applyTheme, readTheme, saveTheme } from "../Utilities/theme";
 import "./navbar.css";
 
 const NavBar = () => {
   const { user, loading, signingIn, authError, signIn, signOutUser } = UseAuth();
   const [open, setOpen] = useState(false);
+  const [theme, setTheme] = useState(readTheme);
   const closeMenu = () => setOpen(false);
+  const nextTheme = theme === "light" ? "dark" : "light";
+
+  const toggleTheme = () => {
+    setTheme(nextTheme);
+    applyTheme(nextTheme);
+    saveTheme(nextTheme);
+  };
 
   return (
     <header className="site-header">
@@ -32,6 +41,16 @@ const NavBar = () => {
         {user?.isAdmin && (
           <NavLink onClick={closeMenu} to="/admin">Studio</NavLink>
         )}
+        <button
+          aria-label={`Switch to ${nextTheme} theme`}
+          className="theme-toggle"
+          onClick={toggleTheme}
+          title={`Switch to ${nextTheme} theme`}
+          type="button"
+        >
+          {theme === "light" ? <MoonStars aria-hidden /> : <Sun aria-hidden />}
+          <span>{nextTheme}</span>
+        </button>
         {!loading &&
           (user ? (
             <button

@@ -8,6 +8,14 @@
       content="Fine art landscapes, nature, and quiet moments photographed by Sondra Tulala."
     />
     <meta name="theme-color" content="#f3f0e9" />
+    <script>
+      try {
+        if (localStorage.getItem("sondra-tulala-theme") === "dark") {
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.style.colorScheme = "dark";
+        }
+      } catch {}
+    </script>
     <link rel="icon" type="image/x-icon" href="/into_the_fog.ico" />
     <title>Sondra Tulala Photography</title>
   </head>

@@ -127,8 +127,8 @@
 
 .like-button:hover,
 .like-button.liked {
-  color: #85433f;
-  border-color: rgba(133, 67, 63, 0.35);
+  color: var(--danger);
+  border-color: var(--danger-border);
 }
 
 .like-button:disabled {
@@ -138,7 +138,7 @@
 
 .inline-error,
 .error-message {
-  color: #85433f;
+  color: var(--danger);
 }
 
 .inline-error {

@@ -2,8 +2,6 @@
 
 :root {
   font-family: "DM Sans", sans-serif;
-  color: #28251f;
-  background: #f3f0e9;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --ink: #28251f;
@@ -12,7 +10,42 @@
   --cream: #e9e3d8;
   --line: rgba(40, 37, 31, 0.18);
   --accent: #7d6d57;
+  --nav-background: rgba(243, 240, 233, 0.94);
+  --surface: rgba(255, 255, 255, 0.28);
+  --field-background: rgba(255, 255, 255, 0.5);
+  --success: #415e43;
+  --success-border: rgba(76, 112, 78, 0.3);
+  --success-background: rgba(76, 112, 78, 0.08);
+  --danger: #85433f;
+  --danger-border: rgba(133, 67, 63, 0.35);
+  --danger-background: rgba(133, 67, 63, 0.08);
+  --dialog-backdrop: rgba(20, 18, 15, 0.68);
+  --shadow: rgba(40, 37, 31, 0.12);
+  --strong-contrast: #fff;
+  --selection-text: #fff;
   --display: "Italiana", Georgia, serif;
+}
+
+:root[data-theme="dark"] {
+  --ink: #f1ece2;
+  --muted: #b9b1a5;
+  --paper: #1f211f;
+  --cream: #292c29;
+  --line: rgba(241, 236, 226, 0.16);
+  --accent: #c2a97b;
+  --nav-background: rgba(31, 33, 31, 0.94);
+  --surface: rgba(255, 255, 255, 0.035);
+  --field-background: rgba(255, 255, 255, 0.06);
+  --success: #a9c0a5;
+  --success-border: rgba(169, 192, 165, 0.35);
+  --success-background: rgba(169, 192, 165, 0.09);
+  --danger: #d99a91;
+  --danger-border: rgba(217, 154, 145, 0.4);
+  --danger-background: rgba(217, 154, 145, 0.09);
+  --dialog-backdrop: rgba(7, 8, 7, 0.78);
+  --shadow: rgba(0, 0, 0, 0.35);
+  --strong-contrast: #1f211f;
+  --selection-text: #1f211f;
 }
 
 * {
@@ -27,7 +60,11 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  color: var(--ink);
   background: var(--paper);
+  transition:
+    color 240ms ease,
+    background-color 240ms ease;
 }
 
 button,
@@ -61,6 +98,6 @@ img {
 }
 
 ::selection {
-  color: #fff;
+  color: var(--selection-text);
   background: var(--accent);
 }

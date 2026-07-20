@@ -11,7 +11,7 @@
 .admin-panel {
   padding: clamp(1.5rem, 4vw, 3rem);
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.28);
+  background: var(--surface);
 }
 
 .admin-panel-heading,
@@ -65,7 +65,7 @@
   border: 1px solid var(--line);
   border-radius: 0;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--field-background);
   font-size: 0.9rem;
   font-weight: 400;
   letter-spacing: normal;
@@ -134,7 +134,7 @@
 .primary-button {
   width: fit-content;
   border-color: var(--ink);
-  color: #fff;
+  color: var(--strong-contrast);
   background: var(--ink);
 }
 
@@ -146,15 +146,15 @@ button:disabled {
 .admin-notice {
   margin: 1rem 0;
   padding: 1rem 1.25rem;
-  border: 1px solid rgba(76, 112, 78, 0.3);
-  color: #415e43;
-  background: rgba(76, 112, 78, 0.08);
+  border: 1px solid var(--success-border);
+  color: var(--success);
+  background: var(--success-background);
 }
 
 .admin-notice.error {
-  border-color: rgba(133, 67, 63, 0.3);
-  color: #85433f;
-  background: rgba(133, 67, 63, 0.08);
+  border-color: var(--danger-border);
+  color: var(--danger);
+  background: var(--danger-background);
 }
 
 .admin-library {
@@ -210,8 +210,8 @@ button:disabled {
 
 .admin-actions .danger-action,
 .danger-button {
-  color: #85433f;
-  border-color: rgba(133, 67, 63, 0.35);
+  color: var(--danger);
+  border-color: var(--danger-border);
 }
 
 .dialog-backdrop {
@@ -221,7 +221,7 @@ button:disabled {
   display: grid;
   place-items: center;
   padding: 1.25rem;
-  background: rgba(20, 18, 15, 0.68);
+  background: var(--dialog-backdrop);
   backdrop-filter: blur(6px);
 }
 

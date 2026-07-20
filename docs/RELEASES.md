@@ -3,6 +3,36 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-13 - Visitor appearance themes
+
+Status: candidate - local visual acceptance pending
+Date: 2026-07-19
+Target: accepted Gen 2 frontend candidate; frontend cutover remains paused
+
+### Implemented
+
+- Added an accessible light/dark theme control to the desktop and mobile
+  navigation, with a clear icon and target-theme label.
+- Kept the warm paper theme as the default for new visitors and added a
+  charcoal, ivory, and muted-brass night-gallery palette.
+- Persisted the visitor's choice locally, applied it before the app renders to
+  prevent a return-visit flash, and synchronized native control and browser
+  theme colors.
+- Extended shared surface, form, status, dialog, and interaction colors across
+  public pages and Studio rather than using a simple color inversion.
+
+### Verification
+
+- ESLint, the production build, and all 18 automated tests pass.
+- In-session browser visual QA was unavailable because no connected browser
+  runtime was present.
+- No backend deployment or frontend cutover occurred.
+
+### Next gate
+
+- Review both themes locally on desktop and mobile, then continue the existing
+  Gen 2 candidate acceptance sequence.
+
 ## STP-2026.07.19-12 - Complete Studio photograph editing
 
 Status: candidate - Gen 2 backend deployment and acceptance pending

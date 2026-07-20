@@ -24,6 +24,8 @@ Sondra's priorities become clearer.
 - [ ] Add dedicated collection pages and shareable photograph detail routes.
 - [ ] Add accessible full-screen lightbox browsing.
 - [x] Add image alt text as a required admin field.
+- [x] Add a light/dark appearance control that defaults to light and remembers
+  each visitor's preference.
 - [ ] Add basic analytics that respects visitor privacy.
 - [ ] Add rate limiting and operational monitoring for public endpoints.
 

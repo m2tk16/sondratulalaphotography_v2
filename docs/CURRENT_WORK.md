@@ -324,6 +324,10 @@ separate approval.
   New uploads require both a title and alternative text.
 - The full capture-date field now opens the native calendar picker in both the
   upload and edit forms.
+- The navigation now offers a light/dark appearance control. New visitors
+  receive the warm light theme by default; the night-gallery theme is
+  accessible on desktop and mobile, persists locally, updates native browser
+  color treatment, and is applied before the app renders on return visits.
 - The Studio manifest boundary now validates every metadata field, category,
   capture date, order, and duplicate ID/path before writing to S3.
 - Backend type-checking, ESLint, the production build, and all 18 automated
