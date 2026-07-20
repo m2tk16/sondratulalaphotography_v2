@@ -341,6 +341,10 @@ frontend or decommission Gen 1 without separate approval.
 - The old portfolio "Featured" badge and category are removed. A legacy
   `Featured` category is normalized to `Nature` when loaded, while new
   manifests reject it.
+- The post-launch roadmap is prioritized in `docs/FEATURES.md`: finish
+  shareable/detail-page, lightbox, responsive-image, analytics, and image
+  metadata polish first; validate print demand before custom commerce; and add
+  threaded comments only alongside moderation and abuse controls.
 - Backend type-checking, ESLint, the production build, and all 22 automated
   tests pass. The accepted Gen 2 candidate has not yet received the stricter
   manifest validator; local Studio acceptance is pending.

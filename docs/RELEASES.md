@@ -3,6 +3,32 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-15 - Post-launch product roadmap
+
+Status: candidate - documentation only; no implementation
+Date: 2026-07-19
+Target: future product layers after the Gen 2 production cutover
+
+### Decisions
+
+- Treat the current portfolio as launch-complete after candidate acceptance
+  rather than expanding the production gate with community or commerce.
+- Prioritize shareable photograph pages, lightbox browsing, responsive image
+  variants, privacy-respecting analytics, and image discovery/rights metadata.
+- Explore a managed photography storefront or small fulfillment pilot before
+  building custom products, variants, tax, shipping, payments, and order
+  fulfillment.
+- Keep photograph comments and threaded replies as a possible community layer,
+  gated by Studio moderation, reporting, spam prevention, rate limiting, block
+  controls, notification preferences, and deletion tools.
+- Prefer shallow reply threading initially so conversations and moderation
+  remain understandable on mobile.
+
+### Verification
+
+- Roadmap-only change; no application, backend, AWS, or production state was
+  changed.
+
 ## STP-2026.07.19-14 - Studio-controlled homepage photograph
 
 Status: candidate - Gen 2 backend deployment and local acceptance pending
