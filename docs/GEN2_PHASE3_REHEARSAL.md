@@ -136,3 +136,24 @@ Deployment verification confirmed:
 - The public count endpoint returns the persisted shared total.
 - All 13 backend tests, backend type-checking, ESLint, and the production
   frontend build pass.
+
+## Phase 4 acceptance result
+
+Phase 4 browser acceptance passed on 2026-07-19:
+
+- Google sign-in worked for the approved admin and a non-admin account.
+- Both accounts liked the same photograph and the shared total reached two.
+- Studio upload, deactivate, reactivate, and permanent delete all worked.
+- The contact submission reached the sandbox Lambda successfully.
+- No contact email was delivered, as designed, because
+  `CONTACT_DELIVERY_ENABLED=false` and the sandbox Lambda has no SES
+  permission.
+
+The browser console retained several `GET /photos/likes` HTTP 404 entries from
+requests made before the corrected Lambda deployment completed at 19:11:38
+local time. Requests after deployment routed to the like handler successfully,
+and a fresh unsigned status check returned the expected HTTP 401 rather than
+404. These were stale console entries, not a remaining route failure.
+
+Phase 4 is complete. Stop before migration `refactor`; it still requires new
+explicit approval.

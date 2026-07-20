@@ -4,9 +4,9 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Complete Phase 4 browser acceptance against the deployed isolated Gen 2
-`gen2rehearsal` sandbox. Google sign-in is ready for retest after correcting
-the provider scopes. Do not run migration `refactor`.
+Phase 4 browser acceptance is complete against the isolated Gen 2
+`gen2rehearsal` sandbox. Stop before migration `refactor`; it requires new
+explicit approval.
 
 ## Current state
 
@@ -249,24 +249,31 @@ the provider scopes. Do not run migration `refactor`.
 - The like-state correction is deployed only to `gen2rehearsal`. The public
   endpoint returns the persisted total, unsigned status reads return HTTP 401,
   and the sandbox stack is `UPDATE_COMPLETE`.
+- Phase 4 authenticated browser acceptance passed: two Google accounts
+  produced a shared total of two, and Studio upload, deactivate, reactivate,
+  and permanent delete all worked.
+- The contact submission reached the sandbox Lambda. Delivery was suppressed
+  by design because `CONTACT_DELIVERY_ENABLED=false` and the sandbox has no
+  SES permission.
+- Console 404s captured during the test preceded the corrected Lambda
+  deployment. Post-deployment like-status requests route successfully.
 
 ## Next steps
 
-1. Refresh the local portfolio and repeat the two-account like workflow.
-2. Run the remaining Phase 4 browser acceptance workflow.
-3. Record the acceptance results and stop before migration `refactor`.
+1. Review the completed Phase 4 evidence.
+2. Decide whether to proceed to the next migration gate.
+3. Do not run migration `refactor` without new explicit approval.
 
 ## Resume point after interruption
 
-Phase 3 is complete and recorded in `docs/GEN2_PHASE3_REHEARSAL.md`. Phase 4
-Google sign-in and account-switch like defects are corrected in the isolated
-sandbox. Refresh `http://localhost:5173/` and repeat the two-account workflow;
-the current test data contains one persisted non-admin like and an unliked
-admin record, so the admin should initially see an empty heart with a shared
-total of one. Browser-level image lazy loading is already implemented. Editing
-all metadata on existing Studio entries and cleaning orphaned likes during
-permanent deletion remain separate product changes. No migration `refactor`
-command has been run.
+Phase 3 deployment and Phase 4 authenticated browser acceptance are complete.
+Two-account likes and all tested Studio controls passed. The contact endpoint
+accepted the test, while real delivery remained safely suppressed in the
+sandbox. The captured 404s were requests made before the corrected Lambda
+deployment completed; current routing is healthy. Browser-level image lazy
+loading is already implemented. Editing all metadata on existing Studio
+entries and cleaning orphaned likes during permanent deletion remain separate
+product changes. No migration `refactor` command has been run.
 
 ## Known risks and blockers
 

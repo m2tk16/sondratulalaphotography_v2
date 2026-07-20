@@ -23,6 +23,13 @@ Target: Gen 2 `gen2rehearsal` sandbox; production unchanged
 - The sandbox root stack is `UPDATE_COMPLETE`.
 - The public count endpoint returns the persisted shared total.
 - An unsigned per-user status request returns HTTP 401.
+- Phase 4 browser acceptance passed with two Google accounts and a shared
+  total of two.
+- Studio upload, deactivate, reactivate, and permanent delete passed.
+- The contact endpoint accepted the request and suppressed delivery as
+  designed because the sandbox delivery flag is false.
+- Console 404s shown during acceptance preceded the corrected Lambda
+  deployment; post-deployment status requests route successfully.
 - Production and the locked Gen 1 clone were not changed; no migration
   `refactor` was run.
 
