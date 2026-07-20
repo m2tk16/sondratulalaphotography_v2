@@ -3,6 +3,29 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-07 - Gen 2 account-switch like state
+
+Status: deployed - isolated sandbox only
+Date: 2026-07-19
+Target: Gen 2 `gen2rehearsal` sandbox; production unchanged
+
+### Implemented
+
+- Replaced the session-dependent public count read with a direct, non-cached
+  request.
+- Added an authenticated like-status read that restores the signed-in
+  account's persisted heart state and the shared total.
+- Routed `GET /photos/likes` to the verified-token Lambda handler.
+
+### Verification
+
+- Backend type-check, ESLint, production build, and all 13 backend tests pass.
+- The sandbox root stack is `UPDATE_COMPLETE`.
+- The public count endpoint returns the persisted shared total.
+- An unsigned per-user status request returns HTTP 401.
+- Production and the locked Gen 1 clone were not changed; no migration
+  `refactor` was run.
+
 ## STP-2026.07.19-06 - Gen 2 Google email scope correction
 
 Status: deployed - isolated sandbox only

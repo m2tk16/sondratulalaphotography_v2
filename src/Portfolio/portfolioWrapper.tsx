@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { get } from "aws-amplify/api";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Heart, HeartFill } from "react-bootstrap-icons";
 import GetImage from "../Utilities/getImage";
 import UseAuth from "../Utilities/auth";
 import {
   PRIVATE_LIKE_API_URL,
-  PUBLIC_API_NAME,
+  PUBLIC_API_URL,
 } from "../config/backend";
 import type { Photo } from "./photoData";
 
@@ -22,28 +21,64 @@ const PortfolioWrapper = ({ photo }: { photo: Photo }) => {
 
   useEffect(() => {
     let active = true;
-    const loadCount = async () => {
+    const query = new URLSearchParams({ photo: photo.path }).toString();
+    const loadPublicCount = async () => {
+      const response = await fetch(
+        `${PUBLIC_API_URL}/photos/likes/count?${query}`,
+        { cache: "no-store" },
+      );
+      if (!response.ok) {
+        throw new Error("Could not load the public like count.");
+      }
+      return (await response.json()) as { totalLikes?: number };
+    };
+    const loadLikeState = async () => {
       try {
-        const operation = get({
-          apiName: PUBLIC_API_NAME,
-          path: "/photos/likes/count",
-          options: { queryParams: { photo: photo.path } },
-        });
-        const response = await operation.response;
-        const body = (await response.body.json()) as { totalLikes?: number };
+        let body: { liked?: boolean; totalLikes?: number };
+        if (user) {
+          const session = await fetchAuthSession();
+          const accessToken = session.tokens?.accessToken?.toString();
+          if (!accessToken) {
+            throw new Error(EXPIRED_SESSION);
+          }
+          const response = await fetch(`${LIKE_ENDPOINT}?${query}`, {
+            cache: "no-store",
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+          if (!response.ok) {
+            throw new Error("Could not load your like.");
+          }
+          body = (await response.json()) as {
+            liked?: boolean;
+            totalLikes?: number;
+          };
+        } else {
+          body = await loadPublicCount();
+        }
+
         if (active) {
           setLikeCount(body.totalLikes ?? 0);
+          setLiked(Boolean(body.liked));
         }
       } catch {
-        // Likes are supplementary; photographs should remain available even
-        // while the API is being deployed.
+        // A signed-in status read should never hide a valid public count.
+        try {
+          const body = await loadPublicCount();
+          if (active) {
+            setLikeCount(body.totalLikes ?? 0);
+            setLiked(false);
+          }
+        } catch {
+          // Likes are supplementary; photographs should remain available even
+          // while the API is being deployed.
+        }
       }
     };
-    void loadCount();
+    void loadLikeState();
     return () => {
       active = false;
     };
-  }, [photo.path]);
+  }, [photo.path, user]);
 
   const handleLikeClick = async () => {
     if (!user) {

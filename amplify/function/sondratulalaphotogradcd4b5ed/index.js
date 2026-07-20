@@ -19,7 +19,7 @@ export const handler = async (event) => {
       return await handleRequestInformation(event);
     }
 
-    if (path.endsWith('/photos/likes') && method === 'POST') {
+    if (path.endsWith('/photos/likes') && ['GET', 'POST'].includes(method)) {
       console.log("Routing to photo like handler");
       return await handleLikePhoto(event);
     }

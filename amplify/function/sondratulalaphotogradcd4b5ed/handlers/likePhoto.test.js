@@ -129,6 +129,7 @@ test("counts every paginated scan page for public totals", async () => {
   const handler = createLikeHandler(documentClient);
   const result = await handler({
     httpMethod: "GET",
+    path: "/photos/likes/count",
     queryStringParameters: {
       photo: "public/images/portfolio/fog.webp",
     },
@@ -136,4 +137,34 @@ test("counts every paginated scan page for public totals", async () => {
 
   assert.deepEqual(JSON.parse(result.body), { totalLikes: 5 });
   assert.equal(page, 2);
+});
+
+test("loads the signed-in user's like state with the shared total", async () => {
+  const photo = "public/images/portfolio/fog.webp";
+  const documentClient = {
+    get: (params) => {
+      assert.deepEqual(params.Key, {
+        username: "verified-user-id",
+        photo,
+      });
+      return request({ Item: { liked: "Y" } });
+    },
+    scan: () => request({ Count: 2 }),
+  };
+  const verifier = {
+    verify: async () => ({ sub: "verified-user-id" }),
+  };
+  const handler = createLikeHandler(documentClient, verifier);
+  const result = await handler({
+    httpMethod: "GET",
+    path: "/photos/likes",
+    queryStringParameters: { photo },
+    headers: { Authorization: "Bearer valid-access-token" },
+  });
+
+  assert.equal(result.statusCode, 200);
+  assert.deepEqual(JSON.parse(result.body), {
+    liked: true,
+    totalLikes: 2,
+  });
 });

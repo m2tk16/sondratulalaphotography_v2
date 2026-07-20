@@ -242,23 +242,31 @@ the provider scopes. Do not run migration `refactor`.
 - The scope correction is deployed only to `gen2rehearsal`. Its root stack is
   `UPDATE_COMPLETE`, Cognito stores `openid profile email`, and a live
   authorization request forwards all three scopes to Google.
+- The first two-account like test persisted both user records but exposed that
+  the frontend reset each account's heart and used a session-dependent helper
+  for the public total. It now uses a direct non-cached public count request
+  and an authenticated per-user status request.
+- The like-state correction is deployed only to `gen2rehearsal`. The public
+  endpoint returns the persisted total, unsigned status reads return HTTP 401,
+  and the sandbox stack is `UPDATE_COMPLETE`.
 
 ## Next steps
 
-1. Retry Google sign-in against the local rehearsal frontend.
-2. Run the remaining Phase 4 two-account browser acceptance workflow.
+1. Refresh the local portfolio and repeat the two-account like workflow.
+2. Run the remaining Phase 4 browser acceptance workflow.
 3. Record the acceptance results and stop before migration `refactor`.
 
 ## Resume point after interruption
 
-Phase 3 is complete and recorded in `docs/GEN2_PHASE3_REHEARSAL.md`. During
-Phase 4, the first Google callback exposed a missing email scope. The isolated
-sandbox now explicitly requests `openid profile email`; deployment and direct
-Cognito redirect verification passed. Retry sign-in at
-`http://localhost:5173/`, then continue the two-account workflow. Browser-level
-image lazy loading is already implemented. Editing all metadata on existing
-Studio entries and cleaning orphaned likes during permanent deletion remain
-separate product changes. No migration `refactor` command has been run.
+Phase 3 is complete and recorded in `docs/GEN2_PHASE3_REHEARSAL.md`. Phase 4
+Google sign-in and account-switch like defects are corrected in the isolated
+sandbox. Refresh `http://localhost:5173/` and repeat the two-account workflow;
+the current test data contains one persisted non-admin like and an unliked
+admin record, so the admin should initially see an empty heart with a shared
+total of one. Browser-level image lazy loading is already implemented. Editing
+all metadata on existing Studio entries and cleaning orphaned likes during
+permanent deletion remain separate product changes. No migration `refactor`
+command has been run.
 
 ## Known risks and blockers
 

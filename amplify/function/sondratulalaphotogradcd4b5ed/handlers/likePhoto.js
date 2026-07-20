@@ -82,7 +82,9 @@ const createLikeHandler =
       return response(400, { message: "A photograph path is required." });
     }
 
-    if (method === "GET") {
+    const isPublicCount =
+      method === "GET" && event.path?.endsWith("/photos/likes/count");
+    if (isPublicCount) {
       return response(200, { totalLikes: await countLikes(documentClient, photo) });
     }
 
@@ -102,6 +104,14 @@ const createLikeHandler =
         Key: { username, photo },
       })
       .promise();
+
+    if (method === "GET") {
+      return response(200, {
+        liked: existing.Item?.liked === "Y",
+        totalLikes: await countLikes(documentClient, photo),
+      });
+    }
+
     const liked = existing.Item?.liked !== "Y";
 
     await documentClient

@@ -114,3 +114,25 @@ forwards all three scopes to Google. Production and the locked Gen 1 clone were
 not changed.
 
 Resume Phase 4 acceptance by signing in again at `http://localhost:5173/`.
+
+## Phase 4 account-switch like correction
+
+The first two-account like test showed zero after changing accounts even
+though both identities had reached the sandbox likes table. The portfolio
+initialized every account's heart as unliked and loaded the shared count
+through a session-dependent API helper. That made account changes unreliable
+and could toggle an existing like off when the empty heart was clicked.
+
+The portfolio now loads the shared total through a direct, non-cached public
+request. Signed-in sessions also load their own persisted heart state through
+an authenticated `GET /photos/likes` request before allowing another toggle.
+The sandbox Lambda and local frontend were updated; production remains
+unchanged.
+
+Deployment verification confirmed:
+
+- The sandbox root stack is `UPDATE_COMPLETE`.
+- An unsigned status read is rejected with HTTP 401.
+- The public count endpoint returns the persisted shared total.
+- All 13 backend tests, backend type-checking, ESLint, and the production
+  frontend build pass.
