@@ -98,3 +98,19 @@ Then run the accepted two-account workflow against the local frontend:
 
 Stop after functional acceptance. Do not run migration `refactor` without a
 new explicit approval.
+
+## Phase 4 authentication correction
+
+The first Google sign-in attempt returned to the local app with
+`error=invalid_request` and
+`error_description=attributes required: [email]`. The generated Google
+identity provider had inherited CDK's `profile`-only default even though the
+User Pool requires an email address.
+
+The Gen 2 auth definition now explicitly requests `openid`, `profile`, and
+`email`. The isolated sandbox redeployed successfully, Cognito reports
+`authorize_scopes` as `openid profile email`, and its authorization endpoint
+forwards all three scopes to Google. Production and the locked Gen 1 clone were
+not changed.
+
+Resume Phase 4 acceptance by signing in again at `http://localhost:5173/`.

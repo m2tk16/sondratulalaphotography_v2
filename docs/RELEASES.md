@@ -3,6 +3,29 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-06 - Gen 2 Google email scope correction
+
+Status: deployed - isolated sandbox only
+Date: 2026-07-19
+Target: Gen 2 `gen2rehearsal` sandbox; production unchanged
+
+### Implemented
+
+- Added explicit Google OAuth scopes `openid`, `profile`, and `email` to the
+  Gen 2 auth definition.
+- Redeployed only the isolated rehearsal sandbox after the first Phase 4
+  callback reported `attributes required: [email]`.
+
+### Verification
+
+- Backend type-check, ESLint, production build, and all 12 backend tests pass.
+- The sandbox root stack is `UPDATE_COMPLETE`.
+- Cognito reports `authorize_scopes` as `openid profile email`.
+- The live Cognito authorization endpoint redirects to Google with all three
+  scopes.
+- Production and the locked Gen 1 clone were not changed; no migration
+  `refactor` was run.
+
 ## STP-2026.07.19-05 - Isolated Gen 2 sandbox
 
 Status: deployed - isolated sandbox only

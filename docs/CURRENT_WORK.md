@@ -4,8 +4,9 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Prepare Phase 4 browser acceptance against the deployed isolated Gen 2
-`gen2rehearsal` sandbox. Do not run migration `refactor`.
+Complete Phase 4 browser acceptance against the deployed isolated Gen 2
+`gen2rehearsal` sandbox. Google sign-in is ready for retest after correcting
+the provider scopes. Do not run migration `refactor`.
 
 ## Current state
 
@@ -234,24 +235,30 @@ Prepare Phase 4 browser acceptance against the deployed isolated Gen 2
 - The rehearsal frontend now consumes generated Gen 2 outputs. Phase 4 Google
   sign-in requires the new Cognito `/oauth2/idpresponse` redirect URI recorded
   in `docs/GEN2_PHASE3_REHEARSAL.md`.
+- The first Phase 4 Google callback failed with
+  `attributes required: [email]` because the provider requested only CDK's
+  default `profile` scope. The auth definition now explicitly requests
+  `openid`, `profile`, and `email`.
+- The scope correction is deployed only to `gen2rehearsal`. Its root stack is
+  `UPDATE_COMPLETE`, Cognito stores `openid profile email`, and a live
+  authorization request forwards all three scopes to Google.
 
 ## Next steps
 
-1. Add the exact Gen 2 sandbox Cognito redirect URI to the Google OAuth client.
-2. Run Phase 4 two-account browser acceptance against the local rehearsal
-   frontend.
+1. Retry Google sign-in against the local rehearsal frontend.
+2. Run the remaining Phase 4 two-account browser acceptance workflow.
 3. Record the acceptance results and stop before migration `refactor`.
 
 ## Resume point after interruption
 
-Phase 3 is complete and recorded in `docs/GEN2_PHASE3_REHEARSAL.md`. The Gen 1
-clone is locked, the generated Gen 2 backend is reconciled, and the isolated
-Gen 2 sandbox is deployed. Local tests, lint, build, infrastructure isolation,
-and unauthenticated API smoke tests pass. Add the documented Google redirect
-URI, then run Phase 4 browser acceptance. Browser-level image lazy loading is
-already implemented. Editing all metadata on existing Studio entries and
-cleaning orphaned likes during permanent deletion remain separate product
-changes. No migration `refactor` command has been run.
+Phase 3 is complete and recorded in `docs/GEN2_PHASE3_REHEARSAL.md`. During
+Phase 4, the first Google callback exposed a missing email scope. The isolated
+sandbox now explicitly requests `openid profile email`; deployment and direct
+Cognito redirect verification passed. Retry sign-in at
+`http://localhost:5173/`, then continue the two-account workflow. Browser-level
+image lazy loading is already implemented. Editing all metadata on existing
+Studio entries and cleaning orphaned likes during permanent deletion remain
+separate product changes. No migration `refactor` command has been run.
 
 ## Known risks and blockers
 
