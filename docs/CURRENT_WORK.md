@@ -373,13 +373,19 @@ Gen 1 without separate approval.
   pre-release gate passes: all 25 unit/backend tests, all four component tests,
   backend type-checking, Lambda syntax checks, ESLint, and the production
   build. The dependency audit has no high or critical findings.
+- Amplify Hosting job 45 failed safely during `npm ci`, before deployment,
+  because four bundled OpenTelemetry entries were missing from the committed
+  lockfile. Regenerating lock metadata added only those required transitive
+  entries; a clean install, all 29 tests, ESLint, the production build, and the
+  high/critical audit pass for the retry.
 - The accepted Gen 2 candidate has not yet received the stricter manifest and
   homepage validator; local Studio and viewer acceptance are pending.
 
 ## Next steps
 
-1. Fast-forward and push `main` to the exact verified Gen 2 candidate.
-2. Confirm the Amplify Hosting production job succeeds.
+1. Push the verified lockfile repair and confirm the retrying Amplify Hosting
+   production job succeeds.
+2. Confirm the deployed bundle targets the accepted Gen 2 production outputs.
 3. Smoke-test public routes, static assets, and Gen 2 public API boundaries.
 4. Run authenticated production acceptance in a regular browser.
 5. Keep the Gen 1 backend intact through an observation window before any

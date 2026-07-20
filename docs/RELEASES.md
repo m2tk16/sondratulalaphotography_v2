@@ -25,6 +25,10 @@ Target: existing production hosting app with accepted Gen 2 backend
   known moderate findings remain.
 - The checked-in outputs match the accepted Gen 2 production User Pool, bucket,
   and REST APIs documented in the blue/green plan.
+- Initial hosting job 45 failed before deployment because `npm ci` found four
+  missing bundled OpenTelemetry entries in `package-lock.json`. The lockfile
+  was regenerated without changing declared dependencies; a clean install and
+  the complete frontend verification gate pass for the retry.
 
 ## STP-2026.07.19-18 - Theme-aware photograph viewer
 
