@@ -3,6 +3,26 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-18 - Theme-aware photograph viewer
+
+Status: candidate - local visual confirmation pending
+Date: 2026-07-19
+Target: Gen 2 frontend candidate; frontend cutover remains paused
+
+### Corrected
+
+- Replaced the standalone viewer's fixed dark surround with the shared
+  appearance tokens, so it follows the visitor's saved light or dark choice.
+- Kept the photograph visually framed in both appearances with a warm cream
+  light mat, the existing night-gallery dark mat, themed controls, and a
+  restrained image shadow.
+
+### Verification
+
+- All four component tests pass.
+- ESLint and the production build pass.
+- No backend deployment or frontend cutover occurred.
+
 ## STP-2026.07.19-17 - Warning-free viewer image priority
 
 Status: candidate - local visual confirmation pending

@@ -369,6 +369,9 @@ frontend or decommission Gen 1 without separate approval.
   standards-compatible lowercase `fetchpriority` DOM attribute through the
   typed image wrapper. A component regression test verifies both the attribute
   and a warning-free render.
+- The standalone photograph viewer now honors the visitor's saved appearance:
+  its image mat, toolbar, controls, borders, metadata, and surrounding details
+  use the shared warm-light or night-gallery theme tokens.
 - The accepted Gen 2 candidate has not yet received the stricter manifest and
   homepage validator; local Studio and viewer acceptance are pending.
 
