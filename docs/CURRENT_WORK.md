@@ -4,9 +4,10 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Phase 4 browser acceptance is complete against the isolated Gen 2
-`gen2rehearsal` sandbox. Stop before migration `refactor`; it requires new
-explicit approval.
+Phase 5 production preparation has started after successful Phase 4 browser
+acceptance. The read-only production reassessment is blocked by the existing
+`gentest` migration marker. Await explicit approval to roll back only the
+clone lock; do not lock or modify production yet.
 
 ## Current state
 
@@ -257,23 +258,33 @@ explicit approval.
   SES permission.
 - Console 404s captured during the test preceded the corrected Lambda
   deployment. Post-deployment like-status requests route successfully.
+- Phase 5 read-only preparation is recorded in
+  `docs/GEN2_PHASE5_PRODUCTION.md`.
+- Production `main` reports no pending Amplify changes and its root stack is
+  `UPDATE_COMPLETE`; its auth nested stack is `UPDATE_ROLLBACK_COMPLETE`.
+- The production reassessment did not run because Amplify still marks
+  `gentest` as the migration environment. No production mutation occurred.
 
 ## Next steps
 
-1. Review the completed Phase 4 evidence.
-2. Decide whether to proceed to the next migration gate.
-3. Do not run migration `refactor` without new explicit approval.
+1. Obtain explicit approval to run `gen2-migration lock --rollback` against
+   `gentest` only.
+2. Verify the clone is healthy and unlocked, then rerun the read-only
+   production assessment.
+3. Stop before the separate production-lock gate.
 
 ## Resume point after interruption
 
 Phase 3 deployment and Phase 4 authenticated browser acceptance are complete.
-Two-account likes and all tested Studio controls passed. The contact endpoint
-accepted the test, while real delivery remained safely suppressed in the
-sandbox. The captured 404s were requests made before the corrected Lambda
-deployment completed; current routing is healthy. Browser-level image lazy
+Phase 5 read-only preparation confirmed the production root and Lambda are
+healthy, while the auth nested stack remains `UPDATE_ROLLBACK_COMPLETE`.
+Production assessment is blocked because the project still marks `gentest` as
+the migration environment. The next reversible mutation is rolling back only
+the clone lock; it requires explicit approval. Browser-level image lazy
 loading is already implemented. Editing all metadata on existing Studio
 entries and cleaning orphaned likes during permanent deletion remain separate
-product changes. No migration `refactor` command has been run.
+product changes. No production lock, deployment, cutover, decommission, or
+migration `refactor` command has been run.
 
 ## Known risks and blockers
 

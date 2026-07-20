@@ -3,6 +3,27 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-08 - Phase 5 production reassessment baseline
+
+Status: candidate - read-only preparation
+Date: 2026-07-19
+Target: production migration planning; no production mutation
+
+### Recorded
+
+- Captured the production root, auth nested stack, Lambda, Gen 1 clone, and
+  Gen 2 rehearsal stack statuses.
+- Reconstructed ignored Gen 1 metadata in a temporary detached `main`
+  worktree using a read-only Amplify pull.
+- Confirmed production reports no pending Amplify backend changes.
+
+### Blocker
+
+- The migration CLI rejected the `main` assessment because the project still
+  marks `gentest` as its migration environment.
+- Rolling back only the clone lock is the next separate approval gate.
+- No production lock, deployment, refactor, cutover, or decommission occurred.
+
 ## STP-2026.07.19-07 - Gen 2 account-switch like state
 
 Status: deployed - isolated sandbox only
