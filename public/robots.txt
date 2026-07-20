@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sondratulalaphotography.com/sitemap.xml

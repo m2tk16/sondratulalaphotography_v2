@@ -8,7 +8,10 @@ interface GetImageProps {
   alt?: string;
   className?: string;
   fluid?: boolean;
+  fetchPriority?: "high" | "low" | "auto";
   loading?: "eager" | "lazy";
+  onUrlChange?: (url: string | null) => void;
+  sizes?: string;
 }
 
 const GetImage: React.FC<GetImageProps> = ({
@@ -16,18 +19,26 @@ const GetImage: React.FC<GetImageProps> = ({
   alt = "",
   className = "",
   fluid = true,
+  fetchPriority = "auto",
   loading = "lazy",
+  onUrlChange,
+  sizes,
 }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
     setImageUrl(null);
+    onUrlChange?.(null);
 
     async function fetchImage() {
       try {
         const urlResponse = await getUrl({ path: imagePath });
-        if (active) setImageUrl(urlResponse.url.toString());
+        if (active) {
+          const resolvedUrl = urlResponse.url.toString();
+          setImageUrl(resolvedUrl);
+          onUrlChange?.(resolvedUrl);
+        }
       } catch (error) {
         if (active) console.error("Error fetching image:", error);
       }
@@ -37,7 +48,7 @@ const GetImage: React.FC<GetImageProps> = ({
     return () => {
       active = false;
     };
-  }, [imagePath]);
+  }, [imagePath, onUrlChange]);
 
   return (
     <>
@@ -45,9 +56,12 @@ const GetImage: React.FC<GetImageProps> = ({
         <Image
           alt={alt}
           className={className}
+          decoding="async"
+          fetchPriority={fetchPriority}
           src={imageUrl}
           fluid={fluid}
           loading={loading}
+          sizes={sizes}
         />
       ) : (
         <div className="loading-spinner">

@@ -3,6 +3,47 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-16 - Shareable photograph viewer and discovery
+
+Status: candidate - local visual acceptance pending
+Date: 2026-07-19
+Target: accepted Gen 2 frontend candidate; frontend cutover remains paused
+
+### Implemented
+
+- Added durable, readable `/portfolio/:photoSlug` routes whose encoded identity
+  keeps old shared links working after title edits.
+- Linked portfolio images and titles to an immersive dark-gallery viewer with
+  close, previous, next, Escape, arrow-key, native share, and copy-link
+  behavior plus accessible labels and missing/inactive states.
+- Added dynamic titles, descriptions, canonical links, Open Graph and Twitter
+  fields, and schema.org `ImageObject` creator, credit, copyright, date, and
+  location metadata.
+- Added generic crawler/share fallbacks, `robots.txt`, and a public-page
+  sitemap.
+- Kept gallery photographs lazy, made primary viewing images eager, ignored
+  stale signed-URL resolutions, and deferred off-screen gallery rendering.
+- Added Vitest, jsdom, and React Testing Library as the focused component-test
+  stack.
+
+### Verification
+
+- Backend type-checking, ESLint, and the production build pass.
+- All 25 Node/backend tests and three viewer component tests pass.
+- The production dependency audit reports no high or critical findings. Three
+  existing moderate findings remain in Babel runtime and AWS SDK v2/uuid.
+- Connected-browser visual QA remains unavailable in this session.
+- No backend deployment or frontend cutover occurred.
+
+### Deferred honestly
+
+- The private bucket currently contains only original photograph files.
+  Browser sizing and lazy rendering are improved, but real lower-byte
+  responsive derivatives require the separately tracked thumbnail-generation
+  pipeline and a one-time legacy backfill.
+- A live image sitemap requires build-time or backend access to the private
+  manifest; the committed sitemap currently covers stable public pages.
+
 ## STP-2026.07.19-15 - Post-launch product roadmap
 
 Status: candidate - documentation only; no implementation

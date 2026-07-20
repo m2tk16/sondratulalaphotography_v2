@@ -41,6 +41,8 @@
   width: 100%;
   margin: 0 0 clamp(3rem, 7vw, 7rem);
   break-inside: avoid;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 620px;
 }
 
 .photo-frame {
@@ -53,6 +55,37 @@
   width: 100%;
   height: auto;
   transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.photo-view-link {
+  position: relative;
+  display: block;
+  color: #fff;
+  text-decoration: none;
+}
+
+.view-photo-label {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.55rem 0.75rem;
+  background: rgba(20, 18, 15, 0.66);
+  backdrop-filter: blur(6px);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  text-transform: uppercase;
+  transform: translateY(0.35rem);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.photo-view-link:hover .view-photo-label,
+.photo-view-link:focus-visible .view-photo-label {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .photo-card:hover .portfolio-image {
@@ -81,6 +114,16 @@
   font-family: var(--display);
   font-size: clamp(1.55rem, 3vw, 2.15rem);
   font-weight: 400;
+}
+
+.photo-details h2 a {
+  text-decoration: none;
+}
+
+.photo-details h2 a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25rem;
 }
 
 .photo-meta,

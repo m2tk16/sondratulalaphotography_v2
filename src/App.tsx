@@ -14,6 +14,7 @@ import Contact from "./Contact/contact";
 import Footer from "./Footer/footer";
 import Home from "./Home/home";
 import NavBar from "./Navigation/navbar";
+import PhotoDetail from "./Portfolio/photoDetail";
 import Portfolio from "./Portfolio/portfolio";
 import { AuthProvider } from "./Utilities/auth";
 import UseAuth from "./Utilities/auth";
@@ -55,6 +56,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/portfolio/:photoSlug" element={<PhotoDetail />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/admin" element={<AdminRoute />} />
               <Route path="*" element={<Navigate to="/" replace />} />

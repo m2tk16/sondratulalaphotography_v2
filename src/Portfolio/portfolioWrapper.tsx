@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Heart, HeartFill } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
 import GetImage from "../Utilities/getImage";
 import UseAuth from "../Utilities/auth";
 import {
@@ -8,6 +9,7 @@ import {
   PUBLIC_API_URL,
 } from "../config/backend";
 import type { Photo } from "./photoData";
+import { photoPath } from "./photoRoutes";
 
 const LIKE_ENDPOINT = `${PRIVATE_LIKE_API_URL}/photos/likes`;
 const EXPIRED_SESSION = "EXPIRED_SESSION";
@@ -135,16 +137,26 @@ const PortfolioWrapper = ({ photo }: { photo: Photo }) => {
   return (
     <article className="photo-card">
       <div className="photo-frame">
-        <GetImage
-          alt={photo.altText}
-          imagePath={photo.path}
-          className="portfolio-image"
-        />
+        <Link
+          aria-label={`View ${photo.title}`}
+          className="photo-view-link"
+          to={photoPath(photo)}
+        >
+          <GetImage
+            alt={photo.altText}
+            imagePath={photo.path}
+            className="portfolio-image"
+            sizes="(max-width: 620px) calc(100vw - 2rem), (max-width: 1200px) 50vw, 700px"
+          />
+          <span aria-hidden className="view-photo-label">View photograph</span>
+        </Link>
       </div>
       <div className="photo-details">
         <div>
           <p className="photo-category">{photo.category}</p>
-          <h2>{photo.title}</h2>
+          <h2>
+            <Link to={photoPath(photo)}>{photo.title}</Link>
+          </h2>
           {(photo.location || photo.capturedAt) && (
             <p className="photo-meta">
               {[photo.location, photo.capturedAt].filter(Boolean).join(" · ")}

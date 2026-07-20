@@ -7,6 +7,8 @@ Last updated: 2026-07-19
 Keep frontend cutover paused while expanding the accepted Gen 2 Studio so
 every existing photograph's metadata can be edited safely, including ordering
 and accessible alternative text, and so Sondra can choose the homepage photo.
+Add durable photograph routes, an accessible viewer, and image discovery
+metadata before cutover.
 Preserve the live Gen 1 backend and frontend as rollback. Do not cut over the
 frontend or decommission Gen 1 without separate approval.
 
@@ -345,15 +347,33 @@ frontend or decommission Gen 1 without separate approval.
   shareable/detail-page, lightbox, responsive-image, analytics, and image
   metadata polish first; validate print demand before custom commerce; and add
   threaded comments only alongside moderation and abuse controls.
-- Backend type-checking, ESLint, the production build, and all 22 automated
-  tests pass. The accepted Gen 2 candidate has not yet received the stricter
-  manifest validator; local Studio acceptance is pending.
+- Every active photograph now has a durable, title-readable detail URL whose
+  identity survives title edits. Portfolio images and titles link to it.
+- The detail route provides an immersive viewer with previous/next controls,
+  Escape-to-close, left/right keyboard navigation, native sharing or link
+  copying, direct-route loading, and a safe inactive/missing state.
+- Photograph pages update titles, descriptions, canonical URLs, Open Graph and
+  Twitter fields, and `ImageObject` creator/copyright metadata. Generic static
+  share metadata, `robots.txt`, and a public-page sitemap provide fallbacks.
+- Gallery cards retain native lazy loading and now defer off-screen rendering;
+  detail and homepage images load eagerly. True smaller responsive derivatives
+  remain a separate image-processing task because the private bucket currently
+  stores only original files.
+- Vitest, jsdom, and React Testing Library now cover the stateful viewer.
+  Durable routes, title-change compatibility, metadata, direct opening,
+  keyboard navigation, close behavior, and missing photographs are tested.
+- Backend/unit tests (25), component tests (3), backend type-checking, ESLint,
+  and the production build pass. The production dependency audit has no high
+  or critical findings; three pre-existing moderate findings remain.
+- The accepted Gen 2 candidate has not yet received the stricter manifest and
+  homepage validator; local Studio and viewer acceptance are pending.
 
 ## Next steps
 
 1. Obtain approval to deploy the stricter manifest and single-homepage-photo
    validator only to the Gen 2 candidate.
-2. Run local Studio field-editing, reordering, and homepage-photo acceptance.
+2. Run local Studio field-editing, reordering, homepage-photo, viewer, sharing,
+   and light/dark-theme acceptance.
 3. Obtain explicit approval for the frontend cutover.
 4. Keep the Gen 1 backend intact through an observation window before any
    separate decommissioning decision.

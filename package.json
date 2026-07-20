@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "test": "node --import tsx --test src/Admin/photoEditor.test.ts amplify/function/sondratulalaphotogradcd4b5ed/handlers/likePhoto.test.js amplify/function/sondratulalaphotogradcd4b5ed/handlers/adminPhoto.test.js amplify/function/sondratulalaphotogradcd4b5ed/handlers/requestInformation.test.js",
+    "test": "npm run test:unit && npm run test:components",
+    "test:unit": "node --import tsx --test src/Admin/photoEditor.test.ts src/Portfolio/photoRoutes.test.ts amplify/function/sondratulalaphotogradcd4b5ed/handlers/likePhoto.test.js amplify/function/sondratulalaphotogradcd4b5ed/handlers/adminPhoto.test.js amplify/function/sondratulalaphotogradcd4b5ed/handlers/requestInformation.test.js",
+    "test:components": "vitest run",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -30,6 +32,9 @@
     "@aws-amplify/backend-cli": "^1.8.0",
     "@aws-amplify/backend-data": "^1.6.2",
     "@eslint/js": "^9.17.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/aws-lambda": "^8.10.92",
     "@types/node": "*",
     "@types/react": "^18.3.18",
@@ -44,9 +49,11 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
+    "jsdom": "^29.1.1",
     "tsx": "^4.20.6",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vitest": "^4.1.10"
   }
 }

@@ -46,9 +46,9 @@ Use tests in proportion to behavior and risk.
 - Do not rely on a successful build as the only verification for behavior that
   can lose data, leak access, charge money, or change ownership.
 
-No frontend test runner is configured yet. When the first meaningful component
-or unit test is needed, prefer Vitest with React Testing Library. Introduce it
-as a focused change and document the command here and in `README.md`.
+Vitest with React Testing Library is configured for stateful frontend behavior.
+Name those files `*.component.test.tsx` and run them with
+`npm run test:components`; `npm test` runs both the Node and component suites.
 
 ## Environments and release safety
 

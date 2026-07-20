@@ -16,17 +16,21 @@ Sondra's priorities become clearer.
 - [ ] Move photograph metadata and likes to AppSync/GraphQL.
 - [x] Lazy-load portfolio images at the browser level as they approach the
   viewport.
-- [ ] Add thumbnail and responsive-image generation after upload.
+- [ ] Add generated thumbnail and responsive-image files after upload so
+  mobile visitors download smaller bytes, not merely smaller rendered images.
 - [x] Let Sondra edit all existing photograph metadata (title, category,
   location, capture date, description, homepage-photo status, alt text) and
   reorder photographs after upload.
 - [x] Let Sondra select one active portfolio photograph as the homepage hero,
   with a safe default image when no photograph is selected.
 - [ ] Remove all related like records when a photograph is permanently deleted.
-- [ ] Add dedicated collection pages and shareable photograph detail routes.
-- [ ] Add accessible full-screen lightbox browsing.
-- [ ] Add per-photograph social preview metadata, image sitemaps, creator and
-  copyright metadata, and an optional licensing/contact link.
+- [ ] Add dedicated collection pages.
+- [x] Add durable, shareable photograph detail routes.
+- [x] Add accessible full-screen lightbox browsing.
+- [x] Add per-photograph social metadata plus creator and copyright structured
+  data.
+- [ ] Generate an image sitemap from the live manifest and add an optional
+  licensing/contact link.
 - [x] Add image alt text as a required admin field.
 - [x] Add a light/dark appearance control that defaults to light and remembers
   each visitor's preference.
@@ -84,8 +88,7 @@ errors could charge customers or create incorrect orders.
   environment.
 - [ ] Migrate Lambda handlers from AWS SDK for JavaScript v2 to modular v3
   clients.
-- [ ] Add automated unit and component testing with Vitest and React Testing
-  Library when the next behavioral change requires it.
+- [x] Add automated component testing with Vitest and React Testing Library.
 - [ ] Add end-to-end coverage for login, likes, admin uploads, and deletion.
 - [ ] Add image backup and recovery procedures.
 - [ ] Add structured logs, alarms, and a lightweight operational runbook.
