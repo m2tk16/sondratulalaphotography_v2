@@ -4,12 +4,10 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Phase 5 production preparation has started after successful Phase 4 browser
-acceptance. The Gen 1 clone is unlocked and the read-only production
-assessment passed. The approved normal production lock stopped on understood
-production drift before mutation. Await explicit approval before repeating
-the production lock with `--skip-validations`; do not deploy, refactor, cut
-over, or decommission yet.
+The Developer Preview in-place migration has been abandoned. Build a clean
+parallel Gen 2 production candidate from the accepted rehearsal backend,
+preserving the live Gen 1 backend and frontend as rollback. Do not cut over the
+frontend or decommission Gen 1 without separate approval.
 
 ## Current state
 
@@ -284,14 +282,21 @@ over, or decommission yet.
   description drift.
 - All unexecuted validation change sets were deleted. Production remains
   unlocked and `UPDATE_COMPLETE`, and the project migration marker is absent.
+- The user approved a clean Gen 2 blue/green replacement instead of continuing
+  the migration CLI workflow. The plan is recorded in
+  `docs/GEN2_BLUE_GREEN.md`.
+- The production candidate enables SES only on the Gen 2 `production` branch
+  and protects the new likes table with retention, deletion protection, and
+  point-in-time recovery.
+- Candidate type-checking, ESLint, the production frontend build, and all 13
+  backend tests pass.
 
 ## Next steps
 
-1. Review the documented production drift and rollback baseline.
-2. Obtain explicit approval before running the production lock with
-   `--skip-validations`.
-3. Stop before generation, parallel deployment, stateful refactor, frontend
-   cutover, or decommission unless each gate is separately approved.
+1. Create and deploy the separate backend-only Gen 2 production app.
+2. Copy the 42 production portfolio objects; keep the new likes table empty.
+3. Add the new Cognito Google redirect and run candidate acceptance.
+4. Stop before frontend cutover and request separate approval.
 
 ## Resume point after interruption
 
@@ -303,9 +308,10 @@ production assessment passed. All reported resources support generation;
 Cognito and S3 also support later stateful refactor. The Lambda custom policy
 is the only manual generation item. The approved normal production lock
 stopped before mutation on understood production drift, and all validation
-artifacts were deleted. The next gate is the CLI-recommended production lock
-with `--skip-validations`, which requires separate explicit approval. No
-production lock, deployment, refactor, cutover, or decommission has occurred.
+artifacts were deleted. The user then abandoned the in-place migration path in
+favor of the already-rehearsed clean Gen 2 backend. Candidate configuration
+passes all local checks and is ready for a separate backend-app deployment.
+No production lock, refactor, frontend cutover, or decommission has occurred.
 
 ## Known risks and blockers
 

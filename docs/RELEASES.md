@@ -3,9 +3,32 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-11 - Clean Gen 2 production candidate
+
+Status: candidate - deployment pending
+Date: 2026-07-19
+Target: separate backend-only Gen 2 application
+
+### Implemented
+
+- Abandoned the Developer Preview in-place migration path before production
+  lock or refactor.
+- Added production-only contact delivery and least-privilege SES permission.
+- Added retention, deletion protection, and point-in-time recovery to the new
+  production likes table.
+- Defined the blue/green data-copy and frontend-cutover gates in
+  `docs/GEN2_BLUE_GREEN.md`.
+
+### Verification
+
+- Backend type-checking, ESLint, production build, and all 13 backend tests
+  pass.
+- Current Gen 1 production remains unlocked and unchanged.
+- Frontend cutover and Gen 1 decommission remain separately approved gates.
+
 ## STP-2026.07.19-10 - Production migration lock candidate
 
-Status: candidate - validation bypass approval pending
+Status: superseded by STP-2026.07.19-11
 Date: 2026-07-19
 Target: production `main` lock; no lock applied
 

@@ -4,11 +4,13 @@ import {
   BillingMode,
   Table,
 } from 'aws-cdk-lib/aws-dynamodb';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Function as LambdaFunction } from 'aws-cdk-lib/aws-lambda';
-import { Stack } from 'aws-cdk-lib';
+import { ArnFormat, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import type { Backend } from '../../backend';
 
 const branchName = process.env.AWS_BRANCH ?? 'sandbox';
+const isProduction = branchName === 'production';
 
 export const sondratulalaphotogradcd4b5ed = defineFunction({
   entry: './index.js',
@@ -16,7 +18,7 @@ export const sondratulalaphotogradcd4b5ed = defineFunction({
   timeoutSeconds: 25,
   memoryMB: 512,
   environment: {
-    CONTACT_DELIVERY_ENABLED: 'false',
+    CONTACT_DELIVERY_ENABLED: isProduction ? 'true' : 'false',
     ENV: `${branchName}`,
   },
   runtime: 20,
@@ -43,8 +45,27 @@ export function configureRuntimeResources(backend: Backend) {
         type: AttributeType.STRING,
       },
       billingMode: BillingMode.PAY_PER_REQUEST,
+      deletionProtection: isProduction,
+      pointInTimeRecovery: isProduction,
     }
   );
+
+  if (isProduction) {
+    likesTable.applyRemovalPolicy(RemovalPolicy.RETAIN);
+    lambda.addToRolePolicy(
+      new PolicyStatement({
+        actions: ['ses:SendEmail'],
+        resources: [
+          Stack.of(lambda).formatArn({
+            service: 'ses',
+            resource: 'identity',
+            resourceName: 'sondratulalaphotography.com',
+            arnFormat: ArnFormat.SLASH_RESOURCE_NAME,
+          }),
+        ],
+      })
+    );
+  }
 
   likesTable.grantReadWriteData(lambda);
   backend.storage.resources.bucket.grantReadWrite(lambda);
