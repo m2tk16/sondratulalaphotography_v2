@@ -8,6 +8,7 @@ interface GetImageProps {
   alt?: string;
   className?: string;
   fluid?: boolean;
+  loading?: "eager" | "lazy";
 }
 
 const GetImage: React.FC<GetImageProps> = ({
@@ -15,20 +16,27 @@ const GetImage: React.FC<GetImageProps> = ({
   alt = "",
   className = "",
   fluid = true,
+  loading = "lazy",
 }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
+    let active = true;
+    setImageUrl(null);
+
     async function fetchImage() {
       try {
         const urlResponse = await getUrl({ path: imagePath });
-        setImageUrl(urlResponse.url.toString());;
+        if (active) setImageUrl(urlResponse.url.toString());
       } catch (error) {
-        console.error("Error fetching image:", error);
+        if (active) console.error("Error fetching image:", error);
       }
     }
 
-    fetchImage();
+    void fetchImage();
+    return () => {
+      active = false;
+    };
   }, [imagePath]);
 
   return (
@@ -39,7 +47,7 @@ const GetImage: React.FC<GetImageProps> = ({
           className={className}
           src={imageUrl}
           fluid={fluid}
-          loading="lazy"
+          loading={loading}
         />
       ) : (
         <div className="loading-spinner">

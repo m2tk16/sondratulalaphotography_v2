@@ -140,7 +140,6 @@ const PortfolioWrapper = ({ photo }: { photo: Photo }) => {
           imagePath={photo.path}
           className="portfolio-image"
         />
-        {photo.featured && <span className="featured-label">Featured</span>}
       </div>
       <div className="photo-details">
         <div>

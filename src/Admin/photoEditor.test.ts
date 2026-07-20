@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  normalizeHomepagePhoto,
+  selectHomepagePhoto,
   updatePhotoMetadata,
   type Photo,
 } from "../Portfolio/photoData";
@@ -42,7 +44,7 @@ test("updates every editable field, preserves identity, and reorders", () => {
     category: "Wildlife",
     location: "  Chattanooga, TN  ",
     capturedAt: "2026-07-19",
-    active: false,
+    active: true,
     featured: true,
     order: 1,
   });
@@ -63,10 +65,52 @@ test("updates every editable field, preserves identity, and reorders", () => {
     category: "Wildlife",
     location: "Chattanooga, TN",
     capturedAt: "2026-07-19",
-    active: false,
+    active: true,
     featured: true,
     order: 1,
   });
+});
+
+test("selects one active homepage photo and replaces the previous selection", () => {
+  const selected = selectHomepagePhoto(
+    [
+      { ...photos[0], featured: true },
+      { ...photos[1], active: false },
+    ],
+    "second",
+  );
+
+  assert.deepEqual(
+    selected.map(({ id, active, featured }) => ({ id, active, featured })),
+    [
+      { id: "first", active: true, featured: false },
+      { id: "second", active: true, featured: true },
+    ],
+  );
+});
+
+test("normalizes duplicate or inactive homepage selections", () => {
+  const normalized = normalizeHomepagePhoto([
+    { ...photos[0], featured: true },
+    { ...photos[1], featured: true },
+    {
+      ...photos[1],
+      id: "third",
+      path: "public/images/portfolio/third.jpg",
+      active: false,
+      featured: true,
+      order: 2,
+    },
+  ]);
+
+  assert.deepEqual(
+    normalized.map(({ id, featured }) => ({ id, featured })),
+    [
+      { id: "first", featured: true },
+      { id: "second", featured: false },
+      { id: "third", featured: false },
+    ],
+  );
 });
 
 test("clamps an out-of-range position and leaves unknown IDs unchanged", () => {

@@ -18,8 +18,10 @@ Sondra's priorities become clearer.
   viewport.
 - [ ] Add thumbnail and responsive-image generation after upload.
 - [x] Let Sondra edit all existing photograph metadata (title, category,
-  location, capture date, description, featured status, alt text) and reorder
-  photographs after upload.
+  location, capture date, description, homepage-photo status, alt text) and
+  reorder photographs after upload.
+- [x] Let Sondra select one active portfolio photograph as the homepage hero,
+  with a safe default image when no photograph is selected.
 - [ ] Remove all related like records when a photograph is permanently deleted.
 - [ ] Add dedicated collection pages and shareable photograph detail routes.
 - [ ] Add accessible full-screen lightbox browsing.

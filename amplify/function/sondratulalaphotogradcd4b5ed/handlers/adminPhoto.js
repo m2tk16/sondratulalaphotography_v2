@@ -28,7 +28,6 @@ const PHOTO_CATEGORIES = new Set([
   "Wildlife",
   "Architecture",
   "Still Life",
-  "Featured",
 ]);
 const ADMIN_EMAILS = new Set([
   "t.sondra1947@gmail.com",
@@ -120,6 +119,7 @@ const validateManifest = (photos) => {
   }
   const ids = new Set();
   const paths = new Set();
+  let homepagePhotoCount = 0;
   for (const photo of photos) {
     if (
       !photo ||
@@ -146,6 +146,14 @@ const validateManifest = (photos) => {
       throw Object.assign(new Error("Manifest contains invalid photo metadata."), {
         statusCode: 400,
       });
+    }
+    if (photo.featured) {
+      homepagePhotoCount += 1;
+      if (!photo.active || homepagePhotoCount > 1) {
+        throw Object.assign(new Error("Manifest has an invalid homepage photo."), {
+          statusCode: 400,
+        });
+      }
     }
     ids.add(photo.id);
     paths.add(photo.path);

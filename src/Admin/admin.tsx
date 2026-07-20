@@ -12,6 +12,7 @@ import {
   loadPhotos,
   PHOTO_CATEGORIES,
   safeFileName,
+  selectHomepagePhoto,
   type Photo,
   updatePhotoMetadata,
 } from "../Portfolio/photoData";
@@ -158,14 +159,21 @@ const Admin = () => {
         featured: form.featured,
         order: photos.length,
       };
-      const nextPhotos = [...photos, nextPhoto];
+      const uploadedPhotos = [...photos, nextPhoto];
+      const nextPhotos = nextPhoto.featured
+        ? selectHomepagePhoto(uploadedPhotos, nextPhoto.id)
+        : uploadedPhotos;
       await adminRequest("/admin/manifest", "PUT", { photos: nextPhotos });
       setPhotos(nextPhotos);
       setForm(EMPTY_FORM);
       setFile(null);
       const input = document.getElementById("photo-file") as HTMLInputElement | null;
       if (input) input.value = "";
-      setMessage(`“${nextPhoto.title}” is now in the portfolio.`);
+      setMessage(
+        nextPhoto.featured
+          ? `“${nextPhoto.title}” is now in the portfolio and on the homepage.`
+          : `“${nextPhoto.title}” is now in the portfolio.`,
+      );
     } catch {
       if (uploadedPath) {
         try {
@@ -212,7 +220,12 @@ const Admin = () => {
       order: editForm.position - 1,
     });
     try {
-      await persist(nextPhotos, `“${editForm.title.trim()}” was updated.`);
+      await persist(
+        nextPhotos,
+        editForm.featured
+          ? `“${editForm.title.trim()}” was updated and set as the homepage photo.`
+          : `“${editForm.title.trim()}” was updated.`,
+      );
       setEditTarget(null);
       setEditForm(null);
     } catch {
@@ -222,7 +235,13 @@ const Admin = () => {
 
   const toggleActive = async (photo: Photo) => {
     const nextPhotos = photos.map((item) =>
-      item.id === photo.id ? { ...item, active: !item.active } : item,
+      item.id === photo.id
+        ? {
+            ...item,
+            active: !item.active,
+            featured: photo.active ? false : item.featured,
+          }
+        : item,
     );
     try {
       await persist(
@@ -348,12 +367,16 @@ const Admin = () => {
           </label>
           <label className="check-label full-width">
             <input
+              aria-describedby="upload-homepage-help"
               checked={form.featured}
               onChange={(event) => setForm({ ...form, featured: event.target.checked })}
               type="checkbox"
             />
-            Feature this photograph
+            Use as homepage photo
           </label>
+          <p className="form-hint full-width" id="upload-homepage-help">
+            Selecting this replaces the current homepage photograph.
+          </p>
           <button className="primary-button" disabled={saving} type="submit">
             {saving ? "Uploading…" : "Upload photograph"}
           </button>
@@ -385,7 +408,13 @@ const Admin = () => {
               <div className="admin-photo-copy">
                 <span>{photo.category}</span>
                 <h3>{photo.title}</h3>
-                <p>{photo.active ? "Visible in portfolio" : "Hidden from portfolio"}</p>
+                <p>
+                  {photo.featured
+                    ? "Homepage photo · Visible in portfolio"
+                    : photo.active
+                      ? "Visible in portfolio"
+                      : "Hidden from portfolio"}
+                </p>
               </div>
               <div className="admin-actions">
                 <button
@@ -514,7 +543,13 @@ const Admin = () => {
                   <input
                     checked={editForm.active}
                     onChange={(event) =>
-                      setEditForm({ ...editForm, active: event.target.checked })
+                      setEditForm({
+                        ...editForm,
+                        active: event.target.checked,
+                        featured: event.target.checked
+                          ? editForm.featured
+                          : false,
+                      })
                     }
                     type="checkbox"
                   />
@@ -522,18 +557,25 @@ const Admin = () => {
                 </label>
                 <label className="check-label">
                   <input
+                    aria-describedby="edit-homepage-help"
                     checked={editForm.featured}
                     onChange={(event) =>
                       setEditForm({
                         ...editForm,
+                        active: event.target.checked
+                          ? true
+                          : editForm.active,
                         featured: event.target.checked,
                       })
                     }
                     type="checkbox"
                   />
-                  Featured photograph
+                  Use as homepage photo
                 </label>
               </div>
+              <p className="form-hint full-width" id="edit-homepage-help">
+                Selecting this replaces the current homepage photograph.
+              </p>
               <label className="full-width">
                 Description
                 <textarea

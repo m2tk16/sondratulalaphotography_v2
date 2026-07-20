@@ -3,6 +3,42 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-14 - Studio-controlled homepage photograph
+
+Status: candidate - Gen 2 backend deployment and local acceptance pending
+Date: 2026-07-19
+Target: accepted Gen 2 candidate; frontend cutover remains paused
+
+### Implemented
+
+- Reframed the stored `featured` field as the single Studio-controlled
+  homepage photograph without requiring a metadata migration.
+- Added "Use as homepage photo" controls for uploads and existing photographs.
+  Choosing one activates it and replaces the previous selection; hiding it
+  clears the homepage setting.
+- Loaded the selected photograph, title, and alternative text into the
+  homepage hero, with the existing `Into the Fog` image as a safe fallback.
+- Removed the ambiguous portfolio Featured badge and Featured category. Legacy
+  category values normalize to Nature when loaded.
+- Made homepage images eager-loading while retaining lazy loading for
+  below-the-fold photographs, with stale asynchronous image requests ignored
+  when the selected source changes.
+- Added client normalization and server validation that reject multiple or
+  inactive homepage selections.
+
+### Verification
+
+- Backend type-checking, ESLint, and the production build pass.
+- All 22 automated tests pass, including unique/active homepage selection and
+  manifest-boundary regressions.
+- No backend deployment or frontend cutover occurred.
+
+### Next gate
+
+- Deploy the combined metadata and homepage validator only to the accepted
+  Gen 2 candidate after approval, then verify selection and replacement
+  locally.
+
 ## STP-2026.07.19-13 - Visitor appearance themes
 
 Status: candidate - local visual acceptance pending

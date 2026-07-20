@@ -21,7 +21,8 @@ npm run build
 
 The current automated tests cover authenticated likes, Studio authorization,
 manifest validation, contact delivery, and deterministic photograph-metadata
-editing and ordering. Browser component tests are not configured yet.
+editing, ordering, and homepage-photo selection. Browser component tests are
+not configured yet.
 
 ## Project documentation
 

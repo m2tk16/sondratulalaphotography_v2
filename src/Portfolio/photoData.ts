@@ -8,7 +8,6 @@ export const PHOTO_CATEGORIES = [
   "Wildlife",
   "Architecture",
   "Still Life",
-  "Featured",
 ] as const;
 
 export interface Photo {
@@ -50,13 +49,32 @@ const normalizePhoto = (photo: Partial<Photo>, index: number): Photo => ({
   title: photo.title || titleFromPath(photo.path || ""),
   altText: photo.altText || photo.title || titleFromPath(photo.path || ""),
   description: photo.description || "",
-  category: photo.category || "Nature",
+  category: photo.category === "Featured" ? "Nature" : photo.category || "Nature",
   location: photo.location || "",
   capturedAt: photo.capturedAt || "",
   active: photo.active !== false,
   featured: photo.featured === true,
   order: Number.isFinite(photo.order) ? Number(photo.order) : index,
 });
+
+export const normalizeHomepagePhoto = (photos: Photo[]): Photo[] => {
+  let homepagePhotoFound = false;
+  return photos.map((photo) => {
+    const featured = photo.active && photo.featured && !homepagePhotoFound;
+    if (featured) homepagePhotoFound = true;
+    return featured === photo.featured ? photo : { ...photo, featured };
+  });
+};
+
+export const selectHomepagePhoto = (
+  photos: Photo[],
+  photoId: string,
+): Photo[] =>
+  photos.map((photo) => ({
+    ...photo,
+    active: photo.id === photoId ? true : photo.active,
+    featured: photo.id === photoId,
+  }));
 
 export const updatePhotoMetadata = (
   photos: Photo[],
@@ -76,7 +94,7 @@ export const updatePhotoMetadata = (
     category: edits.category,
     location: edits.location.trim(),
     capturedAt: edits.capturedAt,
-    active: edits.active,
+    active: edits.featured ? true : edits.active,
     featured: edits.featured,
   };
   const requestedOrder = Number.isFinite(edits.order)
@@ -88,7 +106,13 @@ export const updatePhotoMetadata = (
   );
   orderedPhotos.splice(nextIndex, 0, updatedPhoto);
 
-  return orderedPhotos.map((photo, order) => ({ ...photo, order }));
+  const reorderedPhotos = orderedPhotos.map((photo, order) => ({
+    ...photo,
+    order,
+  }));
+  return edits.featured
+    ? selectHomepagePhoto(reorderedPhotos, photoId)
+    : normalizeHomepagePhoto(reorderedPhotos);
 };
 
 const loadLegacyPhotos = async (): Promise<Photo[]> => {
@@ -109,10 +133,12 @@ export const loadPhotos = async (): Promise<Photo[]> => {
       throw new Error("Photo manifest is unavailable.");
     }
     const photos = (await response.json()) as Partial<Photo>[];
-    return photos
-      .map(normalizePhoto)
-      .filter((photo) => Boolean(photo.path))
-      .sort((a, b) => a.order - b.order);
+    return normalizeHomepagePhoto(
+      photos
+        .map(normalizePhoto)
+        .filter((photo) => Boolean(photo.path))
+        .sort((a, b) => a.order - b.order),
+    );
   } catch {
     return loadLegacyPhotos();
   }

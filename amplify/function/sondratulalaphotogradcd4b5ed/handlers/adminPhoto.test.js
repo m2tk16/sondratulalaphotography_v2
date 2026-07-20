@@ -86,6 +86,7 @@ test("rejects incomplete or malformed photograph metadata", () => {
     { ...validPhoto, title: " " },
     { ...validPhoto, altText: "" },
     { ...validPhoto, category: "Unknown" },
+    { ...validPhoto, category: "Featured" },
     { ...validPhoto, capturedAt: "2026-02-30" },
     { ...validPhoto, active: "yes" },
     { ...validPhoto, order: -1 },
@@ -98,6 +99,39 @@ test("rejects incomplete or malformed photograph metadata", () => {
         error.statusCode === 400 && /invalid photo metadata/i.test(error.message),
     );
   }
+});
+
+test("accepts one active homepage photo", () => {
+  const homepagePhoto = { ...validPhoto, featured: true };
+  const serialized = validateManifest([homepagePhoto]);
+
+  assert.deepEqual(JSON.parse(serialized), [homepagePhoto]);
+});
+
+test("rejects an inactive or duplicate homepage photo", () => {
+  assert.throws(
+    () =>
+      validateManifest([
+        { ...validPhoto, active: false, featured: true },
+      ]),
+    (error) => error.statusCode === 400 && /homepage photo/i.test(error.message),
+  );
+
+  assert.throws(
+    () =>
+      validateManifest([
+        { ...validPhoto, featured: true },
+        {
+          ...validPhoto,
+          id: "second",
+          path: "public/images/portfolio/second.jpg",
+          title: "Second",
+          featured: true,
+          order: 1,
+        },
+      ]),
+    (error) => error.statusCode === 400 && /homepage photo/i.test(error.message),
+  );
 });
 
 test("rejects duplicate photograph IDs and paths", () => {

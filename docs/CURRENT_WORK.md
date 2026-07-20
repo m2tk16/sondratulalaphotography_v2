@@ -6,16 +6,17 @@ Last updated: 2026-07-19
 
 Keep frontend cutover paused while expanding the accepted Gen 2 Studio so
 every existing photograph's metadata can be edited safely, including ordering
-and accessible alternative text. Preserve the live Gen 1 backend and frontend
-as rollback. Do not cut over the frontend or decommission Gen 1 without
-separate approval.
+and accessible alternative text, and so Sondra can choose the homepage photo.
+Preserve the live Gen 1 backend and frontend as rollback. Do not cut over the
+frontend or decommission Gen 1 without separate approval.
 
 ## Current state
 
 - The public portfolio redesign is implemented locally.
 - Google sign-in is integrated for authenticated likes.
 - The `/admin` studio supports uploads, photograph metadata, categories,
-  featured status, visibility controls, and confirmed permanent deletion.
+  homepage-photo selection, visibility controls, and confirmed permanent
+  deletion.
 - Admin API requests verify the signed-in account server-side against the two
   approved email addresses.
 - Public like counts and authenticated like toggling are implemented locally.
@@ -316,7 +317,7 @@ separate approval.
   gate; Gen 1 resources remain intact for rollback.
 - Frontend cutover is now paused for Studio metadata editing. Each existing
   photograph can locally edit its title, category, alternative text, location,
-  capture date, description, visibility, featured status, and portfolio
+  capture date, description, visibility, homepage status, and portfolio
   position without changing its immutable ID or S3 path.
 - Reordering produces unique contiguous positions for the entire collection.
   Existing records without alternative text safely default to their title.
@@ -330,15 +331,25 @@ separate approval.
   color treatment, and is applied before the app renders on return visits.
 - The Studio manifest boundary now validates every metadata field, category,
   capture date, order, and duplicate ID/path before writing to S3.
-- Backend type-checking, ESLint, the production build, and all 18 automated
+- The stored `featured` field now has one clear product meaning: the active
+  homepage photograph. Studio calls it "Use as homepage photo," choosing a new
+  one replaces the previous selection, deactivating it clears the selection,
+  and the collection view clearly identifies it.
+- The homepage loads that photograph and its title/alternative text from the
+  manifest. `Into the Fog` remains the safe fallback when none is selected or
+  the manifest cannot be loaded.
+- The old portfolio "Featured" badge and category are removed. A legacy
+  `Featured` category is normalized to `Nature` when loaded, while new
+  manifests reject it.
+- Backend type-checking, ESLint, the production build, and all 22 automated
   tests pass. The accepted Gen 2 candidate has not yet received the stricter
   manifest validator; local Studio acceptance is pending.
 
 ## Next steps
 
-1. Obtain approval to deploy the stricter manifest validator only to the Gen 2
-   candidate.
-2. Run local Studio field-editing and reordering acceptance.
+1. Obtain approval to deploy the stricter manifest and single-homepage-photo
+   validator only to the Gen 2 candidate.
+2. Run local Studio field-editing, reordering, and homepage-photo acceptance.
 3. Obtain explicit approval for the frontend cutover.
 4. Keep the Gen 1 backend intact through an observation window before any
    separate decommissioning decision.
@@ -348,8 +359,9 @@ separate approval.
 The clean backend-only Gen 2 candidate in Amplify app `d15h7apgzubla9` is
 deployed, protected, populated, and accepted after two-account likes, Studio
 lifecycle, and contact-delivery testing. Frontend cutover is paused at the
-user's request while complete Studio metadata editing is implemented. No
-frontend cutover or Gen 1 decommission has occurred.
+user's request while complete Studio metadata editing and homepage-photo
+selection are implemented. No frontend cutover or Gen 1 decommission has
+occurred.
 
 ## Known risks and blockers
 
