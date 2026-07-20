@@ -4,13 +4,10 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Keep frontend cutover paused while expanding the accepted Gen 2 Studio so
-every existing photograph's metadata can be edited safely, including ordering
-and accessible alternative text, and so Sondra can choose the homepage photo.
-Add durable photograph routes, an accessible viewer, and image discovery
-metadata before cutover.
-Preserve the live Gen 1 backend and frontend as rollback. Do not cut over the
-frontend or decommission Gen 1 without separate approval.
+Publish the accepted Gen 2 frontend candidate to the existing production
+hosting app after explicit cutover approval. Preserve the live Gen 1 backend
+and data as rollback throughout the observation window; do not decommission
+Gen 1 without separate approval.
 
 ## Current state
 
@@ -372,27 +369,30 @@ frontend or decommission Gen 1 without separate approval.
 - The standalone photograph viewer now honors the visitor's saved appearance:
   its image mat, toolbar, controls, borders, metadata, and surrounding details
   use the shared warm-light or night-gallery theme tokens.
+- The user explicitly approved the production frontend cutover. The final
+  pre-release gate passes: all 25 unit/backend tests, all four component tests,
+  backend type-checking, Lambda syntax checks, ESLint, and the production
+  build. The dependency audit has no high or critical findings.
 - The accepted Gen 2 candidate has not yet received the stricter manifest and
   homepage validator; local Studio and viewer acceptance are pending.
 
 ## Next steps
 
-1. Obtain approval to deploy the stricter manifest and single-homepage-photo
-   validator only to the Gen 2 candidate.
-2. Run local Studio field-editing, reordering, homepage-photo, viewer, sharing,
-   and light/dark-theme acceptance.
-3. Obtain explicit approval for the frontend cutover.
-4. Keep the Gen 1 backend intact through an observation window before any
+1. Fast-forward and push `main` to the exact verified Gen 2 candidate.
+2. Confirm the Amplify Hosting production job succeeds.
+3. Smoke-test public routes, static assets, and Gen 2 public API boundaries.
+4. Run authenticated production acceptance in a regular browser.
+5. Keep the Gen 1 backend intact through an observation window before any
    separate decommissioning decision.
 
 ## Resume point after interruption
 
 The clean backend-only Gen 2 candidate in Amplify app `d15h7apgzubla9` is
 deployed, protected, populated, and accepted after two-account likes, Studio
-lifecycle, and contact-delivery testing. Frontend cutover is paused at the
-user's request while complete Studio metadata editing and homepage-photo
-selection are implemented. No frontend cutover or Gen 1 decommission has
-occurred.
+lifecycle, and contact-delivery testing. Studio metadata editing,
+homepage-photo selection, themes, and shareable photograph pages are complete
+and verified locally. The user approved frontend cutover; publishing and hosted
+smoke verification are next. No Gen 1 decommission has occurred.
 
 ## Known risks and blockers
 

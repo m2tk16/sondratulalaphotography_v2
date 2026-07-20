@@ -3,6 +3,29 @@
 Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 `superseded`, or `rolled-back`.
 
+## STP-2026.07.19-19 - Gen 2 production frontend cutover
+
+Status: candidate - approved for production publishing
+Date: 2026-07-19
+Target: existing production hosting app with accepted Gen 2 backend
+
+### Approved
+
+- Publish the accepted Gen 2 frontend configuration to the existing custom
+  domain while retaining the complete Gen 1 backend and data for rollback.
+- Include complete Studio metadata editing and ordering, homepage-photo
+  selection, persistent themes, and shareable photograph pages in the cutover.
+
+### Pre-release verification
+
+- All 25 unit/backend tests and all four component tests pass.
+- Backend type-checking, Lambda syntax checks, ESLint, and the production build
+  pass.
+- The production dependency audit reports no high or critical findings; three
+  known moderate findings remain.
+- The checked-in outputs match the accepted Gen 2 production User Pool, bucket,
+  and REST APIs documented in the blue/green plan.
+
 ## STP-2026.07.19-18 - Theme-aware photograph viewer
 
 Status: candidate - local visual confirmation pending
