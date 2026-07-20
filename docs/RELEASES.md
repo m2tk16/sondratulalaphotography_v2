@@ -5,7 +5,7 @@ Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 
 ## STP-2026.07.19-11 - Clean Gen 2 production candidate
 
-Status: deployed candidate - authenticated acceptance pending
+Status: accepted candidate - frontend cutover pending approval
 Date: 2026-07-19
 Target: separate backend-only Gen 2 application
 
@@ -35,9 +35,13 @@ Target: separate backend-only Gen 2 application
   27,874,789 bytes, and manifest ETag.
 - Public count, unsigned-like rejection, unsigned Studio rejection, and real
   contact email smoke tests pass.
+- Authenticated acceptance passed with two Google accounts. Likes persisted
+  across account switches, and Studio upload, metadata editing, activation,
+  deactivation, permanent deletion, and contact delivery all worked.
+- Final inspection found the root stack `UPDATE_COMPLETE`, 28 portfolio files,
+  17 active manifest records, two Cognito users, and three active like records.
 - Current Gen 1 production remains unlocked and unchanged.
-- Google callback registration and authenticated browser acceptance are next.
-  Frontend cutover and Gen 1 decommission remain separately approved gates.
+- Frontend cutover and Gen 1 decommission remain separately approved gates.
 
 ## STP-2026.07.19-10 - Production migration lock candidate
 

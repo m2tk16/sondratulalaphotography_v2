@@ -1,7 +1,7 @@
 # Clean Gen 2 Blue/Green Deployment
 
 Date started: 2026-07-19
-Status: backend candidate deployed; authenticated acceptance pending
+Status: backend candidate accepted; frontend cutover pending approval
 
 ## Decision
 
@@ -82,7 +82,20 @@ No production lock or CloudFormation stack refactor will be used.
 - Authenticated-like API:
   `https://waghv1ws21.execute-api.us-east-1.amazonaws.com/prod`
 
-The root stack is `UPDATE_COMPLETE`. The new User Pool and likes table are
-empty by design. Public like count, unsigned-like rejection, unsigned Studio
-rejection, and real contact delivery smoke tests pass. The live Gen 1
-frontend and backend have not been changed.
+The root stack is `UPDATE_COMPLETE`. Public like count, unsigned-like
+rejection, unsigned Studio rejection, and real contact delivery smoke tests
+pass.
+
+Authenticated acceptance passed on 2026-07-19:
+
+- Two Google accounts signed into the new User Pool.
+- Likes persisted across account switches and shared totals updated.
+- Studio upload, metadata editing, activation, deactivation, and permanent
+  deletion worked.
+- The contact form delivered email.
+- After deleting the disposable upload, the bucket again contains the 28
+  copied files and the manifest again contains the original 17 active records.
+- Final inspection found two Cognito users and three active like records.
+
+The live Gen 1 frontend and backend have not been changed. Frontend cutover
+remains a separate approval gate.

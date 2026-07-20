@@ -305,22 +305,31 @@ frontend or decommission Gen 1 without separate approval.
 - The new Google callback URI is recorded in
   `docs/GEN2_BLUE_GREEN.md`. Authenticated acceptance and frontend cutover
   remain pending.
+- Authenticated candidate acceptance passed with two Google accounts. Shared
+  likes persisted across account switches; Studio upload, metadata editing,
+  activation, deactivation, permanent deletion, and contact email all worked.
+- Final candidate inspection is healthy: root stack `UPDATE_COMPLETE`, 28
+  portfolio files, 17 active manifest records, two Cognito users, and three
+  active like records.
+- The candidate is accepted. Frontend cutover is the next separate approval
+  gate; Gen 1 resources remain intact for rollback.
 
 ## Next steps
 
-1. Add the new Cognito callback URI to the existing Google OAuth client.
-2. Run local authenticated acceptance against the candidate: two-account
-   likes, Studio upload/edit/deactivate/reactivate/delete, and sign-out.
-3. Stop before frontend cutover and request separate approval.
+1. Obtain explicit approval for the frontend cutover.
+2. Publish the frontend with the accepted Gen 2 outputs and verify the custom
+   domain.
+3. Keep the Gen 1 backend intact through an observation window before any
+   separate decommissioning decision.
 
 ## Resume point after interruption
 
 The in-place Developer Preview migration was abandoned before production
-mutation. A clean backend-only Gen 2 candidate is now deployed in Amplify app
-`d15h7apgzubla9`, protected, populated with the verified portfolio copy, and
-passing unauthenticated API/contact smoke tests. Add the callback URI from
-`docs/GEN2_BLUE_GREEN.md`, then run authenticated acceptance locally. No
-frontend cutover or Gen 1 decommission has occurred.
+mutation. The clean backend-only Gen 2 candidate in Amplify app
+`d15h7apgzubla9` is deployed, protected, populated, and accepted after
+two-account likes, Studio lifecycle, and contact-delivery testing. No frontend
+cutover or Gen 1 decommission has occurred. The next action requires explicit
+frontend-cutover approval.
 
 ## Known risks and blockers
 
