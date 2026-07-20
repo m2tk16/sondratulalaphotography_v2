@@ -21,7 +21,13 @@ Target: production migration planning; no production mutation
 
 - The migration CLI rejected the `main` assessment because the project still
   marks `gentest` as its migration environment.
-- Rolling back only the clone lock is the next separate approval gate.
+- The approved normal clone-lock rollback stopped before mutation because
+  drift validation detected the standard Amplify Gen 1 Identity Pool role
+  trust-policy pattern.
+- Independent drift detection found the same two root-role differences, and
+  no others, on both clone and production.
+- Repeating only the clone rollback with the CLI-recommended
+  `--skip-validations` option is the next separate approval gate.
 - No production lock, deployment, refactor, cutover, or decommission occurred.
 
 ## STP-2026.07.19-07 - Gen 2 account-switch like state

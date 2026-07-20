@@ -63,3 +63,30 @@ Expected scope:
 After verifying the clone is unlocked and healthy, rerun the read-only
 assessment against `main`. Production lock remains a later, separate approval
 gate.
+
+## Clone unlock attempt
+
+The approved `amplify gen2-migration lock --rollback` command was run against
+the temporary `gentest` checkout. The CLI stopped before rollback because its
+drift validation reported:
+
+`Template drift detected beyond expected DeletionPolicy changes`
+
+The clone remains `UPDATE_COMPLETE`, retains its deny-update stack policy, and
+is still marked as the migration environment. Production remains unchanged.
+
+Independent CloudFormation drift detection found exactly two drifted root
+resources on the clone:
+
+- `AuthRole` trust policy;
+- `UnauthRole` trust policy.
+
+Both are the standard Amplify Gen 1 Identity Pool role pattern: the
+CloudFormation template contains a placeholder Cognito `Deny`, while the live
+role contains the scoped Cognito `Allow` policy bound to the environment's
+Identity Pool. Production independently reports the same two resources and no
+other root-stack drift.
+
+The CLI recommends repeating the clone rollback with `--skip-validations`.
+Because this bypasses a migration safety guard, it requires a new explicit
+approval even though the detected drift is understood and matches production.

@@ -6,8 +6,10 @@ Last updated: 2026-07-19
 
 Phase 5 production preparation has started after successful Phase 4 browser
 acceptance. The read-only production reassessment is blocked by the existing
-`gentest` migration marker. Await explicit approval to roll back only the
-clone lock; do not lock or modify production yet.
+`gentest` migration marker. The approved normal clone unlock stopped on a
+known Gen 1 Identity Pool role drift pattern. Await explicit approval before
+repeating only the clone unlock with `--skip-validations`; do not lock or
+modify production yet.
 
 ## Current state
 
@@ -264,11 +266,15 @@ clone lock; do not lock or modify production yet.
   `UPDATE_COMPLETE`; its auth nested stack is `UPDATE_ROLLBACK_COMPLETE`.
 - The production reassessment did not run because Amplify still marks
   `gentest` as the migration environment. No production mutation occurred.
+- The approved clone unlock stopped before mutation because CLI drift
+  validation detected the two standard Gen 1 Identity Pool trust-policy
+  differences. Production reports the same two-resource drift pattern and no
+  additional root-stack drift.
 
 ## Next steps
 
-1. Obtain explicit approval to run `gen2-migration lock --rollback` against
-   `gentest` only.
+1. Obtain explicit approval to run
+   `gen2-migration lock --rollback --skip-validations` against `gentest` only.
 2. Verify the clone is healthy and unlocked, then rerun the read-only
    production assessment.
 3. Stop before the separate production-lock gate.
@@ -279,12 +285,14 @@ Phase 3 deployment and Phase 4 authenticated browser acceptance are complete.
 Phase 5 read-only preparation confirmed the production root and Lambda are
 healthy, while the auth nested stack remains `UPDATE_ROLLBACK_COMPLETE`.
 Production assessment is blocked because the project still marks `gentest` as
-the migration environment. The next reversible mutation is rolling back only
-the clone lock; it requires explicit approval. Browser-level image lazy
-loading is already implemented. Editing all metadata on existing Studio
-entries and cleaning orphaned likes during permanent deletion remain separate
-product changes. No production lock, deployment, cutover, decommission, or
-migration `refactor` command has been run.
+the migration environment. The normal clone unlock stopped before mutation on
+the standard two-role Amplify drift pattern that also exists in production.
+The next reversible mutation is rolling back only the clone lock with the
+CLI-recommended validation bypass; it requires explicit approval. Browser-level
+image lazy loading is already implemented. Editing all metadata on existing
+Studio entries and cleaning orphaned likes during permanent deletion remain
+separate product changes. No production lock, deployment, cutover,
+decommission, or migration `refactor` command has been run.
 
 ## Known risks and blockers
 
