@@ -4,10 +4,10 @@ Last updated: 2026-07-19
 
 ## Current objective
 
-Publish the accepted Gen 2 frontend candidate to the existing production
-hosting app after explicit cutover approval. Preserve the live Gen 1 backend
-and data as rollback throughout the observation window; do not decommission
-Gen 1 without separate approval.
+Observe the completed Gen 2 production frontend cutover and run authenticated
+acceptance in a regular browser. Preserve the live Gen 1 backend and data as
+rollback throughout the observation window; do not decommission Gen 1 without
+separate approval.
 
 ## Current state
 
@@ -383,27 +383,34 @@ Gen 1 without separate approval.
   `amplify_outputs.json`. The accepted Gen 2 production outputs contain public
   resource identifiers and endpoints, no Google client secret or credential,
   and must be tracked for this separate-backend cutover.
+- Amplify Hosting job 47 completed build, deploy, and verification on commit
+  `b040e24`. The live bundle contains the accepted Gen 2 User Pool and both Gen
+  2 API identifiers and no longer contains the old like API identifier.
+- Production public smoke checks pass for the homepage, portfolio, about,
+  contact, Studio, a real durable photograph URL, JavaScript, CSS, the 17-photo
+  manifest, public like count, unsigned-like rejection, unsigned-Studio
+  rejection, and contact CORS.
+- The SPA rewrite now excludes XML as well as other static extensions so the
+  real sitemap can be served after the final release-record deployment.
 - The accepted Gen 2 candidate has not yet received the stricter manifest and
   homepage validator; local Studio and viewer acceptance are pending.
 
 ## Next steps
 
-1. Track the accepted public Gen 2 outputs, push the verified build, and
-   confirm the retrying Amplify Hosting production job succeeds.
-2. Confirm the deployed bundle targets the accepted Gen 2 production outputs.
-3. Smoke-test public routes, static assets, and Gen 2 public API boundaries.
-4. Run authenticated production acceptance in a regular browser.
-5. Keep the Gen 1 backend intact through an observation window before any
+1. Confirm the final documentation-only hosting job and corrected sitemap.
+2. Run authenticated production acceptance in a regular browser: Google
+   sign-in, like/unlike across accounts, Studio edit/reorder/homepage selection,
+   upload/deactivate/reactivate/delete, and contact delivery.
+3. Keep the Gen 1 backend intact through an observation window before any
    separate decommissioning decision.
 
 ## Resume point after interruption
 
-The clean backend-only Gen 2 candidate in Amplify app `d15h7apgzubla9` is
-deployed, protected, populated, and accepted after two-account likes, Studio
-lifecycle, and contact-delivery testing. Studio metadata editing,
-homepage-photo selection, themes, and shareable photograph pages are complete
-and verified locally. The user approved frontend cutover; publishing and hosted
-smoke verification are next. No Gen 1 decommission has occurred.
+The accepted Gen 2 backend in Amplify app `d15h7apgzubla9` is deployed,
+protected, populated, and now consumed by the production frontend. Hosting job
+47 completed successfully and public production smoke checks pass. Final
+release-record hosting verification and authenticated browser acceptance are
+next. No Gen 1 decommission has occurred.
 
 ## Known risks and blockers
 

@@ -5,7 +5,7 @@ Release IDs use `STP-YYYY.MM.DD-NN`. An entry may be `candidate`, `deployed`,
 
 ## STP-2026.07.19-19 - Gen 2 production frontend cutover
 
-Status: candidate - approved for production publishing
+Status: deployed - public smoke passed; authenticated acceptance pending
 Date: 2026-07-19
 Target: existing production hosting app with accepted Gen 2 backend
 
@@ -33,6 +33,25 @@ Target: existing production hosting app with accepted Gen 2 backend
   frontend-only hosting app could not generate the ignored
   `amplify_outputs.json`. The accepted production outputs contain only public
   frontend resource identifiers and endpoints and are tracked for the cutover.
+
+### Deployment and public smoke
+
+- Amplify Hosting job 47 completed build, deploy, and verification on commit
+  `b040e24`.
+- The live JavaScript bundle contains the accepted Gen 2 production User Pool,
+  public API, and authenticated-like API identifiers and excludes the old like
+  API identifier.
+- The homepage, portfolio, about, contact, Studio, and a real durable
+  photograph route return HTTP 200. Deployed JavaScript and CSS return HTTP 200
+  with their correct content types.
+- The Gen 2 manifest contains all 17 active photographs. The Flowers public
+  count returns two; unsigned like and Studio writes return HTTP 401; contact
+  preflight returns HTTP 200 with the expected CORS headers.
+- The production branch remains frontend-only with
+  `AMPLIFY_SKIP_BACKEND_BUILD=true`, and the complete Gen 1 backend remains
+  intact for rollback.
+- Added XML to the SPA rewrite exclusions so the deployed sitemap is served as
+  XML after the final release-record hosting job.
 
 ## STP-2026.07.19-18 - Theme-aware photograph viewer
 
